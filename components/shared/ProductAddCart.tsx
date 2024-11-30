@@ -86,6 +86,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
   const [quantity, setQuantity] = useState<number>(1); // Default quantity set to 1
   const [isSending, setIsSending] = useState(false);
   const [totalorders, setTotalorders] = useState<number>(0);
+  const [isOpen, setIsOpen] = useState(false);
+
   const pathname = usePathname();
   const { toast } = useToast();
 
@@ -241,11 +243,6 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
     if (newQuantity >= 1) {
       setQuantity(newQuantity); // Only set quantity if it is 1 or greater
     }
-  };
-  const [isOpen, setIsOpen] = useState(false);
-
-  const openDialog = () => {
-    setIsOpen(true);
   };
 
   return (
@@ -449,12 +446,6 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                             }`}
                           >
                             {feature.size}
-                            {/* Show "Sold Out" label if stock is 0 
-                        {feature.stock === 0 && (
-                          <span className="flex text-[8px] text-white bg-red-600 rounded-full">
-                            Sold Out
-                          </span>
-                        )}*/}
                           </span>
                         </li>
                       ))}
@@ -655,12 +646,6 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                         }`}
                       >
                         {feature.size}
-                        {/* Show "Sold Out" label if stock is 0 
-                        {feature.stock === 0 && (
-                          <span className="flex text-[8px] text-white bg-red-600 rounded-full">
-                            Sold Out
-                          </span>
-                        )}*/}
                       </span>
                     </li>
                   ))}
