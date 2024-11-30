@@ -31,7 +31,7 @@ const StreetmapOfice = ({
   return (
     <MapContainer
       center={[parseFloat(lat), parseFloat(lng)]}
-      zoom={10}
+      zoom={18}
       scrollWheelZoom={false}
       className="map h-72 w-full rounded-lg z-0"
     >
@@ -42,16 +42,18 @@ const StreetmapOfice = ({
       <Marker position={[parseFloat(lat), parseFloat(lng)]} icon={customIcon}>
         <Popup>
           <div className="gap-1 p-1 w-[150px]">
-            <Image
-              src={imageUrl}
-              alt=""
-              className="w-full h-12 object-cover"
-              width={900}
-              height={500}
-            />
+            <div className="w-16 h-16 bg-gray-100 p-1 rounded-full ">
+              <Image
+                src={imageUrl}
+                alt=""
+                className=" w-full h-full object-cover"
+                width={400}
+                height={400}
+              />
+            </div>
             <div className="flex flex-col">
-              <div>{name}</div>
-              <b>{address}</b>
+              <div className="font-bold">{name}</div>
+              <p>{address}</p>
             </div>
           </div>
         </Popup>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FaTwitter } from "react-icons/fa";
-import { IAd } from "@/lib/database/models/ad.model";
+
 import Head from "next/head";
 import {
   FacebookShareButton,
@@ -16,47 +16,51 @@ import {
   LinkedinShareButton,
   LinkedinIcon,
 } from "next-share";
-import { updateshared } from "@/lib/actions/ad.actions";
+import { updateshared } from "@/lib/actions/ad.product";
+import { IProduct } from "@/lib/database/models/product.model";
 
 interface shareProps {
-  ad: IAd;
+  product: IProduct;
 }
 
-const ShareAd: React.FC<shareProps> = ({ ad }) => {
+const ShareAd: React.FC<shareProps> = ({ product }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
 
-  const shareUrl = `https://autoyard.co.ke/ads/${ad._id}`;
-  const shareTitle = `${ad.title}, Price: Ksh ${ad.price}`;
-  const shareDescription = ad.description;
-  const imageUrl = ad.imageUrls[0];
+  const shareUrl = `https://pama.co.ke/product/${product._id}`;
+  const shareTitle = `${product.productName}, Price: Ksh ${(
+    product.price -
+    (product.price * Number(product.discount)) / 100
+  ).toLocaleString()}`;
+  const shareDescription = product.description;
+  const imageUrl = product.imageUrls[0];
   const handleShare = async () => {
     //console.log(`Shared via ${platform}`);
-    const shared = (Number(ad.shared ?? "0") + 1).toString();
-    const _id = ad._id;
+    const shared = (Number(product.shared ?? "0") + 1).toString();
+    const _id = product._id;
     await updateshared({
       _id,
       shared,
-      path: `/ads/${ad._id}`,
+      path: `/product/${product._id}`,
     });
     // You can add any analytics or event tracking here
   };
   return (
     <>
       <Head>
-        <meta property="og:title" content={ad.title} />
-        <meta property="og:description" content={ad.description} />
-        <meta property="og:image" content={ad.imageUrls[0]} />
+        <meta property="og:title" content={product.productName} />
+        <meta property="og:description" content={product.description} />
+        <meta property="og:image" content={product.imageUrls[0]} />
         <meta property="og:url" content={shareUrl} />
         <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="Autoyard" />
+        <meta property="og:site_name" content="Pama" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={ad.title} />
-        <meta name="twitter:description" content={ad.description} />
-        <meta name="twitter:image" content={ad.imageUrls[0]} />
+        <meta name="twitter:title" content={product.productName} />
+        <meta name="twitter:description" content={product.description} />
+        <meta name="twitter:image" content={product.imageUrls[0]} />
         <meta name="twitter:url" content={shareUrl} />
       </Head>
       <div className="flex gap-1 w-full p-1">

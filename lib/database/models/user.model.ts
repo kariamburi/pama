@@ -26,13 +26,13 @@ export interface IUser extends Document {
   imageUrl?: string;
   fcmToken?: string;
 }
-
 export interface Businesshours {
   openHour: string;
   openMinute: string;
   closeHour: string;
   closeMinute: string;
 }
+
 
 export interface Verified {
   accountverified: boolean;
@@ -74,7 +74,7 @@ const UserSchema = new Schema({
   tiktok: { type: String }, // Optional
   verified: { type: [VerifiedSchema], required: true }, // Optional
   imageUrl: { type: String }, // Optional
-  fcmToken: { type: String },
+  fcmToken: { type: Number },
 });
 
 const User = models.User || model('User', UserSchema);

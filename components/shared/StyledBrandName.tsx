@@ -1,10 +1,14 @@
+import { IUser } from "@/lib/database/models/user.model";
 import React from "react";
-
-const StyledBrandName: React.FC = () => {
+type MobileProps = {
+  comp: IUser;
+};
+const StyledBrandName = ({ comp }: MobileProps) => {
   return (
     <h1 className="text-lg lg:text-xl">
-      <span className="text-[#FEA03C] font-bold">Auto</span>
-      <span className="text-white font-light">Yard</span>
+      <span className="text-[#000000] font-bold">
+        {comp.businessname ?? "Business Name"}
+      </span>
     </h1>
   );
 };

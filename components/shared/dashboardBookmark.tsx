@@ -1,5 +1,5 @@
 "use client";
-import { IAd } from "@/lib/database/models/ad.model";
+
 import { CreateUserParams } from "@/types";
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";

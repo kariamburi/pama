@@ -7,11 +7,12 @@ import { convertFileToUrl } from "@/lib/utils";
 import { RocketIcon } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { UTApi } from "uploadthing/server";
-import { deleteSingleImage } from "@/lib/actions/ad.actions";
+
 import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import Zoom from "react-medium-image-zoom";
 import "react-medium-image-zoom/dist/styles.css";
 import { useToast } from "@/components/ui/use-toast";
+import { deleteSingleImage } from "@/lib/actions/ad.product";
 
 type FileUploaderProps = {
   onFieldChange: (urls: string[]) => void;
@@ -165,7 +166,7 @@ export function FileUploader({
             return await applyWatermark(
               file,
               userName.toUpperCase(),
-              "Posted on AutoYard"
+              "Posted on Pama"
             );
           } catch (error) {
             console.error("Watermark failed, proceeding without:", error);
@@ -208,7 +209,7 @@ export function FileUploader({
   };
 
   return (
-    <div className="flex-center bg-dark-3 flex cursor-pointer p-3 flex-col overflow-hidden rounded-xl bg-grey-50">
+    <div className="flex-center flex cursor-pointer p-3 flex-col overflow-hidden rounded-xl bg-gray-100">
       <input {...getInputProps()} className="cursor-pointer" />
       <div className="text-left text-sm w-full mx-auto">
         <div className="font-semibold">Add Photo</div>

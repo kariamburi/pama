@@ -4,6 +4,7 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Searchmain from "./Searchmain";
+import SearchAll from "./SearchAll";
 
 export default function Header() {
   const router = useRouter();
@@ -16,20 +17,17 @@ export default function Header() {
   };
 
   return (
-    <div className="flex max-w-6xl mx-auto">
-      {/* Right Side */}
-      {/* Middle */}
-      <div className="lg:mb-10 mx-auto md:my-auto py-2 lg:py-10 md:py-0 w-[90%] md:w-[40%] text-center">
-        <div className="">
-          <div className="mb-5 text-white">
-            Find all in{" "}
-            <span className="bg-black text-white p-1 rounded-full">
-              <LocationOnIcon /> Kenya
-            </span>
-          </div>
-        </div>
-
-        <Searchmain />
+    <div className="flex flex-col max-w-6xl mx-auto">
+      <div className="mb-4 mx-auto text-center">
+        <h1 className="text-xl lg:text-2xl font-bold mb-0">
+          Welcome to Turkey Ware
+        </h1>
+        <p className="text-sm lg:text-base">
+          Explore the best collections curated for you!
+        </p>
+      </div>
+      <div className="mx-auto text-center">
+        <SearchAll />
       </div>
       {/* Left Side */}
     </div>

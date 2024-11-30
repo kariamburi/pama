@@ -1,15 +1,21 @@
 "use client";
-import { IAd } from "@/lib/database/models/ad.model";
+
 import React, { useEffect, useRef, useState } from "react";
-import Card from "./Card";
+
 import Pagination from "./Pagination";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import FloatingChatIcon from "./FloatingChatIcon";
-import ChatWindow from "./ChatWindow";
+
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { getRelatedAdByCategory } from "@/lib/actions/ad.actions";
+
+import {
+  getAllProducts,
+  getRelatedProductsByCategory,
+} from "@/lib/actions/ad.product";
+import ProductCard from "./ProductCard";
+import { IProduct } from "@/lib/database/models/product.model";
 //import Card from './Card'
 //import Pagination from './Pagination'
 
@@ -18,11 +24,9 @@ type CollectionProps = {
   emptyTitle: string;
   emptyStateSubtext: string;
   limit: number;
-  categoryId: string;
+  product: any;
   adId: string;
-  subcategory: string;
-  // page: number | string;
-  // totalPages?: number;
+
   urlParamName?: string;
   userId: string;
   userName: string;
@@ -38,8 +42,7 @@ const CollectionRelated = ({
   // totalPages = 0,
   collectionType,
   urlParamName,
-  categoryId,
-  subcategory,
+  product,
   adId,
   userId,
   userName,
@@ -52,7 +55,7 @@ const CollectionRelated = ({
   const pathname = usePathname();
   const isAdCreator = pathname === "/ads/";
 
-  const [data, setAds] = useState<IAd[]>([]); // Initialize with an empty array
+  const [data, setAds] = useState<IProduct[]>([]); // Initialize with an empty array
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -62,20 +65,24 @@ const CollectionRelated = ({
   const fetchAds = async () => {
     setLoading(true);
     try {
-      const relatedAds: any = await getRelatedAdByCategory({
-        categoryId: categoryId,
-        subcategory: subcategory,
-        adId: adId,
+      //const categoryList = await getAllCategories();
+      const relatedAds: any = await getRelatedProductsByCategory({
+        category: product.category,
+        subCategory: product.subCategory,
+        occasion: product.occasion,
+        genderAgeGroup: product.genderAgeGroup,
+        productId: product._id,
         page,
+        limit: 20,
       });
 
       // Update ads state using the latest prevAds for filtering
-      setAds((prevAds: IAd[]) => {
+      setAds((prevAds: IProduct[]) => {
         const existingAdIds = new Set(prevAds.map((ad) => ad._id));
 
         // Filter out ads that are already in prevAds
         const newAds = relatedAds?.data.filter(
-          (ad: IAd) => !existingAdIds.has(ad._id)
+          (ad: IProduct) => !existingAdIds.has(ad._id)
         );
 
         return [...prevAds, ...newAds]; // Return updated ads
@@ -110,35 +117,32 @@ const CollectionRelated = ({
       {data.length > 0 ? (
         <div className="flex flex-col items-center gap-10 p-0">
           <div className="grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
-            {data.map((ad: any, index: number) => {
-              const hasOrderLink = collectionType === "Ads_Organized";
-              const hidePrice = collectionType === "My_Tickets";
-
+            {data.map((prod: any, index: number) => {
               if (data.length === index + 1) {
                 return (
                   <div
                     ref={lastAdRef}
-                    key={ad._id}
+                    key={prod._id}
                     className="flex justify-center"
                   >
                     {/* Render Ad */}
-                    <Card
-                      ad={ad}
-                      hasOrderLink={hasOrderLink}
-                      hidePrice={hidePrice}
+                    <ProductCard
+                      product={prod}
                       userId={userId}
+                      index={index}
+                      trendingStatus={""}
                     />
                   </div>
                 );
               } else {
                 return (
-                  <div key={ad._id} className="flex justify-center">
+                  <div key={prod._id} className="flex justify-center">
                     {/* Render Ad */}
-                    <Card
-                      ad={ad}
-                      hasOrderLink={hasOrderLink}
-                      hidePrice={hidePrice}
+                    <ProductCard
+                      product={prod}
                       userId={userId}
+                      index={index}
+                      trendingStatus={""}
                     />
                   </div>
                 );

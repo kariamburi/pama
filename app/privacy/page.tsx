@@ -1,10 +1,10 @@
 import Navbar from "@/components/shared/navbar";
 import SettingsEdit from "@/components/shared/SettingsEdit";
-import { getUserById } from "@/lib/actions/user.actions";
+import { getUserById, getUserDetails } from "@/lib/actions/user.actions";
 import { Toaster } from "@/components/ui/toaster";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { auth } from "@clerk/nextjs/server";
-import Verification from "@/components/shared/Verification";
+
 import Image from "next/image";
 import BottomNavigation from "@/components/shared/BottomNavigation";
 import Footersub from "@/components/shared/Footersub";
@@ -13,31 +13,37 @@ import Head from "next/head";
 const Privacy = async () => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
-
+  const feedback = await getUserDetails(userId);
+  const comp = feedback.adminUser;
+  const user = feedback.user;
   return (
     <>
       <Head>
-        <title>Privacy Policy | AutoYard.co.ke</title>
+        <title>Pama | Buy Pure Turkey Ware in Kenya</title>
         <meta
           name="description"
-          content="Learn how AutoYard.co.ke collects, uses, and protects your personal information. Our Privacy Policy outlines your data protection rights and how we safeguard your privacy when using our website."
+          content="Pama is Kenya's premier online store specializing in Pure Turkey ware. Shop for the best quality clothes and accessories at affordable prices."
         />
-        <meta property="og:title" content="Privacy Policy | AutoYard.co.ke" />
+        <meta
+          property="og:title"
+          content="Pama | Pure Turkey Ware Store in Kenya"
+        />
         <meta
           property="og:description"
-          content="Read AutoYard.co.ke's Privacy Policy to understand how your personal information is handled. Your privacy and data protection are important to us."
+          content="Pama offers the finest Pure Turkey ware in Kenya. Browse our selection of high-quality clothes, and accessories available for delivery nationwide."
         />
-        <meta property="og:url" content="https://autoyard.co.ke/privacy" />
-        <meta property="og:type" content="article" />
+        <meta property="og:image" content="/assets/images/logo.png" />
+        <meta property="og:url" content="https://pama.co.ke" />
+        <meta property="og:type" content="website" />
         <meta
           name="keywords"
-          content="privacy policy, AutoYard, data protection, personal information, cookies, Kenya vehicle marketplace"
+          content="Pama, Pure Turkey ware, Turkey collections, Turkey clothes,Turkey accessories, Kenya"
         />
-        <meta name="author" content="AutoYard" />
-        <link rel="canonical" href="https://autoyard.co.ke/privacy" />
+        <meta name="author" content="Pama" />
+        <link rel="canonical" href="https://pama.co.ke" />
       </Head>
       <div className="z-10 top-0 fixed w-full">
-        <Navbar userstatus="User" userId={userId} />
+        <Navbar userstatus="User" comp={comp} userId={userId} />
       </div>
 
       <div className="max-w-3xl mx-auto flex mt-20 p-1">

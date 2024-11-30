@@ -1,5 +1,172 @@
 // ====== USER PARAMS
 
+
+
+
+
+// ====== product PARAMS
+
+export interface Feature  {
+  size: string // Represents the size (e.g., "44", "48")
+  stock: number // Number of items available for this size
+ // checked: boolean; // Indicates if the size is currently available for sale
+};
+export type CreateProductParams = {
+  userId: string
+  product: {
+    productName:string
+    description?:string
+    category:string
+    subCategory?:string
+    occasion?:string
+   // material?:string
+    genderAgeGroup?:string
+    features: Feature[]
+    color?: string[]
+    price?:number
+    discount?:string | number
+   // stockQuantity:string | number
+    //tags?: string
+   // trendingStatus?:string
+    featuredInDeals?: string
+    customizationOptions?: string
+    imageUrls: string[]
+    fabricCareInstructions?:string
+    sku?:string
+   // availability?:string
+  }
+  path: string
+}
+
+export type UpdateProductParams = {
+  userId: string
+  product: {
+    _id: string
+    productName:string
+    description?:string
+    category:string
+    subCategory?:string
+    occasion?:string
+   // material?:string
+    genderAgeGroup?:string
+    features: Feature[]
+    color?: string[]
+    price?:number
+    discount?:string | number
+   // stockQuantity:string | number
+   // tags?: string
+   // trendingStatus?:string
+    featuredInDeals?: string
+    customizationOptions?: string
+    imageUrls: string[]
+    fabricCareInstructions?:string
+    sku?:string
+   // availability?:string
+ 
+  }
+  path: string
+}
+export type GetRelatedProductByCategoryParams = {
+  category:string
+    subCategory:string
+    occasion:string
+    genderAgeGroup:string
+    productId:string;
+  limit?: number
+  page: number | string
+}
+export type DeleteProductParams = {
+  adId: string
+  deleteImages: string[]
+  path: string
+}
+
+export type GetAllProductsParams = {
+  query: string
+  sortby:string
+  category:string
+  gender:string
+  kids:string
+  product:string
+  material:string
+  occassion:string
+  color:string
+  price:string
+  limit: number
+  page: number
+
+}
+
+//==========Order
+export type CreateOrderParams = {
+  order: {
+    userId: string
+    productId: string
+    size:string
+    price: number
+    qty: number
+    status: string
+  }
+  path: string
+}
+export type UpdateOrderParams = {
+  order: {
+    _id:string
+    userId: string
+    productId: string
+    size:string
+    price: number
+    qty: number
+    status: string
+  }
+  path: string
+}
+export type DeleteOrderParams = {
+  _id: string
+  path: string
+}
+
+
+export type CreateDeliveryParams = {
+  delivery: {
+    method: string
+    location?: string
+    areas?: string[]
+    price: string
+    note?:string
+  }
+  userId:string
+  path: string
+}
+
+
+export type UpdateDeliveryParams = {
+  delivery: {
+    _id: string
+    method: string
+    location?: string
+    areas?: string[]
+    price: string
+    note?:string
+    
+  
+  }
+  userId:string
+  path: string
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
 export type CreateUserParams = {
   clerkId: string
   firstName: string
@@ -226,10 +393,7 @@ export type CreatePackagesParams = {
 
 
 
-export interface Feature {
-  title: string;
-  checked: boolean;
-}
+
 export interface Price {
   period: string;
   amount: number;
@@ -463,7 +627,7 @@ export type CheckoutOrderParams = {
   buyerId: string
 }
 
-export type CreateOrderParams = {
+export type CreateOrderrParams = {
   stripeId: string
   AdId: string
   buyerId: string

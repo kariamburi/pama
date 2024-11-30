@@ -12,13 +12,15 @@ import { Separator } from "../ui/separator";
 import MenuIcon from "@mui/icons-material/Menu";
 import { useState } from "react";
 import NavItems from "./NavItems";
-import StyledBrandNameblack from "./StyledBrandNameblack";
+import StyledBrandName from "./StyledBrandName";
 import Link from "next/link";
+import { IUser } from "@/lib/database/models/user.model";
 type MobileProps = {
   userstatus: string;
   userId: string;
+  comp: IUser;
 };
-const MobileNav = ({ userstatus, userId }: MobileProps) => {
+const MobileNav = ({ userstatus, userId, comp }: MobileProps) => {
   const [isSheetOpen, setIsSheetOpen] = useState(false);
 
   const handleclicklink = () => {
@@ -33,7 +35,7 @@ const MobileNav = ({ userstatus, userId }: MobileProps) => {
             setIsSheetOpen(true);
           }}
         >
-          <div className="w-8 h-8 flex items-center justify-center rounded-full text-white tooltip tooltip-bottom hover:cursor-pointer">
+          <div className="w-8 h-8 flex items-center justify-center rounded-full text-gray-600 tooltip tooltip-bottom hover:text-black hover:cursor-pointer">
             <MenuIcon />
           </div>
         </SheetTrigger>
@@ -45,13 +47,13 @@ const MobileNav = ({ userstatus, userId }: MobileProps) => {
             <div className="flex items-center">
               <div className="rounded-full overflow-hidden">
                 <Image
-                  src="/assets/images/logo_2.jpg"
-                  alt="logo"
+                  src={comp.imageUrl ?? "/assets/images/logo.png"}
+                  alt={comp.businessname ?? "logo"}
                   width={26}
                   height={26}
                 />
               </div>
-              <StyledBrandNameblack />
+              <StyledBrandName comp={comp} />
             </div>
           </SheetTitle>
           <Separator className="border border-gray-50" />

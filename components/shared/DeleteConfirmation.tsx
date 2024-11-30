@@ -3,7 +3,7 @@
 import { useTransition } from "react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,7 +16,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { deleteAd } from "@/lib/actions/ad.actions";
+import { deleteProduct } from "@/lib/actions/ad.product";
 type deleteProps = {
   adId: string;
   imageUrls: string[];
@@ -37,19 +37,16 @@ export const DeleteConfirmation = ({ adId, imageUrls }: deleteProps) => {
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <Image
-          src="/assets/icons/delete.svg"
-          alt="edit"
-          width={20}
-          height={20}
-        />
+        <div className="cursor-pointer hover:text-red-400">
+          <DeleteOutlineOutlinedIcon />
+        </div>
       </AlertDialogTrigger>
 
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure you want to delete?</AlertDialogTitle>
           <AlertDialogDescription className="p-regular-16 text-grey-600">
-            This will permanently delete this Ad
+            This will permanently delete this Product
           </AlertDialogDescription>
         </AlertDialogHeader>
 
@@ -59,7 +56,7 @@ export const DeleteConfirmation = ({ adId, imageUrls }: deleteProps) => {
           <AlertDialogAction
             onClick={() =>
               startTransition(async () => {
-                await deleteAd({ adId, deleteImages, path: pathname });
+                await deleteProduct({ adId, deleteImages, path: pathname });
               })
             }
           >

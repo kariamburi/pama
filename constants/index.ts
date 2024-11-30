@@ -84,32 +84,13 @@ export const headerLinks = [
 
   },
   {
-    label: 'Sell',
-    route: '/ads/create',
+    label: 'My Orders',
+    route: '/orders',
 
   },
   {
-    label: 'My Shop',
-    route: '/shop',
-    
-  },
-  {
-    label: 'Chat',
-    route: '/chat',
-    
-  },
-  {
-    label: 'Performance',
-    route: '/performance',
-    
-  },
-  {
-    label: 'Bookmark',
+    label: 'Favorite',
     route: '/bookmark',
-    
-  }, {
-    label: 'Plan',
-    route: '/plan',
     
   },
   {
@@ -123,22 +104,6 @@ export const headerLinks = [
   },
 ]
 
-export const allAgents  = [
-  {
-    _id: '1',
-    name: 'paul irungu',
-    email: 'paul.irungu@gmail.com',
-    avatar: '',
-    length: '12',
-   
-  },{
-    _id: '2',
-    name: 'james irungu',
-    email: 'paulmugo@gmail.com',
-    avatar: '',
-    length: '20',
-  },
-]
 
 export const adminLinks = [
   {
@@ -152,27 +117,447 @@ export const adminLinks = [
     
   },
   {
-    label: 'Packages',
-    route: '/packages',
+    label: 'Products',
+    route: '/products',
+    
+  },
+  {
+    label: 'Orders',
+    route: '/orders',
     
   },{
-    label: 'Transactions',
-    route: '/Transactions',
+    label: 'Delivery Methods',
+    route: '/delivery',
     
   },{
-    label: 'User Management',
-    route: '/agents',
+    label: 'Users Profile',
+    route: '/users',
     
   },{
     label: 'Communication',
     route: '/communication',
     
-  },{
-    label: 'Dispute',
-    route: '/dispute',
-    
   },
 ]
+export const GENDERAGEGROUP = ["Men", "Women", "Kids"];
+export const GENDER_AGE_GROUP = [
+  { category: "Men" },
+  { category: "Women" },
+  { category: "Kids", subOptions: ["Boys", "Girls", "Baby"] },
+];
+export const COLORS = [
+  { title: "Red", code: "#FF0000" },
+  { title: "Green", code: "#00FF00" },
+  { title: "Blue", code: "#0000FF" },
+  { title: "Yellow", code: "#FFFF00" },
+  { title: "Black", code: "#000000" },
+  { title: "White", code: "#FFFFFF" },
+  { title: "Burgundy", code: "#800020" },
+  { title: "Beige", code: "#F5F5DC" },
+  { title: "Navy Blue", code: "#000080" },
+  { title: "Light Blue", code: "#ADD8E6" },
+  { title: "Brown", code: "#A52A2A" },
+  { title: "Pink", code: "#FFC0CB" },
+  { title: "Orange", code: "#FFA500" },
+  { title: "Purple", code: "#800080" },
+  { title: "Lavender", code: "#E6E6FA" },
+  { title: "Gray", code: "#808080" },
+  { title: "Silver", code: "#C0C0C0" },
+  { title: "Gold", code: "#FFD700" },
+  { title: "Turquoise", code: "#40E0D0" },
+  { title: "Teal", code: "#008080" },
+  { title: "Mint Green", code: "#98FF98" },
+  { title: "Maroon", code: "#800000" },
+  { title: "Olive", code: "#808000" },
+  { title: "Khaki", code: "#F0E68C" },
+  { title: "Ivory", code: "#FFFFF0" },
+  { title: "Coral", code: "#FF7F50" },
+  { title: "Peach", code: "#FFE5B4" },
+  { title: "Dark Green", code: "#006400" },
+  { title: "Light Gray", code: "#D3D3D3" },
+  { title: "Champagne", code: "#F7E7CE" },
+  { title: "Charcoal", code: "#36454F" },
+  { title: "Cream", code: "#FFFDD0" },
+  { title: "Sand", code: "#C2B280" },
+  { title: "Rust", code: "#B7410E" },
+];
+
+export const OCCASIONS = ["Casual Wear", "Formal Wear", "Party Wear","Sports Wear","Work Wear"];
+
+
+export const MATERIALS = [
+  "Cotton",
+  "Linen",
+  "Wool",
+  "Silk",
+  "Denim",
+  "Polyester",
+  "Blends"
+];
+export const STOCK = [
+  "In Stock",
+  "Out of Stock"
+];
+export const CATEGORIES = {
+  Clothes: {
+   
+    Women: [
+      "Abayas & Modest Wear",
+      "Blouses & Tops",
+      "Dresses",
+      "Skirts",
+      "Suits",
+      "Trousers",
+      "Activewear",
+      "Jackets & Coats",
+      "Outerwear",
+      "Seasonal Wear",
+      "Sportswear",
+      "Swimwear",
+      "T-shirts",
+      "Sleepwear",
+      "Underwear",
+    ],
+    Men: [
+      "Shirts",
+      "Suits",
+      "Trousers",
+      "Activewear",
+      "Jackets & Coats",
+      "Outerwear",
+      "Seasonal Wear",
+      "Sportswear",
+      "Swimwear",
+      "T-shirts",
+      "Sleepwear",
+      "Underwear",
+    ],
+    Kids: {
+      Girls: [
+        "Dresses",
+        "Blouses & Tops",
+        "Skirts",
+        "Activewear",
+        "Jackets & Coats",
+        "T-shirts",
+        "Sleepwear",
+        "Swimwear",
+      ],
+      Boys: [
+        "Shirts",
+        "T-shirts",
+        "Trousers",
+        "Activewear",
+        "Jackets & Coats",
+        "Sleepwear",
+        "Swimwear",
+      ],
+      Babies: [
+        "Sleepwear",
+        "Underwear",
+        "Seasonal Wear",
+        "Swimwear",
+      ],
+    },
+  },
+  Accessories: {
+   
+    Women: [
+      "Jewelry",
+      "Handbags",
+      "Shoes",
+      "Bags",
+      "Belts",
+      "Hats",
+      "Socks",
+      "Sunglasses",
+      "Watches",
+    
+    ],
+    Men: [
+      "Belts",
+      "Watches",
+      "Shoes",
+      "Bags",
+      "Belts",
+      "Hats",
+      "Jewelry",
+      "Socks",
+      "Sunglasses",
+      "Watches",
+      
+    ],
+    Kids: {
+      Girls: [
+        "Hats",
+        "Jewelry",
+        "Bags",
+        "Shoes",
+      ],
+      Boys: [
+        "Hats",
+        "Bags",
+        "Shoes",
+      ],
+      Babies: [
+        "Hats",
+        "Socks",
+        "Bags (diaper bags)",
+        "Shoes",
+      ],
+    },
+  },
+};
+
+
+
+export const trendingStatusOptions = [
+  "Recommended",
+  "New Arrivals",
+  "Bestsellers",
+  "Trending Now",
+  "Lowest Price", 
+  "Highest Price",
+];
+export const shippingClassOptions = [
+  "Express",
+  "Standard",
+  "International",
+  "Local",
+];
+export const DeliveryDefaultValues = {
+  method: "",
+  location: "",
+  areas: [],
+  price: "",
+  note: "",
+}
+export const ProductDefaultValues = {
+  productName: "",
+  description: "",
+  category: "",
+  subCategory: "",
+  occasion: "",
+  genderAgeGroup: "",
+  features: [] as Feature[],
+  color: [],
+  price: 0,
+  discount: "",
+  featuredInDeals: "Sale",
+  customizationOptions: "Made-to-Measure",
+  imageUrls: [],
+  fabricCareInstructions: "",
+  sku: "",
+ 
+};
+const deliveryMethods = [
+  
+  {
+    method: "Shop Pickup - Tom Mboya Street",
+    location: "Beba beba Trade Center ground Floor, Shop A9",
+    price: "Free",
+  },
+  {
+    method: "Door Step Delivery (400)",
+    areas: ["Kahawa West", "Kahawa Wendani"],
+    price: "Ksh 400.00",
+  },
+  {
+    method: "Door Step Delivery (450)",
+    areas: ["Ruaka"],
+    price: "Ksh 450.00",
+  },
+  {
+    method: "Door Step Delivery (590)",
+    areas: [
+      "Rongai",
+      "Nyayo Estate",
+      "Syokimau",
+      "Karen",
+      "Ruiru",
+      "Kikuyu",
+      "Bomas",
+      "Muthiga",
+      "Utawala",
+      "Njiru",
+      "Uthiru",
+      "Banana",
+    ],
+    price: "Ksh 590.00",
+  },
+  {
+    method: "Door Step Delivery - Nairobi and environs",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "2NK Sacco (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "4NTE Sacco (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Chania Genesis (250) - Coast, excluding Nyali",
+    price: "Ksh 250.00",
+  },
+  {
+    method: "Classic Shuttle",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "County Link (150)",
+    price: "Ksh 150.00",
+  },
+  {
+    method: "Dreamline (400) - Coast",
+    price: "Ksh 400.00",
+  },
+  {
+    method: "Easy Coach (300) - Siaya, Bondo, Kisumu, Kakamega, Migori, Kericho",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "Ena Coach (300)",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "G-Coach",
+    price: "Ksh 600.00",
+  },
+  {
+    method: "Guardian (250)",
+    price: "Ksh 250.00",
+  },
+  {
+    method: "JPEE Travellers (300)",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "Kaka Travellers (100)",
+    price: "Ksh 100.00",
+  },
+  {
+    method: "KamT Sacco (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Kijabe Line (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Kinatwa (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Kukena (200)",
+    note: "May vary based on weight",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Liban",
+    price: "Ksh 600.00",
+  },
+  {
+    method: "Libera",
+    price: "Ksh 100.00",
+  },
+  {
+    method: "Likana (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Lopha",
+    price: "Ksh 150.00",
+  },
+  {
+    method: "Meiso",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "Metro Trans (100)",
+    price: "Ksh 100.00",
+  },
+  {
+    method: "Mololine",
+    price: "Ksh 250.00",
+  },
+  {
+    method: "MTN (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Naekana (300)",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "Nairobi CBD",
+    price: "Ksh 100.00",
+  },
+  {
+    method: "Narokline (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Neno (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "NNUS (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Northrift (250)",
+    price: "Ksh 250.00",
+  },
+  {
+    method: "Nuclear (300)",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "Orokise",
+    price: "Ksh 150.00",
+  },
+  {
+    method: "Pickup Mtaani (120)",
+    note: "Confirm on their website if they deliver to a convenient place near you",
+    price: "Ksh 120.00",
+  },
+  {
+    method: "Raha (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "Rembo Shuttle (100)",
+    price: "Ksh 100.00",
+  },
+  {
+    method: "Runa Sacco",
+    price: "Ksh 100.00",
+  },
+  {
+    method: "Satima (200)",
+    price: "Ksh 200.00",
+  },
+  {
+    method: "South Rift (250)",
+    price: "Ksh 250.00",
+  },
+  {
+    method: "Super Metro (150)",
+    price: "Ksh 150.00",
+  },
+  {
+    method: "Teamswat",
+    price: "Ksh 300.00",
+  },
+  {
+    method: "Z. 😢 Delivery Method not provided",
+    note: "Contact 0705084684, or select this and we'll contact you",
+    price: "Free",
+  },
+];
+
 export const AdDefaultValues = {
   title: '',
   description: '',
@@ -1248,9 +1633,11 @@ export const CategoryDefaultValues = {
 }
 // Define the Feature interface
 export interface Feature {
-  title: string;
-  checked: boolean;
-}export interface Price {
+  size: string;
+  stock: number;
+ // checked: boolean;
+}
+export interface Price {
   period: string;
   amount: number;
 }

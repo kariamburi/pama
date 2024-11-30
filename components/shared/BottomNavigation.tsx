@@ -6,7 +6,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import AddCircleOutlineOutlinedIcon from "@mui/icons-material/AddCircleOutlineOutlined";
 import CommentOutlinedIcon from "@mui/icons-material/CommentOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
-import Unreadmessages from "./Unreadmessages";
+
 import { SignedIn, SignedOut } from "@clerk/nextjs";
 import ShareOutlinedIcon from "@mui/icons-material/ShareOutlined";
 type navprop = {
@@ -101,8 +101,7 @@ const BottomNavigation = ({ userId }: navprop) => {
               }`}
             >
               <span className="flex">
-                <CommentOutlinedIcon />
-                <Unreadmessages userId={userId} />
+                <CommentOutlinedIcon />2
               </span>
               <span className="text-xs">Chat</span>
             </div>
@@ -117,8 +116,7 @@ const BottomNavigation = ({ userId }: navprop) => {
               }`}
             >
               <span className="flex">
-                <CommentOutlinedIcon />
-                <Unreadmessages userId={userId} />
+                <CommentOutlinedIcon />1
               </span>
               <span className="text-xs">Chat</span>
             </div>

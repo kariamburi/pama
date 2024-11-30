@@ -11,10 +11,10 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "AutoYard",
-  description: "AutoYard | Where Every Ride Finds a Buyer",
+  title: "Pama",
+  description: "Pama | Buy Pure Turkey Ware in Kenya",
   icons: {
-    icon: "/assets/images/favicon.png",
+    icon: "/assets/images/logo.png",
   },
 };
 

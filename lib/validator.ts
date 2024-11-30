@@ -1,5 +1,72 @@
 import * as z from "zod"
 // Regular expression to match YouTube URLs
+const DimensionsSchema = z.object({
+  length: z.string().or(z.number()).optional(),
+  width: z.string().or(z.number()).optional(),
+  height: z.string().or(z.number()).optional(),
+});
+const FeatureSchema = z.object({
+  size: z.string(), // Assuming title is a string
+  stock: z.number() // Assuming title is a string
+ // checked: z.boolean() // Assuming checked is a boolean
+});
+
+export const ProductSchema = z.object({
+  productName: z.string().min(3, 'Product name must be at least 3 characters'),
+  description: z.string().optional(),
+  category: z.string().min(3,'Category is required'),
+  subCategory: z.string().optional(),
+  occasion: z.string().optional(),
+  //season: z.string().optional(),
+  //style: z.string().optional(),
+  //material: z.string().optional(),
+  genderAgeGroup: z.string().optional(),
+  features: z.array(FeatureSchema),// Adjust to z.array(z.string()) if it should accept multiple sizes
+  color: z.array(z.string()).min(1, 'At least 1 color are required'),
+  price: z.union([z.string(), z.number()])
+  .refine(value => !isNaN(Number(typeof value === 'string' ? value.replace(/,/g, "") : value)), {
+    message: 'Price must be a valid number',
+  })
+  .transform(value => Number(typeof value === 'string' ? value.replace(/,/g, "") : value)),
+
+  discount: z
+    .string()
+    .or(z.number())
+    .refine((val) => Number(val) >= 0, { message: 'Discount must be a positive number' })
+    .optional(),
+  //stockQuantity: z
+   // .string()
+    //.or(z.number())
+ //   .refine((val) => Number(val) >= 0, { message: 'Stock quantity must be a positive number' }),
+ // tags: z.string().optional(), // Adjust to z.array(z.string()) if it should accept multiple tags
+  featuredInDeals: z.string().optional(),
+  customizationOptions: z.string().optional(),
+  imageUrls: z.array(z.string()).min(1, 'At least 1 images are required'),
+  fabricCareInstructions: z.string().optional(),
+  sku: z.string().optional(),
+ // trendingStatus: z.string().optional(),
+  //availability: z.string().optional(),
+  //weight: z.string().or(z.number()).optional(),
+ // dimensions: DimensionsSchema.optional(),
+ 
+  //keywords: z.array(z.string()).optional(), // Adjust to z.array(z.string()) if it should accept multiple keywords
+});
+
+
+export const DeliverySchema = z.object({
+  method: z.string().min(3, 'Method is required'),
+  areas: z.array(z.string()).optional(), // Add areas field
+ // price: z
+ // .string()
+ // .regex(/^Ksh\s\d+$/, 'Price must be in the format "Ksh 100"')
+ // .min(3, 'Price is required'),
+  price: z.string(),
+  location: z.string().optional(),
+  note: z.string().optional(),
+ 
+});
+
+
 const youtubeRegex = /^(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
 
 export const AdFormSchema = z.object({
@@ -107,10 +174,7 @@ export const UserFormSchema = z.object({
 // Define the Feature schema
 
 // Define the Feature schema
-const FeatureSchema = z.object({
-  title: z.string(), // Assuming title is a string
-  checked: z.boolean() // Assuming checked is a boolean
-});
+
 // Define the Feature schema
 const PriceSchema = z.object({
   period: z.string(), // Assuming title is a string

@@ -1,10 +1,10 @@
 import Navbar from "@/components/shared/navbar";
 import SettingsEdit from "@/components/shared/SettingsEdit";
-import { getUserById } from "@/lib/actions/user.actions";
+import { getUserById, getUserDetails } from "@/lib/actions/user.actions";
 import { Toaster } from "@/components/ui/toaster";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { auth } from "@clerk/nextjs/server";
-import Verification from "@/components/shared/Verification";
+
 import Image from "next/image";
 import BottomNavigation from "@/components/shared/BottomNavigation";
 import Footersub from "@/components/shared/Footersub";
@@ -12,35 +12,38 @@ import Head from "next/head";
 const About = async () => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
-
+  const feedback = await getUserDetails(userId);
+  const comp = feedback.adminUser;
+  const user = feedback.user;
   return (
     <>
       <Head>
-        <title>About AutoYard | Kenya&apos;s Leading Vehicle Marketplace</title>
+        <title>Pama | Buy Pure Turkey Ware in Kenya</title>
         <meta
           name="description"
-          content="Learn about AutoYard.co.ke, Kenya's premier platform for buying and selling vehicles. From cars to heavy-duty machinery, we connect buyers and sellers nationwide."
+          content="Pama is Kenya's premier online store specializing in Pure Turkey ware. Shop for the best quality clothes and accessories at affordable prices."
         />
         <meta
           property="og:title"
-          content="About AutoYard | Kenya's Leading Vehicle Marketplace"
+          content="Pama | Pure Turkey Ware Store in Kenya"
         />
         <meta
           property="og:description"
-          content="At AutoYard.co.ke, we offer a seamless, transparent, and secure platform to buy and sell vehicles across Kenya. Discover a wide selection of cars, motorbikes, buses, and machinery."
+          content="Pama offers the finest Pure Turkey ware in Kenya. Browse our selection of high-quality clothes, and accessories available for delivery nationwide."
         />
         <meta property="og:image" content="/assets/images/logo.png" />
-        <meta property="og:url" content="https://autoyard.co.ke/about" />
+        <meta property="og:url" content="https://pama.co.ke" />
         <meta property="og:type" content="website" />
         <meta
           name="keywords"
-          content="AutoYard, buy vehicles, sell vehicles, cars, motorbikes, buses, machinery, Kenya"
+          content="Pama, Pure Turkey ware, Turkey collections, Turkey clothes,Turkey accessories, Kenya"
         />
-        <meta name="author" content="AutoYard" />
+        <meta name="author" content="Pama" />
+        <link rel="canonical" href="https://pama.co.ke" />
       </Head>
 
       <div className="z-10 top-0 fixed w-full">
-        <Navbar userstatus="User" userId={userId} />
+        <Navbar userstatus="User" userId={userId} comp={comp} />
       </div>
 
       <div className="max-w-3xl mx-auto flex mt-20 p-1">

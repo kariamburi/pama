@@ -20,6 +20,7 @@ import SettingsIcon from "@mui/icons-material/Settings";
 import BookmarkIcon from "@mui/icons-material/Bookmark";
 import HomeIcon from "@mui/icons-material/Home";
 import { SignedIn, SignedOut } from "@clerk/nextjs";
+import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 type NavItemsProps = {
   userstatus: string;
   userId: string;
@@ -46,46 +47,29 @@ const NavItems = ({ userstatus, userId }: NavItemsProps) => {
                     key={link.route}
                     className={`${
                       isActive &&
-                      "bg-gradient-to-b from-[#4DCE7A] to-[#30AF5B] text-white rounded-full"
-                    } p-medium-16 whitespace-nowrap`}
+                      "bg-black hover:bg-black rounded-xl text-white"
+                    } p-medium-16 whitespace-nowrap rounded-xl`}
                   >
                     <Link href={userId ? linki : "/sign-in"}>
-                      <div className="flex hover:bg-slate-100 hover:rounded-full hover:text-emerald-600 p-3 mb-1 hover:cursor-pointer">
+                      <div className="flex hover:bg-gray-200 hover:rounded-xl p-3 mb-1 hover:cursor-pointer">
                         {link.label === "Home" && (
                           <span>
                             <HomeIcon className="w-10 p-1 hover:text-white" />
                           </span>
                         )}
-                        {link.label === "Sell" && (
-                          <span>
-                            <AddCircleOutlineOutlinedIcon className="w-10 p-1 hover:text-white" />
-                          </span>
-                        )}
-                        {link.label === "My Shop" && (
+
+                        {link.label === "My Orders" && (
                           <span>
                             <FormatListBulletedOutlinedIcon className="w-10 p-1 hover:text-white" />
                           </span>
                         )}
-                        {link.label === "Chat" && (
+
+                        {link.label === "Favorite" && (
                           <span>
-                            <CommentOutlinedIcon className="w-10 p-1 hover:text-white" />
+                            <FavoriteOutlinedIcon className="w-10 p-1 hover:text-white" />
                           </span>
                         )}
-                        {link.label === "Performance" && (
-                          <span>
-                            <StackedLineChartOutlinedIcon className="w-10 p-1 hover:text-white" />
-                          </span>
-                        )}
-                        {link.label === "Bookmark" && (
-                          <span>
-                            <BookmarkIcon className="w-10 p-1 hover:text-white" />
-                          </span>
-                        )}
-                        {link.label === "Plan" && (
-                          <span>
-                            <DiamondIcon className="w-10 p-1 hover:text-white" />
-                          </span>
-                        )}
+
                         {link.label === "Settings" && (
                           <span>
                             <SettingsIcon className="w-10 p-1 hover:text-white" />

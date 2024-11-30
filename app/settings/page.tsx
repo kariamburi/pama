@@ -1,23 +1,26 @@
 import Navbar from "@/components/shared/navbar";
 import SettingsEdit from "@/components/shared/SettingsEdit";
-import { getUserById } from "@/lib/actions/user.actions";
+import { getUserById, getUserDetails } from "@/lib/actions/user.actions";
 import { Toaster } from "@/components/ui/toaster";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { auth } from "@clerk/nextjs/server";
-import Verification from "@/components/shared/Verification";
+
 import Image from "next/image";
 import BottomNavigation from "@/components/shared/BottomNavigation";
 import Footersub from "@/components/shared/Footersub";
 const Settings = async () => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
-  const user = await getUserById(userId);
+
+  const feedback = await getUserDetails(userId);
+  const comp = feedback.adminUser;
+  const user = feedback.user;
   const isAdCreator = true;
   if (!user) {
     return (
       <div className="flex-center h-screen w-full bg-[#ebf2f7] bg-dotted-pattern bg-cover bg-fixed bg-center">
         <div className="top-0 z-10 fixed w-full">
-          <Navbar userstatus="User" userId={userId || ""} />
+          <Navbar userstatus="User" comp={comp} userId={userId || ""} />
         </div>
         <div className="max-w-6xl mx-auto mt-20">
           <div className="flex gap-1 items-center">
@@ -37,7 +40,7 @@ const Settings = async () => {
   return (
     <>
       <div className="z-10 top-0 fixed w-full">
-        <Navbar userstatus="User" userId={userId} />
+        <Navbar userstatus="User" comp={comp} userId={userId} />
       </div>
 
       <div className="max-w-3xl mx-auto flex mt-20 p-1">
@@ -50,13 +53,6 @@ const Settings = async () => {
                 <div className="flex text-lg mb-1 gap-1 font-bold">
                   <SettingsOutlinedIcon />
                   <h3 className="font-bold text-[25px]">Settings</h3>
-                </div>
-                <div className="flex">
-                  <Verification
-                    user={user}
-                    userId={userId}
-                    isAdCreator={isAdCreator}
-                  />
                 </div>
               </div>
             </section>

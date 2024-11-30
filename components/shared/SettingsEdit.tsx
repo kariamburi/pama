@@ -31,7 +31,6 @@ import { TextField } from "@mui/material";
 import { SignedIn, UserButton } from "@clerk/nextjs";
 import { useUploadThing } from "@/lib/uploadthing";
 import { FileuploaderBusiness } from "./FileuploaderBusiness";
-import { verificationStatus } from "@/lib/actions/verificationstatus";
 
 type setingsProp = {
   type: "Create" | "Update";
@@ -49,69 +48,6 @@ type Businesshours = {
 const SettingsEdit = ({ user, type, userId }: setingsProp) => {
   //const initialValues = user;
   const { toast } = useToast();
-
-  useEffect(() => {
-    // Check to see if this is a redirect back from Checkout
-    const query = new URLSearchParams(window.location.search);
-
-    if (query.get("OrderTrackingId")) {
-      const orderTrackingId = query.get("OrderTrackingId");
-      console.log(orderTrackingId);
-      // Retrieve transaction values from session storage
-      const plan = sessionStorage.getItem("plan");
-      const period = sessionStorage.getItem("period");
-      const amount = parseInt(sessionStorage.getItem("amount") || "0");
-      const planId = sessionStorage.getItem("planId");
-      const buyerId = sessionStorage.getItem("buyerId");
-      const phone = sessionStorage.getItem("phone");
-      const firstName = sessionStorage.getItem("firstName");
-      const middleName = sessionStorage.getItem("middleName");
-      const lastName = sessionStorage.getItem("lastName");
-      const email = sessionStorage.getItem("email");
-
-      const transaction = {
-        plan: plan,
-        amount: amount,
-        period: period,
-        planId: planId,
-        buyerId: buyerId,
-        phone: phone,
-        firstName: firstName,
-        middleName: middleName,
-        lastName: lastName,
-        email: email,
-        orderTrackingId: orderTrackingId || "", // Provide a default value if null
-      };
-
-      //  alert(JSON.stringify(transaction));
-      const checkstatus = async ({ transaction }: any) => {
-        console.log("TRA***********: " + transaction);
-
-        const response = await verificationStatus(transaction);
-
-        if (response === "success") {
-          console.log("RESPONSE    " + response);
-          toast({
-            title: "Verification successful!",
-            description: "You will receive an email confirmation",
-            duration: 5000,
-            className: "bg-[#30AF5B] text-white",
-          });
-
-          router.push("/settings/");
-        } else if (response === "failed") {
-          toast({
-            variant: "destructive",
-            title: "Verification canceled!",
-            description:
-              "Continue to shop around and checkout when you're ready",
-            duration: 5000,
-          });
-        }
-      };
-      checkstatus({ transaction });
-    }
-  }, []);
 
   const [countryCode, setCountryCode] = useState(
     user?.phone ? user.phone.substring(0, 4) : "+254"
@@ -213,17 +149,17 @@ const SettingsEdit = ({ user, type, userId }: setingsProp) => {
 
         if (updatedUser) {
           // form.reset();
-          router.push(`/settings/`);
+          //   router.push(`/settings/`);
           toast({
             title: "Successful!",
             description: "You have updated your details successfully",
             duration: 5000,
-            className: "bg-[#30AF5B] text-white",
+            className: "bg-[#000000] text-white",
           });
           // router.push(`/categories`);
         }
       } catch (error) {
-        console.log(error);
+        // console.log(error);
       }
     }
     // console.log(values);
@@ -368,292 +304,337 @@ const SettingsEdit = ({ user, type, userId }: setingsProp) => {
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-2">
-            <AccordionTrigger>Business details</AccordionTrigger>
-            <AccordionContent>
-              <div className="p-1 rounded-[20px] m-1  bg-white">
-                <div className="m-3">
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="imageUrl"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl className="h-72">
-                            <FileuploaderBusiness
-                              onFieldChange={field.onChange}
-                              imageUrl={field?.value ?? ""}
-                              setFiles={setFiles}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="businessname"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="Business Name"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="aboutbusiness"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              multiline
-                              rows={5} // You can adjust this number based on your preference
-                              label="About Business*"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="businessaddress"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="Business Address"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="latitude"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="Latitude"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                    <FormField
-                      control={form.control}
-                      name="longitude"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="Longitude"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="businesshours"
-                      render={({ field }) => (
-                        <FormItem className="w-full gap-2">
-                          <FormControl>
-                            <div className="w-full flex flex-col">
-                              <div className="w-full flex gap-1 mb-2">
-                                <label>Office Open Time:</label>
+          {user?.status === "Admin" && (
+            <>
+              <AccordionItem value="item-2">
+                <AccordionTrigger>Business details</AccordionTrigger>
+                <AccordionContent>
+                  <div className="p-1 rounded-[20px] m-1  bg-white">
+                    <div className="m-3">
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="imageUrl"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl className="h-72">
+                                <FileuploaderBusiness
+                                  onFieldChange={field.onChange}
+                                  imageUrl={field?.value ?? ""}
+                                  setFiles={setFiles}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="businessname"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="Business Name"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="aboutbusiness"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  multiline
+                                  rows={5} // You can adjust this number based on your preference
+                                  label="About Business*"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="businessaddress"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="Business Address"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="latitude"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="Latitude"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                        <FormField
+                          control={form.control}
+                          name="longitude"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="Longitude"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="businesshours"
+                          render={({ field }) => (
+                            <FormItem className="w-full gap-2">
+                              <FormControl>
+                                <div className="w-full flex flex-col">
+                                  <div className="w-full flex gap-1 mb-2">
+                                    <label>Office Open Time:</label>
 
-                                <select
-                                  className="bg-gray-100 p-1 border ml-2 rounded-sm"
-                                  value={startHour}
-                                  onChange={(e) => setStartHour(e.target.value)}
-                                >
-                                  {Array.from({ length: 24 }, (_, i) => i).map(
-                                    (hour) => (
-                                      <option
-                                        key={hour}
-                                        value={hour.toString().padStart(2, "0")}
-                                      >
-                                        {hour.toString().padStart(2, "0")}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-                                <select
-                                  className="bg-gray-100 p-1 border ml-2 mr-2 rounded-sm"
-                                  value={startMinute}
-                                  onChange={(e) =>
-                                    setStartMinute(e.target.value)
-                                  }
-                                >
-                                  {Array.from({ length: 60 }, (_, i) => i).map(
-                                    (minute) => (
-                                      <option
-                                        key={minute}
-                                        value={minute
-                                          .toString()
-                                          .padStart(2, "0")}
-                                      >
-                                        {minute.toString().padStart(2, "0")}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-                              </div>
-                              <div className="w-full flex gap-1">
-                                <label>Office Close Time:</label>
-                                <select
-                                  className="bg-gray-100 p-1 border ml-2 rounded-sm"
-                                  value={endHour}
-                                  onChange={(e) => setEndHour(e.target.value)}
-                                >
-                                  {Array.from({ length: 24 }, (_, i) => i).map(
-                                    (hour) => (
-                                      <option
-                                        key={hour}
-                                        value={hour.toString().padStart(2, "0")}
-                                      >
-                                        {hour.toString().padStart(2, "0")}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-                                <select
-                                  className="bg-gray-100 p-1 border ml-2 rounded-sm"
-                                  value={endMinute}
-                                  onChange={(e) => setEndMinute(e.target.value)}
-                                >
-                                  {Array.from({ length: 60 }, (_, i) => i).map(
-                                    (minute) => (
-                                      <option
-                                        key={minute}
-                                        value={minute
-                                          .toString()
-                                          .padStart(2, "0")}
-                                      >
-                                        {minute.toString().padStart(2, "0")}
-                                      </option>
-                                    )
-                                  )}
-                                </select>
-                              </div>
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="businessworkingdays"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <div>
-                              <label>Choose Working Days:</label>
+                                    <select
+                                      className="bg-gray-100 p-1 border ml-2 rounded-sm"
+                                      value={startHour}
+                                      onChange={(e) =>
+                                        setStartHour(e.target.value)
+                                      }
+                                    >
+                                      {Array.from(
+                                        { length: 24 },
+                                        (_, i) => i
+                                      ).map((hour) => (
+                                        <option
+                                          key={hour}
+                                          value={hour
+                                            .toString()
+                                            .padStart(2, "0")}
+                                        >
+                                          {hour.toString().padStart(2, "0")}
+                                        </option>
+                                      ))}
+                                    </select>
+                                    <select
+                                      className="bg-gray-100 p-1 border ml-2 mr-2 rounded-sm"
+                                      value={startMinute}
+                                      onChange={(e) =>
+                                        setStartMinute(e.target.value)
+                                      }
+                                    >
+                                      {Array.from(
+                                        { length: 60 },
+                                        (_, i) => i
+                                      ).map((minute) => (
+                                        <option
+                                          key={minute}
+                                          value={minute
+                                            .toString()
+                                            .padStart(2, "0")}
+                                        >
+                                          {minute.toString().padStart(2, "0")}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                  <div className="w-full flex gap-1">
+                                    <label>Office Close Time:</label>
+                                    <select
+                                      className="bg-gray-100 p-1 border ml-2 rounded-sm"
+                                      value={endHour}
+                                      onChange={(e) =>
+                                        setEndHour(e.target.value)
+                                      }
+                                    >
+                                      {Array.from(
+                                        { length: 24 },
+                                        (_, i) => i
+                                      ).map((hour) => (
+                                        <option
+                                          key={hour}
+                                          value={hour
+                                            .toString()
+                                            .padStart(2, "0")}
+                                        >
+                                          {hour.toString().padStart(2, "0")}
+                                        </option>
+                                      ))}
+                                    </select>
+                                    <select
+                                      className="bg-gray-100 p-1 border ml-2 rounded-sm"
+                                      value={endMinute}
+                                      onChange={(e) =>
+                                        setEndMinute(e.target.value)
+                                      }
+                                    >
+                                      {Array.from(
+                                        { length: 60 },
+                                        (_, i) => i
+                                      ).map((minute) => (
+                                        <option
+                                          key={minute}
+                                          value={minute
+                                            .toString()
+                                            .padStart(2, "0")}
+                                        >
+                                          {minute.toString().padStart(2, "0")}
+                                        </option>
+                                      ))}
+                                    </select>
+                                  </div>
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="businessworkingdays"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <div>
+                                  <label>Choose Working Days:</label>
 
-                              <>
-                                <div className="flex gap-1 w-full items-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedDays.includes("Sunday")}
-                                    onChange={() => handleDayToggle("Sunday")}
-                                  />
-                                  <label>Sunday</label>
+                                  <>
+                                    <div className="flex gap-1 w-full items-center">
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedDays.includes(
+                                          "Sunday"
+                                        )}
+                                        onChange={() =>
+                                          handleDayToggle("Sunday")
+                                        }
+                                      />
+                                      <label>Sunday</label>
+                                    </div>
+                                    <div className="flex gap-1 w-full items-center">
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedDays.includes(
+                                          "Monday"
+                                        )}
+                                        onChange={() =>
+                                          handleDayToggle("Monday")
+                                        }
+                                      />
+                                      <label>Monday</label>
+                                    </div>
+                                    <div className="flex gap-1 w-full items-center">
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedDays.includes(
+                                          "Tuesday"
+                                        )}
+                                        onChange={() =>
+                                          handleDayToggle("Tuesday")
+                                        }
+                                      />
+                                      <label>Tuesday</label>
+                                    </div>
+                                    <div className="flex gap-1 w-full items-center">
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedDays.includes(
+                                          "Wednesday"
+                                        )}
+                                        onChange={() =>
+                                          handleDayToggle("Wednesday")
+                                        }
+                                      />
+                                      <label>Wednesday</label>
+                                    </div>
+                                    <div className="flex gap-1 w-full items-center">
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedDays.includes(
+                                          "Thursday"
+                                        )}
+                                        onChange={() =>
+                                          handleDayToggle("Thursday")
+                                        }
+                                      />
+                                      <label>Thursday</label>
+                                    </div>
+                                    <div className="flex gap-1 w-full items-center">
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedDays.includes(
+                                          "Friday"
+                                        )}
+                                        onChange={() =>
+                                          handleDayToggle("Friday")
+                                        }
+                                      />
+                                      <label>Friday</label>
+                                    </div>
+                                    <div className="flex gap-1 w-full items-center">
+                                      <input
+                                        type="checkbox"
+                                        checked={selectedDays.includes(
+                                          "Saturday"
+                                        )}
+                                        onChange={() =>
+                                          handleDayToggle("Saturday")
+                                        }
+                                      />
+                                      <label>Saturday</label>
+                                    </div>
+                                  </>
                                 </div>
-                                <div className="flex gap-1 w-full items-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedDays.includes("Monday")}
-                                    onChange={() => handleDayToggle("Monday")}
-                                  />
-                                  <label>Monday</label>
-                                </div>
-                                <div className="flex gap-1 w-full items-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedDays.includes("Tuesday")}
-                                    onChange={() => handleDayToggle("Tuesday")}
-                                  />
-                                  <label>Tuesday</label>
-                                </div>
-                                <div className="flex gap-1 w-full items-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedDays.includes("Wednesday")}
-                                    onChange={() =>
-                                      handleDayToggle("Wednesday")
-                                    }
-                                  />
-                                  <label>Wednesday</label>
-                                </div>
-                                <div className="flex gap-1 w-full items-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedDays.includes("Thursday")}
-                                    onChange={() => handleDayToggle("Thursday")}
-                                  />
-                                  <label>Thursday</label>
-                                </div>
-                                <div className="flex gap-1 w-full items-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedDays.includes("Friday")}
-                                    onChange={() => handleDayToggle("Friday")}
-                                  />
-                                  <label>Friday</label>
-                                </div>
-                                <div className="flex gap-1 w-full items-center">
-                                  <input
-                                    type="checkbox"
-                                    checked={selectedDays.includes("Saturday")}
-                                    onChange={() => handleDayToggle("Saturday")}
-                                  />
-                                  <label>Saturday</label>
-                                </div>
-                              </>
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
                   </div>
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
+                </AccordionContent>
+              </AccordionItem>
+            </>
+          )}
+
           <AccordionItem value="item-3">
             <AccordionTrigger>Contacts details</AccordionTrigger>
             <AccordionContent>
@@ -759,210 +740,249 @@ const SettingsEdit = ({ user, type, userId }: setingsProp) => {
                       )}
                     />
                   </div>
+                  {user?.status === "Admin" && (
+                    <>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="whatsapp"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <div className="flex w-full gap-1">
+                                  <select
+                                    className="bg-gray-100 p-1 text-sm lg:text-base border ml-2 rounded-sm w-[120px]"
+                                    value={countryCodeWhatsapp}
+                                    onChange={handleCountryCodeChangeWhatsapp}
+                                  >
+                                    <option value="+254">Kenya (+254)</option>
+                                    <option value="+213">Algeria (+213)</option>
+                                    <option value="+244">Angola (+244)</option>
+                                    <option value="+229">Benin (+229)</option>
+                                    <option value="+267">
+                                      Botswana (+267)
+                                    </option>
+                                    <option value="+226">
+                                      Burkina Faso (+226)
+                                    </option>
+                                    <option value="+257">Burundi (+257)</option>
+                                    <option value="+237">
+                                      Cameroon (+237)
+                                    </option>
+                                    <option value="+238">
+                                      Cape Verde (+238)
+                                    </option>
+                                    <option value="+236">
+                                      Central African Republic (+236)
+                                    </option>
+                                    <option value="+235">Chad (+235)</option>
+                                    <option value="+269">Comoros (+269)</option>
+                                    <option value="+243">
+                                      Democratic Republic of the Congo (+243)
+                                    </option>
+                                    <option value="+253">
+                                      Djibouti (+253)
+                                    </option>
+                                    <option value="+20">Egypt (+20)</option>
+                                    <option value="+240">
+                                      Equatorial Guinea (+240)
+                                    </option>
+                                    <option value="+291">Eritrea (+291)</option>
+                                    <option value="+268">
+                                      Eswatini (+268)
+                                    </option>
+                                    <option value="+251">
+                                      Ethiopia (+251)
+                                    </option>
+                                    <option value="+241">Gabon (+241)</option>
+                                    <option value="+220">Gambia (+220)</option>
+                                    <option value="+233">Ghana (+233)</option>
+                                    <option value="+224">Guinea (+224)</option>
+                                    <option value="+245">
+                                      Guinea-Bissau (+245)
+                                    </option>
+                                    <option value="+225">
+                                      Ivory Coast (+225)
+                                    </option>
+                                    <option value="+266">Lesotho (+266)</option>
+                                    <option value="+231">Liberia (+231)</option>
+                                    <option value="+218">Libya (+218)</option>
+                                    <option value="+261">
+                                      Madagascar (+261)
+                                    </option>
+                                    <option value="+265">Malawi (+265)</option>
+                                    <option value="+223">Mali (+223)</option>
+                                    <option value="+222">
+                                      Mauritania (+222)
+                                    </option>
+                                    <option value="+230">
+                                      Mauritius (+230)
+                                    </option>
+                                    <option value="+212">Morocco (+212)</option>
+                                    <option value="+258">
+                                      Mozambique (+258)
+                                    </option>
+                                    <option value="+264">Namibia (+264)</option>
+                                    <option value="+227">Niger (+227)</option>
+                                    <option value="+234">Nigeria (+234)</option>
+                                    <option value="+242">
+                                      Republic of the Congo (+242)
+                                    </option>
+                                    <option value="+250">Rwanda (+250)</option>
+                                    <option value="+239">
+                                      Sao Tome and Principe (+239)
+                                    </option>
+                                    <option value="+221">Senegal (+221)</option>
+                                    <option value="+248">
+                                      Seychelles (+248)
+                                    </option>
+                                    <option value="+232">
+                                      Sierra Leone (+232)
+                                    </option>
+                                    <option value="+252">Somalia (+252)</option>
+                                    <option value="+27">
+                                      South Africa (+27)
+                                    </option>
+                                    <option value="+211">
+                                      South Sudan (+211)
+                                    </option>
+                                    <option value="+249">Sudan (+249)</option>
+                                    <option value="+255">
+                                      Tanzania (+255)
+                                    </option>
+                                    <option value="+228">Togo (+228)</option>
+                                    <option value="+216">Tunisia (+216)</option>
+                                    <option value="+256">Uganda (+256)</option>
+                                    <option value="+260">Zambia (+260)</option>
+                                    <option value="+263">
+                                      Zimbabwe (+263)
+                                    </option>
+                                  </select>
 
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="whatsapp"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <div className="flex w-full gap-1">
-                              <select
-                                className="bg-gray-100 p-1 text-sm lg:text-base border ml-2 rounded-sm w-[120px]"
-                                value={countryCodeWhatsapp}
-                                onChange={handleCountryCodeChangeWhatsapp}
-                              >
-                                <option value="+254">Kenya (+254)</option>
-                                <option value="+213">Algeria (+213)</option>
-                                <option value="+244">Angola (+244)</option>
-                                <option value="+229">Benin (+229)</option>
-                                <option value="+267">Botswana (+267)</option>
-                                <option value="+226">
-                                  Burkina Faso (+226)
-                                </option>
-                                <option value="+257">Burundi (+257)</option>
-                                <option value="+237">Cameroon (+237)</option>
-                                <option value="+238">Cape Verde (+238)</option>
-                                <option value="+236">
-                                  Central African Republic (+236)
-                                </option>
-                                <option value="+235">Chad (+235)</option>
-                                <option value="+269">Comoros (+269)</option>
-                                <option value="+243">
-                                  Democratic Republic of the Congo (+243)
-                                </option>
-                                <option value="+253">Djibouti (+253)</option>
-                                <option value="+20">Egypt (+20)</option>
-                                <option value="+240">
-                                  Equatorial Guinea (+240)
-                                </option>
-                                <option value="+291">Eritrea (+291)</option>
-                                <option value="+268">Eswatini (+268)</option>
-                                <option value="+251">Ethiopia (+251)</option>
-                                <option value="+241">Gabon (+241)</option>
-                                <option value="+220">Gambia (+220)</option>
-                                <option value="+233">Ghana (+233)</option>
-                                <option value="+224">Guinea (+224)</option>
-                                <option value="+245">
-                                  Guinea-Bissau (+245)
-                                </option>
-                                <option value="+225">Ivory Coast (+225)</option>
-                                <option value="+266">Lesotho (+266)</option>
-                                <option value="+231">Liberia (+231)</option>
-                                <option value="+218">Libya (+218)</option>
-                                <option value="+261">Madagascar (+261)</option>
-                                <option value="+265">Malawi (+265)</option>
-                                <option value="+223">Mali (+223)</option>
-                                <option value="+222">Mauritania (+222)</option>
-                                <option value="+230">Mauritius (+230)</option>
-                                <option value="+212">Morocco (+212)</option>
-                                <option value="+258">Mozambique (+258)</option>
-                                <option value="+264">Namibia (+264)</option>
-                                <option value="+227">Niger (+227)</option>
-                                <option value="+234">Nigeria (+234)</option>
-                                <option value="+242">
-                                  Republic of the Congo (+242)
-                                </option>
-                                <option value="+250">Rwanda (+250)</option>
-                                <option value="+239">
-                                  Sao Tome and Principe (+239)
-                                </option>
-                                <option value="+221">Senegal (+221)</option>
-                                <option value="+248">Seychelles (+248)</option>
-                                <option value="+232">
-                                  Sierra Leone (+232)
-                                </option>
-                                <option value="+252">Somalia (+252)</option>
-                                <option value="+27">South Africa (+27)</option>
-                                <option value="+211">South Sudan (+211)</option>
-                                <option value="+249">Sudan (+249)</option>
-                                <option value="+255">Tanzania (+255)</option>
-                                <option value="+228">Togo (+228)</option>
-                                <option value="+216">Tunisia (+216)</option>
-                                <option value="+256">Uganda (+256)</option>
-                                <option value="+260">Zambia (+260)</option>
-                                <option value="+263">Zimbabwe (+263)</option>
-                              </select>
-
-                              <TextField
-                                {...field}
-                                label="Whatsapp number"
-                                type="tel"
-                                value={whatsappNumber}
-                                onChange={handleInputChangeWhatsapp}
-                                className="w-full"
-                              />
-                            </div>
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
+                                  <TextField
+                                    {...field}
+                                    label="Whatsapp number"
+                                    type="tel"
+                                    value={whatsappNumber}
+                                    onChange={handleInputChangeWhatsapp}
+                                    className="w-full"
+                                  />
+                                </div>
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </>
+                  )}
                 </div>
               </div>
             </AccordionContent>
           </AccordionItem>
-          <AccordionItem value="item-4">
-            <AccordionTrigger>Social Media</AccordionTrigger>
-            <AccordionContent>
-              <div className="p-1 rounded-[20px] m-1  bg-white">
-                <div className="m-3">
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="facebook"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="facebook link"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
+          {user?.status === "Admin" && (
+            <>
+              <AccordionItem value="item-4">
+                <AccordionTrigger>Social Media</AccordionTrigger>
+                <AccordionContent>
+                  <div className="p-1 rounded-[20px] m-1  bg-white">
+                    <div className="m-3">
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="facebook"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="facebook link"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="twitter"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="twitter link"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="instagram"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="instagram link"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="tiktok"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="tiktok link"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <FormField
+                          control={form.control}
+                          name="website"
+                          render={({ field }) => (
+                            <FormItem className="w-full">
+                              <FormControl>
+                                <TextField
+                                  {...field}
+                                  label="Website"
+                                  className="w-full"
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+                      </div>
+                    </div>
                   </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="twitter"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="twitter link"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="instagram"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="instagram link"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="tiktok"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="tiktok link"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <FormField
-                      control={form.control}
-                      name="website"
-                      render={({ field }) => (
-                        <FormItem className="w-full">
-                          <FormControl>
-                            <TextField
-                              {...field}
-                              label="Website"
-                              className="w-full"
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </div>
-              </div>
-            </AccordionContent>
-          </AccordionItem>
+                </AccordionContent>
+              </AccordionItem>
+            </>
+          )}
         </Accordion>
 
         <Button

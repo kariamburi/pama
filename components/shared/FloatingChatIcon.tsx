@@ -1,33 +1,25 @@
 // components/FloatingChatIcon.js
 
 import React from "react";
-import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
-import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
+import WhatsAppIcon from "@mui/icons-material/WhatsApp";
+import Link from "next/link";
 interface FloatingChatIconProps {
-  onClick: () => void;
-  isOpen: boolean;
+  phone: string;
 }
-const FloatingChatIcon: React.FC<FloatingChatIconProps> = ({
-  onClick,
-  isOpen,
-}) => {
+const FloatingChatIcon: React.FC<FloatingChatIconProps> = ({ phone }) => {
   return (
-    <div
-      className="fixed bottom-20 lg:bottom-10 right-1 lg:right-5 bg-[#000000] w-10 lg:w-16 h-10 lg:h-16 flex justify-center items-center rounded-full cursor-pointer z-10"
-      onClick={onClick}
+    <Link
+      href={`https://wa.me/${phone.replace(/\D/g, "")}`}
+      className="flex items-center"
+      target="_blank"
+      rel="noopener noreferrer"
     >
-      <div className="w-6 h-6 lg:w-8 lg:h-8 flex text-[#000000] items-center justify-center rounded-full bg-white tooltip tooltip-bottom hover:cursor-pointer">
-        {isOpen === true ? (
-          <>
-            <KeyboardArrowDownOutlinedIcon />
-          </>
-        ) : (
-          <>
-            <SupportAgentOutlinedIcon />
-          </>
-        )}
+      <div className="fixed bottom-20 lg:bottom-10 right-1 lg:right-5 bg-[#00B53F] w-10 lg:w-16 h-10 lg:h-16 flex justify-center items-center rounded-full cursor-pointer z-10">
+        <div className="w-6 h-6 lg:w-8 lg:h-8 flex text-[#00B53F] items-center justify-center rounded-full bg-white tooltip tooltip-bottom hover:cursor-pointer">
+          <WhatsAppIcon />
+        </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

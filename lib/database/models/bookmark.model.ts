@@ -6,7 +6,7 @@ export interface ICategory extends Document {
   adId: string;
 }
 const BookmarkSchema = new Schema({
-  adId: { type: Schema.Types.ObjectId, ref: 'Ad' },
+  adId: { type: Schema.Types.ObjectId, ref: 'Product' },
  userBId: { type: Schema.Types.ObjectId, ref: 'User' },
 })
 const Bookmark = models.Bookmark || model('Bookmark', BookmarkSchema);

@@ -3,19 +3,40 @@
 import { CreateBookmarkParams, CreatePackagesParams, DeleteBookmarkParams, DeleteCategoryParams, DeletePackagesParams, UpdatePackagesParams } from "@/types"
 import { handleError } from "../utils"
 import { connectToDatabase } from "../database"
-import Category from "../database/models/category.model"
+
 import { revalidatePath } from "next/cache"
 import { UTApi } from "uploadthing/server"
-import Packages from "../database/models/packages.model"
+
 import Bookmark from "../database/models/bookmark.model"
-import Ad from "../database/models/ad.model"
+import Product from "../database/models/product.model"
 
 
 const populateAd = (query: any) => {
   return query.populate({
     path: 'adId',
-    model: Ad,
-    select: '_id title description imageUrls negotiable enableMap latitude longitude geometry address youtube phone subcategory views price make vehiclemodel vehicleyear vehiclecolor vehicleinteriorColor vehiclecondition vehiclesecordCondition vehicleTransmissions vehiclemileage vehiclekeyfeatures vehiclechassis vehicleregistered vehicleexchangeposible vehicleFuelTypes vehicleBodyTypes vehicleSeats vehicleEngineSizesCC Types bedrooms bathrooms furnishing amenities toilets parking status area landuse propertysecurity floors estatename houseclass listedby fee category organizer plan priority expirely adstatus createdAt'
+    model: Product,
+    select: `
+      productName
+      description
+      category
+      subCategory
+      occasion
+      material
+      genderAgeGroup
+      features
+      color
+      price
+      discount
+      stockQuantity
+      tags
+      trendingStatus
+      featuredInDeals
+      customizationOptions
+      imageUrls
+      fabricCareInstructions
+      sku
+      availability
+    `
   });
 };
 
@@ -28,10 +49,10 @@ export const createBookmark = async ({ bookmark, path}: CreateBookmarkParams) =>
     const book = await Bookmark.findOne(conditions);  // Use findOne to find a single matching document
     
     let newBookmark={}
-    let response="Ad aleardy Saved to Bookmark"
+    let response="Product aleardy Saved to Favorite"
     if(!book){
        newBookmark = await Bookmark.create({ ...bookmark});
-       response="Ad Saved to Bookmark"
+       response="Product Saved to Favorite"
     }
     
     revalidatePath(path)
@@ -48,7 +69,7 @@ export async function getBookmarkById(_id: string) {
 
     const bookmark = await Bookmark.findById(_id)
 
-    if (!bookmark) throw new Error('Bookmark not found')
+    if (!bookmark) throw new Error('Favorite not found')
 
     return JSON.parse(JSON.stringify(bookmark))
   } catch (error) {
@@ -95,10 +116,10 @@ export const deleteBookmark = async ({ bookmark, path }: CreateBookmarkParams) =
     const conditions = { $and: [{adId: bookmark.adId }, { userBId: bookmark.userBId }] };
     const book = await Bookmark.findOne(conditions); // Find the matching bookmark
     
-    let response = "Bookmark not found";
+    let response = "Favorite not found";
     if (book) {
       await Bookmark.deleteOne(conditions); // Delete the bookmark if it exists
-      response = "Bookmark deleted successfully";
+      response = "Favorite deleted successfully";
     }
     
     revalidatePath(path); // Revalidate the path to update cache

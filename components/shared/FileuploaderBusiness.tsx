@@ -61,28 +61,27 @@ export function FileuploaderBusiness({
 
   const { getRootProps, getInputProps } = useDropzone({
     onDrop,
-    accept: "image/*" ? generateClientDropzoneAccept(["image/*"]) : undefined,
+    accept: generateClientDropzoneAccept(["image/*"]),
   });
-
   return (
     <div
       {...getRootProps()}
-      className="flex-center bg-dark-3 flex h-72 cursor-pointer flex-col overflow-hidden rounded-xl bg-grey-50"
+      className="flex-center bg-dark-3 flex  cursor-pointer flex-col overflow-hidden rounded-xl bg-grey-50"
     >
       <input {...getInputProps()} className="cursor-pointer" />
 
       {imageUrl ? (
-        <div className="flex h-50 w-full flex-1 justify-center ">
-          <Zoom>
+        <Zoom>
+          <div className="flex h-20 w-20 p-1 bg-gray-100 rounded-full justify-center ">
             <Image
               src={imageUrl}
               alt="image"
-              className="object-center w-full h-full"
-              width={900}
-              height={500}
+              className="object-center w-full h-full rounded-full"
+              width={400}
+              height={400}
             />
-          </Zoom>
-        </div>
+          </div>
+        </Zoom>
       ) : (
         <div className="flex-center flex-col py-5 text-grey-500">
           <Image
@@ -91,7 +90,7 @@ export function FileuploaderBusiness({
             height={77}
             alt="file upload"
           />
-          <h3 className="mb-2 mt-2">Drag Business Profile Image here</h3>
+          <h3 className="mb-2 mt-2">Drag Business Logo Image here</h3>
           <p className="p-medium-12 mb-4">SVG, PNG, JPG</p>
           <Button type="button" className="rounded-full">
             Select from computer

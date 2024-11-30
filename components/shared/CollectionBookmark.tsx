@@ -1,10 +1,10 @@
-import { IAd } from "@/lib/database/models/ad.model";
 import React, { useEffect, useRef, useState } from "react";
 import Pagination from "./Pagination";
-import VerticalCard from "./VerticalCard";
-import HorizontalCard from "./HorizontalCard";
+
 import { getallBookmarkByuserId } from "@/lib/actions/bookmark.actions";
 import Image from "next/image";
+import { IProduct } from "@/lib/database/models/product.model";
+import ProductCard from "./ProductCard";
 type CollectionProps = {
   userId: string;
   //data: IAd[];
@@ -31,7 +31,7 @@ const CollectionBookmark = ({
   isAdCreator,
   isVertical,
 }: CollectionProps) => {
-  const [data, setAds] = useState<IAd[]>([]); // Initialize with an empty array
+  const [data, setAds] = useState<IProduct[]>([]); // Initialize with an empty array
   const [page, setPage] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -44,12 +44,12 @@ const CollectionBookmark = ({
       const bookmark = await getallBookmarkByuserId(userId);
 
       // Update ads state using the latest prevAds for filtering
-      setAds((prevAds: IAd[]) => {
+      setAds((prevAds: IProduct[]) => {
         const existingAdIds = new Set(prevAds.map((ad) => ad._id));
 
         // Filter out ads that are already in prevAds
         const newAds = bookmark?.data.filter(
-          (ad: IAd) => !existingAdIds.has(ad._id)
+          (ad: IProduct) => !existingAdIds.has(ad._id)
         );
 
         return [...prevAds, ...newAds]; // Return updated ads
@@ -84,30 +84,32 @@ const CollectionBookmark = ({
         isVertical ? (
           <div className="flex flex-col bg-grey-50 rounded-lg items-center gap-10 p-1 lg:p-2">
             <ul className="grid w-full grid-cols-2 gap-1 lg:gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:gap-3">
-              {data.map((ad: any, index: number) => {
+              {data.map((prod: any, index: number) => {
                 if (data.length === index + 1) {
                   return (
                     <div
                       ref={lastAdRef}
-                      key={ad.adId._id}
+                      key={prod._id}
                       className="flex justify-center"
                     >
                       {/* Render Ad */}
-                      <VerticalCard
-                        ad={ad.adId}
+                      <ProductCard
+                        product={prod}
                         userId={userId}
-                        isAdCreator={isAdCreator}
+                        index={index}
+                        trendingStatus={"Favorite"}
                       />
                     </div>
                   );
                 } else {
                   return (
-                    <div key={ad.adId._id} className="flex justify-center">
+                    <div key={prod._id} className="flex justify-center">
                       {/* Render Ad */}
-                      <VerticalCard
-                        ad={ad.adId}
+                      <ProductCard
+                        product={prod}
                         userId={userId}
-                        isAdCreator={isAdCreator}
+                        index={index}
+                        trendingStatus={"Favorite"}
                       />
                     </div>
                   );
@@ -118,30 +120,32 @@ const CollectionBookmark = ({
         ) : (
           <div className="flex p-1 bg-grey-50 rounded-lg">
             <ul className="w-full">
-              {data.map((ad: any, index: number) => {
+              {data.map((prod: any, index: number) => {
                 if (data.length === index + 1) {
                   return (
                     <div
                       ref={lastAdRef}
-                      key={ad._id}
+                      key={prod._id}
                       className="flex justify-center"
                     >
                       {/* Render Ad */}
-                      <HorizontalCard
-                        ad={ad}
+                      <ProductCard
+                        product={prod}
                         userId={userId}
-                        isAdCreator={isAdCreator}
+                        index={index}
+                        trendingStatus={"Favorite"}
                       />
                     </div>
                   );
                 } else {
                   return (
-                    <div key={ad._id} className="flex justify-center">
+                    <div key={prod._id} className="flex justify-center">
                       {/* Render Ad */}
-                      <HorizontalCard
-                        ad={ad}
+                      <ProductCard
+                        product={prod}
                         userId={userId}
-                        isAdCreator={isAdCreator}
+                        index={index}
+                        trendingStatus={"Favorite"}
                       />
                     </div>
                   );

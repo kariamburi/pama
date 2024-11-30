@@ -56,34 +56,6 @@ export default function MenuSubmobile({ categoryList }: MobileProps) {
   return (
     <div className="mx-auto mt-10">
       <div className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-7 m-1 gap-1">
-        <SignedIn>
-          <div
-            onClick={() => router.push("/ads/create")}
-            className="hidden lg:inline h-[100px] bg-emerald-500 text-white flex flex-col items-center justify-center cursor-pointer rounded-sm p-1 border-0 border-emerald-300 hover:bg-emerald-600"
-          >
-            <div className="flex flex-col items-center text-center justify-center">
-              <div className="h-12 w-12 rounded-full p-2">
-                <AddCircleOutlineOutlinedIcon />
-              </div>
-              <h2 className="text-lg font-bold">SELL</h2>
-            </div>
-          </div>
-        </SignedIn>
-
-        <SignedOut>
-          <div
-            onClick={() => router.push("/sign-in")}
-            className="hidden lg:inline h-[100px] bg-emerald-500 text-white flex flex-col items-center justify-center cursor-pointer rounded-sm p-1 border-0 border-emerald-300 hover:bg-emerald-600"
-          >
-            <div className="flex flex-col items-center text-center justify-center">
-              <div className="h-12 w-12 rounded-full p-2">
-                <AddCircleOutlineOutlinedIcon />
-              </div>
-              <h2 className="text-lg font-bold">SELL</h2>
-            </div>
-          </div>
-        </SignedOut>
-
         {vehicleCategory?.subcategory.map((sub, index) => (
           <div
             key={sub.title} // Using sub.title as a unique key

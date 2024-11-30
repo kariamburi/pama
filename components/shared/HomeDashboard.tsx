@@ -1,15 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import CategoryForm from "@/components/shared/CategoryForm";
-import Menulistcategory from "@/components/shared/menulistcategory";
-import { getAllCategories } from "@/lib/actions/category.actions";
+
 import Box from "@mui/material/Box";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
-import AdminNavItemsMobile from "@/components/shared/AdminNavItemsMobile";
-import PieChart from "@/components/shared/PieChart";
-import { adminLinks } from "@/constants";
+
+import { adminLinks, CATEGORIES } from "@/constants";
 import CottageOutlinedIcon from "@mui/icons-material/CottageOutlined";
 import ClassOutlinedIcon from "@mui/icons-material/ClassOutlined";
 import ChecklistOutlinedIcon from "@mui/icons-material/ChecklistOutlined";
@@ -17,51 +14,153 @@ import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import CoPresentOutlinedIcon from "@mui/icons-material/CoPresentOutlined";
 import DiamondIcon from "@mui/icons-material/Diamond";
-import Menulistpackages from "./menulistpackages";
-import PackageForm from "./packageForm";
-import { getAllPackages } from "@/lib/actions/packages.actions";
 import { ScrollArea } from "../ui/scroll-area";
-import { getallTrans } from "@/lib/actions/transactionstatus";
-import TotalRevenue from "./TotalRevenue";
-import PropertyReferrals from "./PropertyReferrals";
-import Chat from "./Chat";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
+import { ProductForm } from "./ProductForm";
+import ProductWindow from "./ProductWindow";
+import { getallOders } from "@/lib/actions/order.actions";
+import CollectionOrder from "./CollectionOrder";
+import { number } from "zod";
+
+import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
+
+import {
+  formUrlQuery,
+  formUrlQuerymultiple,
+  removeKeysFromQuery,
+} from "@/lib/utils";
+import { useRouter, useSearchParams } from "next/navigation";
+import CollectionProducts from "./CollectionProducts";
+import CollectionUsers from "./CollectionUsers";
+import CollectionMethods from "./CollectionMethods";
+import MethodsWindow from "./MethodsWindow";
+import AirportShuttleOutlinedIcon from "@mui/icons-material/AirportShuttleOutlined";
+import NotificationsActiveOutlinedIcon from "@mui/icons-material/NotificationsActiveOutlined";
+import AccordionTree from "./AccordionTree";
+import TotalCard from "./TotalCard";
+import TotalCardOrders from "./TotalCardOrders";
+import BarChart from "./SalesLineGraph";
+import SalesLineGraph from "./SalesLineGraph";
+import TrendingProducts from "./TrendingProducts";
+import BroadcastMessage from "./BroadcastMessage";
 type homeProps = {
   userId: string;
   userName: string;
   userImage: string;
+  limit: number;
+  page: number;
+  orders: any;
+  totalPages: number;
+  Products: any;
+  totalPagesProducts: number;
+  users: any;
+  totalPagesUsers: number;
+  deliveries: any;
+  prodSum: any;
+  orderSum: any;
+  // trending: any;
 };
-const HomeDashboard = ({ userId, userName, userImage }: homeProps) => {
+
+const HomeDashboard = ({
+  userId,
+  userName,
+  userImage,
+  limit,
+  page,
+  orders,
+  Products,
+  totalPages,
+  totalPagesProducts,
+  totalPagesUsers,
+  deliveries,
+  users,
+  prodSum,
+  orderSum,
+}: //trending,
+homeProps) => {
   const [activeTab, setActiveTab] = useState("Home");
   const [categoryList, setcategoryList] = useState<any[]>([]);
   const [packList, setpackList] = useState<any[]>([]);
   const [alltrans, setalltrans] = useState<any[]>([]);
-
+  const [startDate, setStartDate] = useState<string | null>(null);
+  const [endDate, setEndDate] = useState<string | null>(null);
   const handle = async (title: string) => {
     setActiveTab(title);
-    if (title === "Categories") {
-      const Categories = async () => {
-        const category = await getAllCategories();
-        setcategoryList(category);
-      };
-      Categories();
-    }
-    if (title === "Packages") {
-      const pack = async () => {
-        const list = await getAllPackages();
-        setpackList(list);
-      };
-      pack();
-    }
   };
-  useEffect(() => {
-    const transactions = async () => {
-      const allt = await getallTrans();
-      setalltrans(allt);
-      console.log(allt);
-      //  alert(allt);
-    };
-    transactions();
-  }, []);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const handleOpen = () => {
+    setIsOpen(true);
+  };
+
+  const handleClose = () => {
+    setIsOpen(false);
+  };
+  const [isOpenMethods, setIsOpenMethods] = useState(false);
+  const handleOpenMethods = () => {
+    setIsOpenMethods(true);
+  };
+
+  const handleCloseMethods = () => {
+    setIsOpenMethods(false);
+  };
+  // const [orders, setOrders] = useState<any>([]);
+  const [search, setSearch] = useState("");
+  // const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+
+  const handleSearch = (e: React.FormEvent) => {
+    e.preventDefault();
+    //fetchOrders(search);
+    let newUrl = "";
+
+    if (search) {
+      newUrl = formUrlQuery({
+        params: searchParams.toString(),
+        key: "orderId",
+        value: search,
+      });
+    } else {
+      newUrl = removeKeysFromQuery({
+        params: searchParams.toString(),
+        keysToRemove: ["orderId"],
+      });
+    }
+
+    router.push(newUrl, { scroll: false });
+  };
+  const handleClear = () => {
+    setSearch("");
+    const newUrl = removeKeysFromQuery({
+      params: searchParams.toString(),
+      keysToRemove: ["orderId", "start", "end"],
+    });
+
+    router.push(newUrl, { scroll: false });
+  };
+  const handleSearchDates = () => {
+    let newUrl = "";
+    if (startDate || endDate) {
+      newUrl = formUrlQuerymultiple({
+        params: "",
+        updates: {
+          start: startDate ?? "",
+          end: endDate ?? "",
+        },
+      });
+    } else {
+      newUrl = removeKeysFromQuery({
+        params: searchParams.toString(),
+        keysToRemove: ["start", "end"],
+      });
+    }
+
+    router.push(newUrl, { scroll: false });
+  };
+
   return (
     <div className="w-full flex mt-3 p-1">
       <div className="hidden lg:inline mr-5">
@@ -74,13 +173,12 @@ const HomeDashboard = ({ userId, userName, userImage }: homeProps) => {
                 <li
                   key={link.route}
                   className={`${
-                    activeTab === link.label &&
-                    "bg-gradient-to-b from-[#4DCE7A] to-[#30AF5B] text-white rounded-full"
+                    activeTab === link.label && "bg-black text-white rounded-xl"
                   } p-medium-16 whitespace-nowrap`}
                 >
                   <div
                     onClick={() => handle(link.label)}
-                    className="flex hover:bg-emerald-100 hover:rounded-full hover:text-emerald-600 p-3 mb-1 hover:cursor-pointer"
+                    className="flex hover:bg-gray-200 hover:rounded-xl hover:text-gray-700 p-3 mb-1 hover:cursor-pointer"
                   >
                     <span className="text-right my-auto">
                       {link.label === "Home" && (
@@ -90,32 +188,32 @@ const HomeDashboard = ({ userId, userName, userImage }: homeProps) => {
                       )}
                       {link.label === "Categories" && (
                         <span>
-                          <ClassOutlinedIcon className="w-10 p-1 hover:text-white" />
-                        </span>
-                      )}
-                      {link.label === "Packages" && (
-                        <span>
                           <DiamondIcon className="w-10 p-1 hover:text-white" />
                         </span>
                       )}
-                      {link.label === "Transactions" && (
+                      {link.label === "Products" && (
+                        <span>
+                          <ClassOutlinedIcon className="w-10 p-1 hover:text-white" />
+                        </span>
+                      )}
+                      {link.label === "Orders" && (
                         <span>
                           <ChecklistOutlinedIcon className="w-10 p-1 hover:text-white" />
                         </span>
                       )}
-                      {link.label === "User Management" && (
+                      {link.label === "Delivery Methods" && (
+                        <span>
+                          <AirportShuttleOutlinedIcon className="w-10 p-1 hover:text-white" />
+                        </span>
+                      )}
+                      {link.label === "Users Profile" && (
                         <span>
                           <GroupsOutlinedIcon className="w-10 p-1 hover:text-white" />
                         </span>
                       )}
                       {link.label === "Communication" && (
                         <span>
-                          <ChatBubbleOutlineOutlinedIcon className="w-10 p-1 hover:text-white" />
-                        </span>
-                      )}
-                      {link.label === "Dispute" && (
-                        <span>
-                          <CoPresentOutlinedIcon className="w-10 p-1 hover:text-white" />
+                          <NotificationsActiveOutlinedIcon className="w-10 p-1 hover:text-white" />
                         </span>
                       )}
                     </span>
@@ -137,137 +235,341 @@ const HomeDashboard = ({ userId, userName, userImage }: homeProps) => {
 
       <div className="flex-1 rounded-lg">
         <div className="bg-white rounded-lg lg:hidden">
-          <div className="">
-            <AdminNavItemsMobile />
+          <div>
+            <ul className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-8 m-1 gap-1 p-1">
+              {adminLinks.map((link) => {
+                //  const isActive = pathname === link.route;
+
+                return (
+                  <li
+                    key={link.route}
+                    className={`${
+                      activeTab === link.label &&
+                      "bg-black text-white rounded-xl"
+                    } p-medium-16 whitespace-nowrap border rounded-xl`}
+                  >
+                    <div
+                      onClick={() => handle(link.label)}
+                      className="flex hover:bg-gray-200 hover:rounded-xl hover:text-gray-700 p-3 mb-1 hover:cursor-pointer"
+                    >
+                      <span className="text-right my-auto">
+                        {link.label === "Home" && (
+                          <span>
+                            <CottageOutlinedIcon className="w-10 p-1 hover:text-white" />
+                          </span>
+                        )}
+                        {link.label === "Categories" && (
+                          <span>
+                            <DiamondIcon className="w-10 p-1 hover:text-white" />
+                          </span>
+                        )}
+                        {link.label === "Products" && (
+                          <span>
+                            <ClassOutlinedIcon className="w-10 p-1 hover:text-white" />
+                          </span>
+                        )}
+                        {link.label === "Orders" && (
+                          <span>
+                            <ChecklistOutlinedIcon className="w-10 p-1 hover:text-white" />
+                          </span>
+                        )}
+                        {link.label === "Delivery Methods" && (
+                          <span>
+                            <AirportShuttleOutlinedIcon className="w-10 p-1 hover:text-white" />
+                          </span>
+                        )}
+                        {link.label === "Users Profile" && (
+                          <span>
+                            <GroupsOutlinedIcon className="w-10 p-1 hover:text-white" />
+                          </span>
+                        )}
+                        {link.label === "Communication" && (
+                          <span>
+                            <NotificationsActiveOutlinedIcon className="w-10 p-1 hover:text-white" />
+                          </span>
+                        )}
+                      </span>
+
+                      <span className="flex-1 text-xs mr-5 hover:no-underline my-auto">
+                        {link.label}
+                      </span>
+                    </div>
+                  </li>
+                );
+              })}
+            </ul>
           </div>
         </div>
 
         {activeTab === "Home" && (
           <>
-            <div className="p-2 rounded-lg bg-white max-w-6xl mx-auto flex flex-col lg:flex-row mt-3">
-              <Box>
-                <Typography fontSize={25} fontWeight={700} color="#11142D">
-                  Dashboard
-                </Typography>
+            <div className="container mx-auto p-4 border rounded-xl">
+              <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 
+              <Box>
                 <Box mt="20px" display="flex" flexWrap="wrap" gap={2}>
-                  <PieChart
-                    title="Properties for Sale"
-                    value={684}
-                    series={[75, 25]}
-                    colors={["#275be8", "#c4e8ef"]}
+                  <TotalCard
+                    title="Total Products"
+                    value={prodSum.totalProducts}
                   />
-                  <PieChart
-                    title="Properties for Rent"
-                    value={550}
-                    series={[60, 40]}
-                    colors={["#b84644", "#4576b5"]}
-                  />
-                  <PieChart
-                    title="Total customers"
-                    value={5684}
-                    series={[75, 25]}
-                    colors={["#275be8", "#c4e8ef"]}
-                  />
-                  <PieChart
-                    title="Properties for Cities"
-                    value={555}
-                    series={[75, 25]}
-                    colors={["#275be8", "#c4e8ef"]}
-                  />
+                  <TotalCard title="Total Sizes" value={prodSum.totalStock} />
+                  <TotalCard title="Total worth" value={prodSum.totalWorth} />
                 </Box>
 
+                <Box mt="20px" display="flex" flexWrap="wrap" gap={2}>
+                  <TotalCardOrders
+                    title="Active Orders"
+                    value={orderSum.successful}
+                  />
+                  <TotalCardOrders
+                    title="Completed Orders"
+                    value={orderSum.completed}
+                  />
+                  <TotalCardOrders
+                    title="Pending Orders"
+                    value={orderSum.pending}
+                  />
+                </Box>
                 <Stack
                   mt="25px"
                   width="100%"
                   direction={{ xs: "column", lg: "row" }}
                   gap={4}
                 >
-                  <TotalRevenue />
-                  <PropertyReferrals />
-                </Stack>
-
-                <Box
-                  flex={1}
-                  borderRadius="15px"
-                  padding="20px"
-                  bgcolor="#fcfcfc"
-                  display="flex"
-                  flexDirection="column"
-                  minWidth="100%"
-                  mt="25px"
-                >
-                  <Typography fontSize="18px" fontWeight={600} color="#11142d">
-                    Latest Properties
-                  </Typography>
-
-                  <Box
-                    mt={2.5}
-                    sx={{ display: "flex", flexWrap: "wrap", gap: 4 }}
-                  >
-                    -----------------
+                  {/* Make each child component flexible */}
+                  <Box flex={1}>
+                    <SalesLineGraph />
                   </Box>
-                </Box>
+                  <Box flex={1}>
+                    <TrendingProducts />
+                  </Box>
+                </Stack>
               </Box>
             </div>
           </>
         )}
         {activeTab === "Categories" && (
           <>
-            <div className="p-2 rounded-lg bg-white max-w-6xl mx-auto flex flex-col lg:flex-row mt-3">
-              <div className="lg:flex-1 bg-white p-5 ml-2 mr-5 mb-3 lg:mb-0">
-                <div className="text-lg font-bold breadcrumbs text-gray-600">
-                  Add Category
-                </div>
-                <CategoryForm type="Create" />
-              </div>
+            <div className="container mx-auto p-4 border rounded-xl">
+              <h1 className="text-2xl font-bold mb-4">Categories</h1>
 
-              <div className="lg:flex-1 bg-white p-5 ml-2 mr-5">
-                <div className="text-lg font-bold breadcrumbs text-gray-600">
-                  Category List
-                </div>
-                <Menulistcategory categoryList={categoryList} />
+              <div className="p-2">
+                <AccordionTree data={CATEGORIES} />
               </div>
             </div>
           </>
         )}
-        {activeTab === "Packages" && (
+        {activeTab === "Products" && (
           <>
-            <div className="p-2 rounded-lg bg-white max-w-6xl mx-auto flex flex-col lg:flex-row mt-3">
-              <div className="bg-white p-5 ml-2 mr-5 mb-3">
-                <section className="bg-dotted-pattern bg-cover bg-center py-0 md:py-0 rounded-sm">
-                  <div className="wrapper flex items-center justify-center sm:justify-between">
-                    <h3 className="font-bold text-[25px] sm:text-left">
-                      Add Package
-                    </h3>
+            <div className="container mx-auto p-4 border rounded-xl">
+              <h1 className="text-2xl font-bold mb-4">Products</h1>
+              <div className="flex flex-col lg:flex-row gap-3">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="flex flex-col">
+                    <button
+                      onClick={handleOpen}
+                      className={`flex text-sm gap-1 items-center  text-white px-4 py-2 rounded-lg bg-black hover:bg-gray-700`}
+                    >
+                      <AddOutlinedIcon /> Add Product
+                    </button>
                   </div>
-                </section>
+                </div>
 
-                <PackageForm type="Create" />
+                {/* Search Form */}
               </div>
+              {/* Date Filter Section */}
 
-              <div className="bg-white p-5 ml-2 mr-5">
-                <section className="bg-grey-50 bg-dotted-pattern bg-cover bg-center py-0 md:py-0 rounded-sm">
-                  <div className="wrapper flex items-center justify-center sm:justify-between">
-                    <h3 className="font-bold text-[25px] sm:text-left">
-                      Packages List
-                    </h3>
+              <CollectionProducts
+                data={Products}
+                emptyTitle={`No Product Found`}
+                emptyStateSubtext="Come back later"
+                limit={limit}
+                page={page}
+                userId={userId}
+                totalPages={totalPagesProducts}
+              />
+              <ProductWindow
+                isOpen={isOpen}
+                onClose={handleClose}
+                userId={userId}
+              />
+            </div>
+          </>
+        )}
+        {activeTab === "Orders" && (
+          <>
+            <div className="container mx-auto p-4 border rounded-xl">
+              <h1 className="text-2xl font-bold mb-4">Orders</h1>
+              <div className="flex flex-col lg:flex-row gap-3">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="flex flex-col">
+                    <label
+                      className="text-sm font-semibold mb-1"
+                      htmlFor="startDate"
+                    >
+                      Start Date
+                    </label>
+                    <input
+                      type="date"
+                      id="startDate"
+                      value={startDate || ""}
+                      onChange={(e) => setStartDate(e.target.value)}
+                      className="border p-2 rounded"
+                    />
                   </div>
-                </section>
+                  <div className="flex flex-col">
+                    <label
+                      className="text-sm font-semibold mb-1"
+                      htmlFor="endDate"
+                    >
+                      End Date
+                    </label>
+                    <input
+                      type="date"
+                      id="endDate"
+                      value={endDate || ""}
+                      onChange={(e) => setEndDate(e.target.value)}
+                      className="border p-2 rounded"
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label
+                      className="text-sm font-semibold mb-1"
+                      htmlFor="endDate"
+                    >
+                      .
+                    </label>
+                    <button
+                      onClick={handleSearchDates}
+                      className="bg-black text-white px-4 py-2 rounded"
+                    >
+                      Search
+                    </button>
+                  </div>
+                </div>
 
-                <Menulistpackages packagesList={packList} />
+                {/* Search Form */}
+
+                <form onSubmit={handleSearch}>
+                  <div className="flex gap-1">
+                    <div className="flex flex-col">
+                      <label
+                        className="text-sm font-semibold mb-1"
+                        htmlFor="endDate"
+                      >
+                        OrderId
+                      </label>
+                      <div className="flex gap-1">
+                        <input
+                          type="text"
+                          placeholder="Search by Order ID"
+                          value={search}
+                          onChange={(e) => setSearch(e.target.value)}
+                          className="border p-2 flex rounded-md"
+                        />
+                        <button
+                          type="submit"
+                          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
+                        >
+                          Search
+                        </button>
+                        <div
+                          onClick={handleClear}
+                          className="bg-black items-center justify-center cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-800"
+                        >
+                          Clear
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </form>
               </div>
+              {/* Date Filter Section */}
+
+              <CollectionOrder
+                data={orders}
+                emptyTitle={`No Order Found`}
+                emptyStateSubtext="Come back later"
+                limit={limit}
+                page={page}
+                totalPages={totalPages}
+              />
+            </div>
+          </>
+        )}
+        {activeTab === "Delivery Methods" && (
+          <>
+            <div className="container mx-auto p-4 border rounded-xl">
+              <h1 className="text-2xl font-bold mb-4">Delivery Methods</h1>
+              <div className="flex flex-col lg:flex-row gap-3">
+                <div className="flex items-center gap-4 mb-4">
+                  <div className="flex flex-col">
+                    <button
+                      onClick={handleOpenMethods}
+                      className={`flex text-sm gap-1 items-center  text-white px-4 py-2 rounded-lg bg-black hover:bg-gray-700`}
+                    >
+                      <AddOutlinedIcon /> Add Methods
+                    </button>
+                  </div>
+                </div>
+
+                {/* Search Form */}
+              </div>
+              {/* Date Filter Section */}
+
+              <ScrollArea className="p-2 h-[500px]">
+                <CollectionMethods
+                  data={deliveries}
+                  emptyTitle={`No Method Found`}
+                  emptyStateSubtext="Come back later"
+                  limit={limit}
+                  page={page}
+                  userId={userId}
+                  totalPages={1}
+                />
+              </ScrollArea>
+
+              <MethodsWindow
+                isOpen={isOpenMethods}
+                onClose={handleCloseMethods}
+                userId={userId}
+                type={"Create"}
+              />
+            </div>
+          </>
+        )}
+        {activeTab === "Users Profile" && (
+          <>
+            <div className="container mx-auto p-4 border rounded-xl">
+              <h1 className="text-2xl font-bold mb-4">Users Profile</h1>
+              <div className="flex flex-col lg:flex-row gap-3"></div>
+              {/* Date Filter Section */}
+
+              <CollectionUsers
+                data={users.data}
+                emptyTitle={`No User Found`}
+                emptyStateSubtext="Come back later"
+                limit={limit}
+                page={page}
+                userId={userId}
+                totalPages={users.totalPages}
+              />
+              <ProductWindow
+                isOpen={isOpen}
+                onClose={handleClose}
+                userId={userId}
+              />
             </div>
           </>
         )}
         {activeTab === "Communication" && (
           <>
-            <div className="p-2 rounded-lg bg-white max-w-6xl mx-auto flex flex-col lg:flex-row mt-3">
-              <Chat
-                senderId={userId}
-                senderName={userName}
-                senderImage={userImage}
-              />
+            <div className="container mx-auto p-4 border rounded-xl">
+              <h1 className="text-2xl font-bold mb-4">
+                Send Broadcast Message
+              </h1>
+              <div className="flex flex-col lg:flex-row gap-3"></div>
+              <BroadcastMessage />
             </div>
           </>
         )}

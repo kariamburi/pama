@@ -1,10 +1,10 @@
 import Navbar from "@/components/shared/navbar";
 import SettingsEdit from "@/components/shared/SettingsEdit";
-import { getUserById } from "@/lib/actions/user.actions";
+import { getUserById, getUserDetails } from "@/lib/actions/user.actions";
 import { Toaster } from "@/components/ui/toaster";
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import { auth } from "@clerk/nextjs/server";
-import Verification from "@/components/shared/Verification";
+
 import Image from "next/image";
 import BottomNavigation from "@/components/shared/BottomNavigation";
 import Footersub from "@/components/shared/Footersub";
@@ -12,7 +12,9 @@ import Head from "next/head";
 const Faq = async () => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
-
+  const feedback = await getUserDetails(userId);
+  const comp = feedback.adminUser;
+  const user = feedback.user;
   return (
     <>
       <Head>
@@ -55,7 +57,7 @@ const Faq = async () => {
         <link rel="canonical" href="https://www.autoyard.co.ke/faq" />
       </Head>
       <div className="z-10 top-0 fixed w-full">
-        <Navbar userstatus="User" userId={userId} />
+        <Navbar userstatus="User" comp={comp} userId={userId} />
       </div>
 
       <div className="max-w-3xl mx-auto flex mt-20 p-1">
