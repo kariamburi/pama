@@ -5,8 +5,6 @@ import { Toaster } from "@/components/ui/toaster";
 import React from "react";
 import Image from "next/image";
 import { auth } from "@clerk/nextjs/server";
-
-import DashboardPay from "@/components/shared/dashboardPay";
 import ContactForm from "@/components/shared/ContactForm";
 import DeliveryDetails from "@/components/shared/DeliveryDetails";
 import ShippingMethod from "@/components/shared/ShippingMethod";
