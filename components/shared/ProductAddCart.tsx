@@ -263,9 +263,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                 }`}
               >
                 {product.imageUrls.map((url: string, index: number) => (
-                  <Zoom>
+                  <Zoom key={index}>
                     <img
-                      key={index}
                       src={url}
                       alt={product.productName}
                       className="rounded-lg max-h-[600px] shadow-lg"
