@@ -63,6 +63,7 @@ export const DeliveryForm = ({
   const [newTag, setNewTag] = useState("");
   const [files, setFiles] = useState<File[]>([]);
   const [uploadProgress, setUploadProgress] = useState(0);
+  const [inputValue, setInputValue] = useState("");
   const { toast } = useToast();
   const pathname = usePathname();
   const initialValues =
@@ -224,8 +225,6 @@ export const DeliveryForm = ({
             control={form.control}
             name="areas"
             render={({ field }) => {
-              const [inputValue, setInputValue] = React.useState("");
-
               const handleAddAreas = () => {
                 if (!inputValue.trim()) return; // Avoid empty input
 

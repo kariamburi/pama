@@ -380,8 +380,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     </tr>
                   </thead>
                   <tbody>
-                    {product.features.map((feature: any) => (
-                      <tr key={feature._id}>
+                    {product.features.map((feature: any, index: number) => (
+                      <tr key={index}>
                         <td className="border px-4 py-2">{feature.size}</td>
                         <td className="border px-4 py-2">{feature.stock}</td>
                       </tr>
