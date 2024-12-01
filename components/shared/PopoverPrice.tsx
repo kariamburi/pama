@@ -84,7 +84,8 @@ export function PopoverPrice() {
               <Input
                 onChange={(e) => setminPrice(e.target.value)}
                 id="min"
-                defaultValue=""
+                type="number"
+                value={minPrice}
                 className="col-span-2 h-8"
               />
             </div>
@@ -93,7 +94,8 @@ export function PopoverPrice() {
               <Input
                 onChange={(e) => setmaxPrice(e.target.value)}
                 id="max"
-                defaultValue=""
+                type="number"
+                value={maxPrice}
                 className="col-span-2 h-8"
               />
             </div>

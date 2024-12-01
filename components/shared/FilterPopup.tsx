@@ -296,6 +296,8 @@ export const FilterPopup = () => {
                         <Input
                           onChange={(e) => setminPrice(e.target.value)}
                           id="min"
+                          type="number"
+                          value={minPrice}
                           defaultValue=""
                           className="col-span-2"
                         />
@@ -307,6 +309,8 @@ export const FilterPopup = () => {
                         <Input
                           onChange={(e) => setmaxPrice(e.target.value)}
                           id="max"
+                          type="number"
+                          value={maxPrice}
                           defaultValue=""
                           className="col-span-2"
                         />
