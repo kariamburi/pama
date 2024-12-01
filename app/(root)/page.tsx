@@ -35,6 +35,13 @@ import { createDelivery } from "@/lib/actions/delivery.actions";
 import { ComboTrending } from "@/components/shared/ComboTrending";
 import CollectionInfinite from "@/components/shared/CollectionInfinite";
 import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+
 export default async function Home({ searchParams }: SearchParamProps) {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
@@ -121,36 +128,59 @@ export default async function Home({ searchParams }: SearchParamProps) {
               <ComboTrending />
             </div>
             <div className="flex p-1 w-full items-center justify-between">
-              <div className="flex items-center gap-1">
+              <div className="grid grid-cols-3 flex items-center gap-1">
                 {occassion && (
-                  <div className="flex text-[10px] text-white bg-gray-800 border rounded-full p-2 gap-1">
-                    <div className="font-bold">Occassion:</div>
-                    <div>{occassion}</div>
-                  </div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="w-full cursor-pointer text-[10px] text-white bg-gray-800 border rounded-full p-2 gap-1 truncate">
+                          {occassion}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p> {occassion}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
                 {material && (
-                  <div className="flex text-[10px] text-white bg-gray-800 border rounded-full p-2 gap-1">
-                    <div className="font-bold">Material:</div>
-                    <div>{material}</div>
-                  </div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="w-full cursor-pointer text-[10px] text-white bg-gray-800 border rounded-full p-2 gap-1 truncate">
+                          {material}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p> {material}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
                 {price && (
                   <div className="flex text-[10px] text-white bg-gray-800 border rounded-full p-2 gap-1">
                     <div className="flex gap-1">
-                      <div className="font-bold">Min:</div>
                       <div>{formatKsh(minPrice)}</div>
                     </div>
+                    -
                     <div className="flex gap-1">
-                      <div className="font-bold">Max:</div>
                       <div>{formatKsh(maxPrice)}</div>
                     </div>
                   </div>
                 )}
                 {color && (
-                  <div className="flex text-[10px] text-white bg-gray-800 border rounded-full p-2 gap-1">
-                    <div className="font-bold">Color:</div>
-                    <div>{color}</div>
-                  </div>
+                  <TooltipProvider>
+                    <Tooltip>
+                      <TooltipTrigger asChild>
+                        <div className="w-full cursor-pointer text-[10px] text-white bg-gray-800 border rounded-full p-2 gap-1 truncate">
+                          {color}
+                        </div>
+                      </TooltipTrigger>
+                      <TooltipContent>
+                        <p> {color}</p>
+                      </TooltipContent>
+                    </Tooltip>
+                  </TooltipProvider>
                 )}
                 {(occassion || material || price || color) && (
                   <>
