@@ -145,7 +145,7 @@ const CollectionInfinite = ({
   return (
     <div>
       {data.length > 0 ? (
-        <div className="flex flex-col items-center gap-10 p-0">
+        <div className="flex flex-col items-center gap-10 p-1">
           <div className="grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
             {data.map((prod: any, index: number) => {
               if (data.length === index + 1) {

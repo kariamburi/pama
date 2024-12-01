@@ -101,11 +101,11 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
           animation: `fadeIn 0.3s ease-out ${(index + 1) * 0.1}s forwards`,
           opacity: 0,
         }}
-        className="max-w-md mx-auto rounded-lg bg-white"
+        className="w-full max-w-[400px] border rounded-xl bg-white"
       >
         {/* Product Image */}
-        <div className="w-full overflow-hidden rounded-lg">
-          <div className="relative h-400 lg:h-[420px] w-full">
+        <div className="w-full overflow-hidden  rounded-t-xl">
+          <div className="relative h-400 lg:h-[420px] rounded-t-xl w-full">
             <div className="absolute top-2 left-2 z-10 w-full">
               <SignedIn>
                 <div
@@ -137,7 +137,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                 <ZoomInOutlinedIcon sx={{ fontSize: 16 }} />
               </button>
             </div>
-            <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 right-2 bg-white text-black text-xs px-2 py-1 rounded-full shadow-md z-10">
+            <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 right-2 bg-white text-black text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
               <LocalFireDepartmentOutlinedIcon sx={{ fontSize: 14 }} />
               <div>{trendingStatus}</div>
             </div>
@@ -145,7 +145,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
               <>
                 {product.featuredInDeals === "Sale" && (
                   <>
-                    <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-black text-white text-xs px-2 py-1 rounded-full shadow-md z-10">
+                    <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-black text-white text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
                       <div>
                         <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
                       </div>
@@ -155,7 +155,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                 )}
                 {product.featuredInDeals === "Clearance" && (
                   <>
-                    <div className="absolute flex gap-1 flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-blue-800  text-white text-xs px-2 py-1 rounded-full shadow-md z-10">
+                    <div className="absolute flex gap-1 flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-blue-800  text-white text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
                       <div>
                         <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
                       </div>
@@ -165,7 +165,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                 )}
                 {product.featuredInDeals === "Bundles" && (
                   <>
-                    <div className="absolute shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-orange-400 text-white text-xs px-2 py-1 rounded-full shadow-md z-10">
+                    <div className="absolute shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-orange-400 text-white text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
                       <div>
                         <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
                       </div>
@@ -191,7 +191,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
             )}
 
             {isLoadingpopup && (
-              <div className="absolute inset-0 flex items-center justify-center bg-[#000000] bg-opacity-50 rounded-xl ">
+              <div className="absolute inset-0 flex items-center justify-center bg-[#000000] bg-opacity-50 rounded-t-xl ">
                 {/* Spinner or loading animation */}
                 <CircularProgress sx={{ color: "white" }} />
               </div>
@@ -205,7 +205,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                   height={400}
                   onMouseEnter={() => setHoveredIndex(index)}
                   onMouseLeave={() => setHoveredIndex(null)}
-                  className={`rounded-xl object-cover h-full w-full ${
+                  className={`rounded-t-xl object-cover h-full w-full ${
                     isLoadingpopup ? "opacity-0" : "opacity-100"
                   } transition-opacity  transition-transform duration-300 transform ${
                     hoveredIndex === index ? "scale-105" : ""
@@ -262,7 +262,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
           <div className="text-gray-700 mb-1">
             {/* Inclusions */}
             <ul className="flex text-xs items-center gap-1">
-              Sizes:
+              <div className="hidden lg:inline"> Sizes:</div>
               {product.features.map((feature: any, index: number) => (
                 <li key={index} className="relative">
                   {/* Circular Badge for Stock 
@@ -287,17 +287,14 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
             </ul>
           </div>
 
-          <div className="flex items-center text-xs lg:text-sm gap-1 font-medium text-gray-700">
-            <div className="flex text-xs items-center font-semibold gap-1">
-              <VerifiedOutlinedIcon sx={{ fontSize: 16 }} />
-              <div>Fabric Care:</div>
+          <div className="flex items-center text-[10px] lg:text-xs gap-1 font-medium text-gray-700">
+            <div className="flex items-center gap-1">Material:</div>
+
+            <div className="flex font-semibold items-center gap-1">
+              {product.fabricCareInstructions}
             </div>
-            {product.fabricCareInstructions}
           </div>
           <div className="flex gap-1 text-xs lg:text-base font-medium text-gray-700">
-            <span className="font-semibold">
-              <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
-            </span>
             <span className="line-through text-gray-500">
               Ksh. {product.price.toLocaleString()}
             </span>

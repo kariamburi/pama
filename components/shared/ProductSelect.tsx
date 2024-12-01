@@ -19,6 +19,7 @@ import {
 } from "@/components/ui/popover";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
+import React from "react";
 
 const ProductSelect = ({
   selected,
@@ -31,7 +32,7 @@ const ProductSelect = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const [open, setOpen] = React.useState(false);
   const handleRoote = (product: string) => {
     let newUrl = "";
 
@@ -51,7 +52,7 @@ const ProductSelect = ({
     router.push(newUrl, { scroll: false });
   };
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="p-2 lg:w-[150px] p-2 cursor-pointer">
           <div className="flex flex-col items-start">
@@ -76,6 +77,7 @@ const ProductSelect = ({
                   onSelect={() => {
                     onChange(product);
                     handleRoote(product);
+                    setOpen(false);
                   }}
                 >
                   {product}

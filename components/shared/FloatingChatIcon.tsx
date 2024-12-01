@@ -14,8 +14,8 @@ const FloatingChatIcon: React.FC<FloatingChatIconProps> = ({ phone }) => {
       target="_blank"
       rel="noopener noreferrer"
     >
-      <div className="fixed bottom-20 lg:bottom-10 right-1 lg:right-5 bg-[#00B53F] w-10 lg:w-16 h-10 lg:h-16 flex justify-center items-center rounded-full cursor-pointer z-10">
-        <div className="w-6 h-6 lg:w-8 lg:h-8 flex text-[#00B53F] items-center justify-center rounded-full bg-white tooltip tooltip-bottom hover:cursor-pointer">
+      <div className="fixed bottom-20 lg:bottom-10 right-2 lg:right-5 bg-[#00B53F] w-12 h-12 lg:w-16 lg:h-16 flex justify-center items-center rounded-full cursor-pointer z-10">
+        <div className="w-10 h-10 flex text-[#ffffff] items-center justify-center rounded-full bg-[#00B53F] tooltip tooltip-bottom hover:cursor-pointer">
           <WhatsAppIcon />
         </div>
       </div>

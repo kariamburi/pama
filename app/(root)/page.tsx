@@ -34,7 +34,7 @@ import FilterSheet from "@/components/shared/FilterSheet";
 import { createDelivery } from "@/lib/actions/delivery.actions";
 import { ComboTrending } from "@/components/shared/ComboTrending";
 import CollectionInfinite from "@/components/shared/CollectionInfinite";
-
+import AccountTreeOutlinedIcon from "@mui/icons-material/AccountTreeOutlined";
 export default async function Home({ searchParams }: SearchParamProps) {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
@@ -66,6 +66,9 @@ export default async function Home({ searchParams }: SearchParamProps) {
               <div className="flex font-bold items-center gap-1">
                 {category && (
                   <div className="flex gap-1">
+                    <div className="text-xs text-gray-400">
+                      <AccountTreeOutlinedIcon />
+                    </div>
                     <div className="items-center text-sm lg:text-base underline">
                       {category}
                     </div>
@@ -73,7 +76,9 @@ export default async function Home({ searchParams }: SearchParamProps) {
                 )}
                 {gender && (
                   <div className="flex gap-1">
-                    <KeyboardArrowRightOutlinedIcon />
+                    <div className="text-xs text-gray-400">
+                      <KeyboardArrowRightOutlinedIcon />
+                    </div>
                     <div className="items-center text-sm lg:text-base underline">
                       {gender}
                     </div>
@@ -81,7 +86,9 @@ export default async function Home({ searchParams }: SearchParamProps) {
                 )}
                 {kids && (
                   <div className="flex gap-1">
-                    <KeyboardArrowRightOutlinedIcon />
+                    <div className="text-xs text-gray-400">
+                      <KeyboardArrowRightOutlinedIcon />
+                    </div>
                     <div className="items-center text-sm lg:text-base underline">
                       {kids}
                     </div>
@@ -89,7 +96,10 @@ export default async function Home({ searchParams }: SearchParamProps) {
                 )}
                 {product && (
                   <div className="flex gap-1">
-                    <KeyboardArrowRightOutlinedIcon />
+                    <div className="text-xs text-gray-400">
+                      <KeyboardArrowRightOutlinedIcon />
+                    </div>
+
                     <div className="items-center text-sm lg:text-base underline">
                       {product}
                     </div>
@@ -107,7 +117,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
                   <PopoverColor />
                 </div>
               </div>
-              <FilterSheet />
+              <FilterPopup />
               <ComboTrending />
             </div>
             <div className="flex p-1 w-full items-center justify-between">

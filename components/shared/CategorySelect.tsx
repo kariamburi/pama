@@ -18,6 +18,7 @@ import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import React from "react";
 
 const CategorySelect = ({
   selected,
@@ -28,7 +29,7 @@ const CategorySelect = ({
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const [open, setOpen] = React.useState(false);
   const handleRoote = (category: string) => {
     let newUrl = "";
 
@@ -48,7 +49,7 @@ const CategorySelect = ({
     router.push(newUrl, { scroll: false });
   };
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="p-2 lg:w-[150px] cursor-pointer border-r">
           <div className="flex flex-col items-start">
@@ -73,6 +74,7 @@ const CategorySelect = ({
                   onSelect={() => {
                     onChange(category);
                     handleRoote(category);
+                    setOpen(false);
                   }}
                 >
                   {category}

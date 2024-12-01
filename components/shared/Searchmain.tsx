@@ -47,7 +47,7 @@ const Search = ({
     router.push(newUrl, { scroll: false });
   };
   return (
-    <div className="flex justify-between items-center bg-white p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] rounded-full mx-auto w-full max-w-md">
+    <div className="flex justify-between items-center bg-white p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] rounded-full w-full">
       <div>
         <button
           onClick={() =>

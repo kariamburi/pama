@@ -18,6 +18,7 @@ import { useEffect } from "react";
 import { Check, ChevronsUpDown } from "lucide-react";
 
 import { cn } from "@/lib/utils";
+import React from "react";
 const KidsSelect = ({
   selected,
   onChange,
@@ -28,7 +29,7 @@ const KidsSelect = ({
   const kidsCategories = ["Girls", "Boys", "Babies"];
   const router = useRouter();
   const searchParams = useSearchParams();
-
+  const [open, setOpen] = React.useState(false);
   const handleRoote = (kids: string) => {
     let newUrl = "";
 
@@ -48,7 +49,7 @@ const KidsSelect = ({
     router.push(newUrl, { scroll: false });
   };
   return (
-    <Popover>
+    <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
         <div className="p-2 lg:w-[200px] cursor-pointer border-r">
           <div className="flex flex-col items-start">
@@ -73,6 +74,7 @@ const KidsSelect = ({
                   onSelect={() => {
                     onChange(kids);
                     handleRoote(kids);
+                    setOpen(false);
                   }}
                 >
                   {kids}
