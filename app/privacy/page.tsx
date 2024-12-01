@@ -58,10 +58,10 @@ const Privacy = async () => {
               </p>
 
               <p className="mb-4">
-                Pama Collection (“we,” “us,” or “our”) is committed to
-                protecting the privacy of our customers and website users. This
-                Privacy Policy explains how we collect, use, and safeguard your
-                information when you visit our website,{" "}
+                Pama Collection is committed to protecting the privacy of our
+                customers and website users. This Privacy Policy explains how we
+                collect, use, and safeguard your information when you visit our
+                website,{" "}
                 <a
                   href="https://www.pama.co.ke"
                   className="text-teal-600 underline"
@@ -172,7 +172,7 @@ const Privacy = async () => {
               </p>
 
               <h2 className="text-xl font-semibold mb-4 text-black">
-                7. Children’s Privacy
+                7. Children&apos;s Privacy
               </h2>
               <p className="mb-6">
                 Our website is not intended for individuals under 18. We do not
@@ -184,7 +184,7 @@ const Privacy = async () => {
               </h2>
               <p className="mb-6">
                 We reserve the right to update this Privacy Policy. Changes will
-                be posted on this page with the “Last Updated” date.
+                be posted on this page with the &quot;Last Updated`&quot; date.
               </p>
 
               <h2 className="text-xl font-semibold mb-4 text-black">

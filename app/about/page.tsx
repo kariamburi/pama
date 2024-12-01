@@ -57,9 +57,9 @@ const About = async () => {
                 <p className="text-gray-700 mb-6">
                   Welcome to <strong>Pama Collection</strong>, your ultimate
                   destination for high-quality Turkey wear, specializing in
-                  elegant and stylish ladies' clothing. At Pama Collection, we
-                  are passionate about providing our customers with the best in
-                  fashion, blending modern trends with timeless designs that
+                  elegant and stylish ladies&apos; clothing. At Pama Collection,
+                  we are passionate about providing our customers with the best
+                  in fashion, blending modern trends with timeless designs that
                   make you stand out.
                 </p>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-3">
@@ -68,7 +68,7 @@ const About = async () => {
                 <p className="text-gray-700 mb-6">
                   Founded with a vision to bring unique and premium-quality
                   clothing to the Kenyan market, Pama Collection has quickly
-                  grown to become a trusted name in ladies' fashion. We are
+                  grown to become a trusted name in ladies&quot fashion. We are
                   inspired by the beauty and confidence of our customers, and
                   our carefully curated selection of Turkey wear is designed to
                   celebrate individuality and style.
@@ -79,7 +79,7 @@ const About = async () => {
                 <ul className="list-disc pl-5 text-gray-700 mb-6">
                   <li>
                     <strong>Pure Turkey Wear:</strong> A wide range of authentic
-                    and high-quality ladies' outfits directly sourced from
+                    and high-quality ladies&apos; outfits directly sourced from
                     Turkey.
                   </li>
                   <li>
@@ -130,9 +130,10 @@ const About = async () => {
                 </h2>
                 <p className="text-gray-700 mb-6">
                   When you shop with Pama Collection, you are choosing a brand
-                  that values quality, style, and affordability. Whether you're
-                  looking for a chic dress for a party, professional attire for
-                  work, or comfortable casual wear, we’ve got you covered.
+                  that values quality, style, and affordability. Whether
+                  you&apos;re looking for a chic dress for a party, professional
+                  attire for work, or comfortable casual wear, we&apos;ve got
+                  you covered.
                 </p>
                 <h2 className="text-2xl font-semibold text-gray-800 mb-3">
                   Contact Us

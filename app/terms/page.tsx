@@ -84,7 +84,7 @@ const Terms = async () => {
                 <strong>Effective Date:</strong> December 1, 2024
               </p>
               <p className="mb-4">
-                Welcome to Pama Collection! These Terms and Conditions ("Terms")
+                Welcome to Pama Collection! These Terms and Conditions (Terms)
                 govern your use of our website{" "}
                 <strong>
                   <a
@@ -94,7 +94,7 @@ const Terms = async () => {
                     www.pama.co.ke
                   </a>
                 </strong>{" "}
-                ("Website") and the purchase of our products. By accessing or
+                (Website) and the purchase of our products. By accessing or
                 using our Website, you agree to comply with these Terms. Please
                 read them carefully before making any purchase.
               </p>
@@ -104,9 +104,9 @@ const Terms = async () => {
               </h2>
               <p className="mb-4">
                 Pama Collection specializes in selling high-quality Turkish
-                wear, with a particular focus on ladies' clothing. Our online
-                store allows buyers to select items, make purchases, and arrange
-                for delivery.
+                wear, with a particular focus on ladies&apos; clothing. Our
+                online store allows buyers to select items, make purchases, and
+                arrange for delivery.
               </p>
 
               <h2 className="text-lg font-semibold mb-2">2. Use of Website</h2>

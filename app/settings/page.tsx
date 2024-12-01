@@ -8,6 +8,7 @@ import { auth } from "@clerk/nextjs/server";
 import Image from "next/image";
 import BottomNavigation from "@/components/shared/BottomNavigation";
 import Footersub from "@/components/shared/Footersub";
+import Footer from "@/components/shared/Footer";
 const Settings = async () => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
@@ -16,26 +17,6 @@ const Settings = async () => {
   const comp = feedback.adminUser;
   const user = feedback.user;
   const isAdCreator = true;
-  if (!user) {
-    return (
-      <div className="flex-center h-screen w-full bg-[#ebf2f7] bg-dotted-pattern bg-cover bg-fixed bg-center">
-        <div className="top-0 z-10 fixed w-full">
-          <Navbar userstatus="User" comp={comp} userId={userId || ""} />
-        </div>
-        <div className="max-w-6xl mx-auto mt-20">
-          <div className="flex gap-1 items-center">
-            <Image
-              src="/assets/icons/loading.gif"
-              alt="edit"
-              width={60}
-              height={60}
-            />
-            Loading...
-          </div>
-        </div>
-      </div>
-    );
-  }
 
   return (
     <>
@@ -62,7 +43,7 @@ const Settings = async () => {
           </div>
         </div>
       </div>
-      <footer>
+      <footer className="bg-gray-100">
         <Footer comp={comp} />
       </footer>
     </>

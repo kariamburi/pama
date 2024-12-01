@@ -231,13 +231,13 @@ const SettingsEdit = ({ user, type, userId }: setingsProp) => {
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="p-1 flex flex-col"
+        className="p-3 flex flex-col rounded-[20px] border"
       >
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="item-1">
             <AccordionTrigger>Personal Details</AccordionTrigger>
             <AccordionContent>
-              <div className="p-1 rounded-[20px] m-1 bg-white">
+              <div className="p-1 m-1 bg-white">
                 <div className="m-3">
                   <div className="flex flex-col gap-5 mb-5 md:flex-row">
                     <SignedIn>
