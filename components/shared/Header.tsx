@@ -19,10 +19,10 @@ export default function Header() {
   return (
     <div className="flex flex-col max-w-6xl mx-auto">
       <div className="mb-4 lg:mx-auto text-center">
-        <h1 className="text-base lg:text-2xl font-bold mb-0">
+        <h1 className="text-xs lg:text-2xl text-gray-800 font-bold mb-0">
           Welcome to Turkey Wear
         </h1>
-        <p className="text-xs lg:text-base">
+        <p className="text-[12px] lg:text-base text-gray-500">
           Explore the best collections curated for you!
         </p>
       </div>

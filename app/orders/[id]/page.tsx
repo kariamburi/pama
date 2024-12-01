@@ -99,7 +99,7 @@ const Cart = async ({ searchParams }: SearchParamProps) => {
           </main>
 
           {/* Footer */}
-          <footer>
+          <footer className="bg-gray-100">
             <Footer comp={comp} />
           </footer>
         </div>

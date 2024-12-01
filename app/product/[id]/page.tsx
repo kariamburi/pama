@@ -55,7 +55,7 @@ const AdDetails = async ({
       <div className="top-0 z-10 fixed w-full">
         <Navbar userstatus="User" comp={comp} userId={userId || ""} />
       </div>
-      <div className="max-w-6xl mx-auto mt-[40px] lg:mt-[70px]">
+      <div className="flex flex-col max-w-6xl mx-auto mt-[40px] lg:mt-[70px]">
         <div className="text-sm p-0 hidden lg:inline">
           <div className="flex items-center">
             <div className="bg-white p-1 rounded-full mr-1">
@@ -158,11 +158,12 @@ const AdDetails = async ({
           </div>
         </div>
 
-        <div>
+        <div className="flex flex-col">
           <ProductAddCart product={product} userId={userId} />
         </div>
-        <h2 className="mt-4 font-bold p-2 text-[30px]">You may also like</h2>
+
         <div className="p-1 mb-24 lg:mb-0">
+          <h2 className="mt-4 font-bold p-2 text-[30px]">You may also like</h2>
           <CollectionRelated
             emptyTitle="No Related Item Found"
             emptyStateSubtext="Come back later"

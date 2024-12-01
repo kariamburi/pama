@@ -11,6 +11,7 @@ import { getallOdersByuserId } from "@/lib/actions/order.actions";
 import { getAllDeliveries } from "@/lib/actions/delivery.actions";
 import { CheckoutForm } from "@/components/shared/CheckoutForm";
 import { getUserDetails } from "@/lib/actions/user.actions";
+import Footer from "@/components/shared/Footer";
 type payProps = {
   params: {
     id: string;
@@ -54,6 +55,9 @@ const Checkout = async ({ searchParams }: SearchParamProps) => {
           userEmail={userEmail}
         />
       </div>
+      <footer>
+        <Footer comp={comp} />
+      </footer>
     </>
   );
 };

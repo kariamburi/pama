@@ -82,7 +82,7 @@ const ProductSchema: Schema = new Schema(
 );
 
 // Drop the existing model, if it exists
-delete mongoose.models.Product;
+//delete mongoose.models.Product;
 const Product = models.Product || model('Product', ProductSchema);
 
 export default Product;

@@ -3,8 +3,8 @@
 import { CreateBookmarkParams, CreatePackagesParams, DeleteBookmarkParams, DeleteCategoryParams, DeletePackagesParams, UpdatePackagesParams } from "@/types"
 import { handleError } from "../utils"
 import { connectToDatabase } from "../database"
-import Subscriber from "../database/models/SubscriberSchema"
-
+import Subscriber from "../database/models/NotifySchema";
+import Notify from "../database/models/NotifySchema";
 
 function isValidEmail(text: string): boolean {
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -15,11 +15,11 @@ function isValidPhone(text: string): boolean {
   const phoneRegex = /^\+?[1-9]\d{1,14}$/; // E.164 format
   return phoneRegex.test(text);
 }
-
 export const createSubscribe = async (text: string): Promise<string> => {
   try {
     await connectToDatabase();
 
+    // Validate the input
     const isEmail = isValidEmail(text);
     const isPhone = isValidPhone(text);
 
@@ -27,8 +27,9 @@ export const createSubscribe = async (text: string): Promise<string> => {
       return "Please provide a valid email or phone number.";
     }
 
-    const conditions = isEmail ? { email: text } : { phone: text };
-    const existingSubscriber = await Subscriber.findOne(conditions);
+    // Check if the contact already exists
+    const conditions = { contact: text };
+    const existingSubscriber = await Notify.findOne(conditions);
 
     if (existingSubscriber) {
       return isEmail
@@ -36,11 +37,12 @@ export const createSubscribe = async (text: string): Promise<string> => {
         : "Phone number already subscribed.";
     }
 
-    const newSubscriber = await Subscriber.create({
-      email: isEmail ? text : "",
-      phone: isPhone ? text : "",
+    // Create a new subscriber
+    console.log("existingSubscriber: "+text)
+    const newSubscriber = await Notify.create({
+      contact: text, // Use the provided `text` directly
     });
-
+    console.log("newSubscriber: "+newSubscriber)
     return isEmail
       ? "Email subscription successful!"
       : "Phone subscription successful!";
@@ -49,3 +51,5 @@ export const createSubscribe = async (text: string): Promise<string> => {
     return "An error occurred. Please try again later.";
   }
 };
+
+

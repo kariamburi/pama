@@ -60,7 +60,7 @@ const GenderSelect = ({
               Gender
             </label>
             <div className="text-gray-500 text-xs lg:text-sm">
-              {selected || "Select Gender"}
+              {selected || "Search"}
             </div>
           </div>
         </div>

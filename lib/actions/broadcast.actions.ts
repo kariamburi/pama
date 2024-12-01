@@ -9,7 +9,7 @@ import { UTApi } from "uploadthing/server"
 
 import Bookmark from "../database/models/bookmark.model"
 import Product from "../database/models/product.model"
-import Subscriber from "../database/models/SubscriberSchema"
+import Subscriber from "../database/models/NotifySchema"
 import User from "../database/models/user.model"
 import nodemailer from 'nodemailer';
 import axios from "axios"
@@ -19,15 +19,22 @@ export async function broadcastMessage(type: string, message: string) {
     // Connect to the database
     await connectToDatabase();
 
-    // Fetch emails or phone numbers based on message type
-    const users = await User.find({}, type === 'email' ? 'email' : 'phone');
-    const subscribers = await Subscriber.find({}, type === 'email' ? 'email' : 'phone');
+    // Fetch users' emails or phone numbers
+    const userContacts = await User.find({}, type === 'email' ? 'email' : 'phone')
+      .then((users) => users.map((u) => (type === 'email' ? u.email : u.phone)).filter(Boolean));
 
-    // Extract and deduplicate contacts
-    const userContacts = users.map((u) => (type === 'email' ? u.email : u.phone)).filter(Boolean);
-    const subscriberContacts = subscribers.map((s) => (type === 'email' ? s.email : s.phone)).filter(Boolean);
-    //const recipients = [...new Set([...userContacts, ...subscriberContacts])]; // Avoid duplicates
-    const recipients = Array.from(new Set([...userContacts, ...subscriberContacts]));
+    // Fetch subscribers based on type (email or phone)
+    const subscribers = await Subscriber.find({
+      contact: type === 'email' ? { $regex: /^[^\s@]+@[^\s@]+\.[^\s@]+$/ } : { $regex: /^\+?[0-9]{7,}$/ },
+    }).then((subs) => subs.map((s) => s.contact));
+
+    // Deduplicate recipients
+    const recipients = Array.from(new Set([...userContacts, ...subscribers]));
+
+    if (recipients.length === 0) {
+      return { message: `No ${type} recipients found.` };
+    }
+
     // Handle email sending
     if (type === 'email') {
       const transporter = nodemailer.createTransport({
@@ -40,7 +47,6 @@ export async function broadcastMessage(type: string, message: string) {
         },
       });
 
-      // Send emails
       for (const email of recipients) {
         const mailOptions = {
           from: '"Pama" <no-reply@pama.co.ke>',
@@ -69,8 +75,7 @@ export async function broadcastMessage(type: string, message: string) {
       }
     }
 
-    // Return success response
-    return { message: `${type} sent successfully to all recipients.` };
+    return { message: `${type === 'email' ? 'Emails' : 'SMS messages'} sent successfully to all recipients.` };
   } catch (error) {
     console.error('Error in broadcastMessage:', error);
     throw new Error('Failed to send messages.');

@@ -26,7 +26,7 @@ import {
 } from "@radix-ui/react-tooltip";
 import Link from "next/link";
 import { updatebookmarked } from "@/lib/actions/ad.product";
-import { createBookmark } from "@/lib/actions/bookmark.actions";
+import { createBookmark, deleteBookmark } from "@/lib/actions/bookmark.actions";
 type CardProps = {
   product: any;
   userId: string;
@@ -34,10 +34,15 @@ type CardProps = {
   trendingStatus: string;
 };
 
-const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
+const ProductCardBookMark = ({
+  product,
+  userId,
+  index,
+  trendingStatus,
+}: CardProps) => {
   const [isLoadingpopup, setIsLoadingpopup] = useState(true);
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const isAdCreator = userId === product.organizer._id.toString();
+
   const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { toast } = useToast();
@@ -94,6 +99,30 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
   const handleZoomChange = useCallback((shouldZoom: any) => {
     setIsZoomed(shouldZoom);
   }, []);
+  const handledeletebk = async (id: string) => {
+    const delBookmark = await deleteBookmark({
+      bookmark: {
+        userBId: userId,
+        adId: id,
+      },
+      path: pathname,
+    });
+    if (delBookmark === "Favorite deleted successfully") {
+      const bookmarked = (Number(product.bookmarked ?? "1") - 1).toString();
+      const _id = product._id;
+      await updatebookmarked({
+        _id,
+        bookmarked,
+        path: pathname,
+      });
+      toast({
+        variant: "destructive",
+        title: "Deleted!",
+        description: delBookmark,
+        duration: 5000,
+      });
+    }
+  };
   return (
     <>
       <div
@@ -175,20 +204,6 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                 )}
               </>
             )}
-            {isAdCreator && (
-              <div className="absolute right-2 top-12 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all z-10">
-                <div
-                  onClick={handleOpen}
-                  className="cursor-pointer hover:text-green-600"
-                >
-                  <ModeEditOutlinedIcon />
-                </div>
-                <DeleteConfirmation
-                  adId={product._id}
-                  imageUrls={product.imageUrls}
-                />
-              </div>
-            )}
 
             {isLoadingpopup && (
               <div className="absolute inset-0 flex items-center justify-center bg-[#000000] bg-opacity-50 rounded-t-xl ">
@@ -250,11 +265,34 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
 
         {/* Product Details */}
         <div className="mt-1 p-1">
-          <Link href={`/product/${product._id}`} passHref>
-            <h3 className="text-sm lg:text-lg cursor-pointer font-semibold text-gray-800 hover:underline">
-              {truncateDescription(product.productName, 35)}
-            </h3>
-          </Link>
+          <div className="flex items-center justify-between">
+            <Link href={`/product/${product._id}`} passHref>
+              <h3 className="text-sm lg:text-lg cursor-pointer font-semibold text-gray-800 hover:underline">
+                {truncateDescription(product.productName, 35)}
+              </h3>
+            </Link>
+            <div
+              className="w-7 h-7 lg:w-8 lg:h-8 p-1 mt-[-20px] shadow-lg flex items-center justify-center rounded-full bg-red-100 text-emerald-500 tooltip tooltip-bottom hover:text-[#2BBF4E] hover:cursor-pointer"
+              data-tip="Bookmark"
+              onClick={() => handledeletebk(product._id)}
+            >
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Image
+                      src="/assets/icons/delete.svg"
+                      alt="edit"
+                      width={20}
+                      height={20}
+                    />
+                  </TooltipTrigger>
+                  <TooltipContent side="left">
+                    <p className="text-sm"> Delete Ad</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            </div>
+          </div>
 
           <div className="text-gray-500 text-xs hidden lg:inline">
             {truncateDescription(product.description, 35)}
@@ -371,4 +409,4 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
   );
 };
 
-export default ProductCard;
+export default ProductCardBookMark;

@@ -9,6 +9,7 @@ import Image from "next/image";
 import BottomNavigation from "@/components/shared/BottomNavigation";
 import Footersub from "@/components/shared/Footersub";
 import Head from "next/head";
+import Footer from "@/components/shared/Footer";
 const Terms = async () => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
@@ -18,30 +19,54 @@ const Terms = async () => {
   return (
     <>
       <Head>
-        <title>Pama | Buy Pure Turkey Ware in Kenya</title>
+        <title>Terms and Conditions | Pama Collection</title>
         <meta
           name="description"
-          content="Pama is Kenya's premier online store specializing in Pure Turkey ware. Shop for the best quality clothes and accessories at affordable prices."
+          content="Read the Terms and Conditions for Pama Collection. Learn about our policies for purchasing Turkish wears online, delivery, returns, and more."
         />
         <meta
+          name="keywords"
+          content="Pama Collection, Terms and Conditions, Turkish wears, Ladies clothing, Online shopping, Delivery policy, Return policy"
+        />
+        <meta name="author" content="Pama Collection" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+        {/* Open Graph / Facebook */}
+        <meta
           property="og:title"
-          content="Pama | Pure Turkey Ware Store in Kenya"
+          content="Terms and Conditions | Pama Collection"
         />
         <meta
           property="og:description"
-          content="Pama offers the finest Pure Turkey ware in Kenya. Browse our selection of high-quality clothes, and accessories available for delivery nationwide."
+          content="Learn about Pama Collection's Terms and Conditions. We specialize in Turkish wears, offering high-quality ladies' clothing with online shopping and parcel delivery."
         />
-        <meta property="og:image" content="/assets/images/logo.png" />
-        <meta property="og:url" content="https://pama.co.ke" />
+        <meta
+          property="og:url"
+          content="https://www.pama.co.ke/terms-and-conditions"
+        />
         <meta property="og:type" content="website" />
         <meta
-          name="keywords"
-          content="Pama, Pure Turkey ware, Turkey collections, Turkey clothes,Turkey accessories, Kenya"
+          property="og:image"
+          content="https://www.pama.co.ke/assets/images/logo.png"
         />
-        <meta name="author" content="Pama" />
-        <link rel="canonical" href="https://pama.co.ke" />
-      </Head>
 
+        {/* Twitter */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta
+          name="twitter:title"
+          content="Terms and Conditions | Pama Collection"
+        />
+        <meta
+          name="twitter:description"
+          content="Explore Pama Collection's Terms and Conditions for online shopping of Turkish wears, delivery details, return policy, and more."
+        />
+        <meta
+          name="twitter:image"
+          content="https://www.pama.co.ke/assets/images/logo.png}"
+        />
+
+        <link rel="canonical" href="https://www.pama.co.ke/terms" />
+      </Head>
       <div className="z-10 top-0 fixed w-full">
         <Navbar userstatus="User" comp={comp} userId={userId} />
       </div>
@@ -51,165 +76,209 @@ const Terms = async () => {
 
         <div className="flex-1">
           <div className="rounded-[20px] bg-white max-w-6xl mx-auto lg:flex-row mt-0 p-1 justify-center">
-            <div className="terms-and-conditions p-6 text-gray-800">
-              <h1 className="text-2xl font-bold mb-4">Terms and Conditions</h1>
-
+            <div className="p-6 bg-white text-gray-800 max-w-4xl mx-auto rounded-[20px] border">
+              <h1 className="text-2xl font-bold mb-4 text-center">
+                Terms and Conditions for Pama Collection
+              </h1>
+              <p className="text-sm text-gray-600 mb-4">
+                <strong>Effective Date:</strong> December 1, 2024
+              </p>
               <p className="mb-4">
-                Welcome to AutoYard.co.ke! By using our website, you agree to
-                comply with and be bound by the following terms and conditions.
-                Please review them carefully. If you do not agree to these
-                terms, you should not use this website.
+                Welcome to Pama Collection! These Terms and Conditions ("Terms")
+                govern your use of our website{" "}
+                <strong>
+                  <a
+                    href="https://www.pama.co.ke"
+                    className="text-teal-600 hover:underline"
+                  >
+                    www.pama.co.ke
+                  </a>
+                </strong>{" "}
+                ("Website") and the purchase of our products. By accessing or
+                using our Website, you agree to comply with these Terms. Please
+                read them carefully before making any purchase.
               </p>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                1. Acceptance of Terms
+              <h2 className="text-lg font-semibold mb-2">
+                1. General Overview
               </h2>
               <p className="mb-4">
-                By accessing and using AutoYard.co.ke, you accept and agree to
-                be bound by the terms and provision of this agreement. In
-                addition, when using AutoYard.co.ke&apos;s services, you shall
-                be subject to any posted guidelines or rules applicable to such
-                services, which may be posted and modified from time to time.
-                All such guidelines or rules are hereby incorporated by
-                reference into the Terms of Service.
+                Pama Collection specializes in selling high-quality Turkish
+                wear, with a particular focus on ladies' clothing. Our online
+                store allows buyers to select items, make purchases, and arrange
+                for delivery.
               </p>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                2. User Obligations
+              <h2 className="text-lg font-semibold mb-2">2. Use of Website</h2>
+              <ul className="list-disc ml-6 mb-4">
+                <li>
+                  You must be at least 18 years old to place an order on our
+                  Website.
+                </li>
+                <li>
+                  All information provided on the Website is for general
+                  informational purposes and may be updated without notice.
+                </li>
+                <li>
+                  Misuse of the Website, including unauthorized access or data
+                  tampering, is strictly prohibited.
+                </li>
+              </ul>
+
+              <h2 className="text-lg font-semibold mb-2">
+                3. Orders and Payments
               </h2>
+              <ul className="list-disc ml-6 mb-4">
+                <li>
+                  All prices listed on the Website are in Kenyan Shillings (KES)
+                  and are inclusive of VAT, where applicable.
+                </li>
+                <li>
+                  Delivery charges are calculated and displayed at checkout.
+                </li>
+                <li>
+                  Payments must be made in full before your order is processed.
+                  We accept payments via mobile money (M-Pesa) and other payment
+                  methods available on the Website.
+                </li>
+              </ul>
+
+              <h2 className="text-lg font-semibold mb-2">4. Delivery Policy</h2>
+              <ul className="list-disc ml-6 mb-4">
+                <li>
+                  Pama Collection delivers items to customers as parcels.
+                  Delivery charges vary based on the location of the buyer and
+                  will be clearly indicated during checkout.
+                </li>
+                <li>
+                  We aim to dispatch orders within 24 hours of receiving
+                  payment. Delivery times may vary depending on your location
+                  and the courier service used.
+                </li>
+                <li>
+                  Buyers are responsible for providing accurate delivery
+                  information. Pama Collection will not be held liable for
+                  delayed or failed deliveries due to incorrect addresses or
+                  contact details.
+                </li>
+              </ul>
+
+              <h2 className="text-lg font-semibold mb-2">
+                5. Return and Exchange Policy
+              </h2>
+              <ul className="list-disc ml-6 mb-4">
+                <li>
+                  Due to the nature of clothing products, items can only be
+                  returned or exchanged if:
+                  <ul className="list-disc ml-6">
+                    <li>The item is defective or damaged upon delivery.</li>
+                    <li>The wrong item was delivered.</li>
+                    <li>The issue with the fitting of the delivered item.</li>
+                  </ul>
+                </li>
+                <li>
+                  Requests for returns or exchanges must be made within 3 days
+                  of receiving the item by contacting our customer service at{" "}
+                  <strong>
+                    <a
+                      href="mailto:support@pama.co.ke"
+                      className="text-teal-600 hover:underline"
+                    >
+                      support@pama.co.ke
+                    </a>
+                  </strong>{" "}
+                  or {comp.phone}.
+                </li>
+                <li>
+                  The item must be returned in its original condition, unworn,
+                  and with all tags intact.
+                </li>
+                <li>
+                  Delivery charges for returns or exchanges are non-refundable,
+                  and the buyer bears the cost of return shipping.
+                </li>
+              </ul>
+
+              <h2 className="text-lg font-semibold mb-2">6. Privacy Policy</h2>
               <p className="mb-4">
-                Users agree to provide accurate and complete information when
-                listing vehicles for sale. You must not post any misleading or
-                false information, and you are responsible for ensuring that the
-                vehicle you are listing complies with all applicable laws and
-                regulations. You must not use AutoYard.co.ke to engage in any
-                illegal activities.
+                Pama Collection respects your privacy. Any personal information
+                collected during your use of the Website will be used solely for
+                order processing, delivery, and customer support. We will not
+                share your information with third parties except as required for
+                order fulfillment or by law.
               </p>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                3. Listing Guidelines
+              <h2 className="text-lg font-semibold mb-2">
+                7. Limitation of Liability
               </h2>
+              <ul className="list-disc ml-6 mb-4">
+                <li>
+                  Pama Collection is not liable for any indirect, incidental, or
+                  consequential damages arising from the use of the Website or
+                  the purchase of products.
+                </li>
+                <li>
+                  While we strive to ensure the accuracy of product
+                  descriptions, colors, and images on the Website, minor
+                  variations may occur, and we cannot guarantee an exact match.
+                </li>
+              </ul>
+
+              <h2 className="text-lg font-semibold mb-2">8. Governing Law</h2>
               <p className="mb-4">
-                Users must list vehicles in the appropriate category and ensure
-                that all descriptions, prices, and images are accurate. Any
-                listings that violate our guidelines, are deemed inappropriate,
-                or are fraudulent will be removed without notice.
+                These Terms are governed by and construed in accordance with the
+                laws of Kenya. Any disputes arising out of or related to these
+                Terms will be subject to the jurisdiction of the Kenyan courts.
               </p>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                4. Payment and Fees
-              </h2>
+              <h2 className="text-lg font-semibold mb-2">9. Amendments</h2>
               <p className="mb-4">
-                AutoYard.co.ke may charge fees for listing vehicles or for other
-                premium services. These fees will be clearly outlined on the
-                website, and users will be notified of any applicable charges
-                before using a paid service.
+                Pama Collection reserves the right to update or modify these
+                Terms at any time. Changes will be posted on the Website, and
+                your continued use of the Website constitutes acceptance of the
+                revised Terms.
               </p>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                5. No Guarantee of Sale
+              <h2 className="text-lg font-semibold mb-2">
+                10. Contact Information
               </h2>
               <p className="mb-4">
-                AutoYard.co.ke does not guarantee that your vehicle will be sold
-                within a certain time frame or at all. We are not responsible
-                for any transactions that occur between buyers and sellers and
-                do not act as a mediator in any disputes.
+                If you have any questions or concerns about these Terms, please
+                contact us at:
               </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                6. User Conduct
-              </h2>
               <p className="mb-4">
-                Users are prohibited from:
-                <ul className="list-disc list-inside ml-6">
-                  <li>Posting any illegal or fraudulent content.</li>
-                  <li>
-                    Engaging in harassment, abusive behavior, or spamming other
-                    users.
-                  </li>
-                  <li>
-                    Attempting to hack, disrupt, or interfere with the website’s
-                    operation.
-                  </li>
-                  <li>Violating any intellectual property rights.</li>
-                </ul>
-              </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                7. Intellectual Property
-              </h2>
-              <p className="mb-4">
-                All content on AutoYard.co.ke, including text, images, logos,
-                and design, is the property of AutoYard.co.ke or its content
-                suppliers and is protected by intellectual property laws. Users
-                may not copy, reproduce, distribute, or create derivative works
-                from any part of this site without express permission.
-              </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                8. Limitation of Liability
-              </h2>
-              <p className="mb-4">
-                AutoYard.co.ke is not responsible for any damages that may arise
-                from your use of this website. This includes direct, indirect,
-                incidental, consequential, or punitive damages, even if
-                AutoYard.co.ke has been advised of the possibility of such
-                damages.
-              </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                9. Modifications to Terms
-              </h2>
-              <p className="mb-4">
-                AutoYard.co.ke reserves the right to change these terms and
-                conditions at any time. Any changes will be posted on this page,
-                and it is the responsibility of users to review these terms
-                regularly. Continued use of the site after any such changes
-                constitutes your acceptance of the new terms.
-              </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                10. Termination of Use
-              </h2>
-              <p className="mb-4">
-                AutoYard.co.ke reserves the right to terminate or suspend your
-                access to the website, without notice, for conduct that
-                AutoYard.co.ke believes violates these Terms and Conditions or
-                is harmful to other users, AutoYard.co.ke, or third parties, or
-                for any other reason.
-              </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                11. Governing Law
-              </h2>
-              <p className="mb-4">
-                These terms and conditions are governed by and construed in
-                accordance with the laws of Kenya. You agree to submit to the
-                exclusive jurisdiction of the courts located within Kenya for
-                the resolution of any disputes arising from these terms and
-                conditions or your use of AutoYard.co.ke.
-              </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                12. Contact Information
-              </h2>
-              <p className="mb-4">
-                If you have any questions about these terms and conditions,
-                please contact us at:
+                <strong>Pama Collection</strong>
+                <br />
+                Website:{" "}
                 <a
-                  href="mailto:support@AutoYard.co.ke"
-                  className="text-emerald-600 hover:underline"
+                  href="https://www.pama.co.ke"
+                  className="text-teal-600 hover:underline"
                 >
-                  support@AutoYard.co.ke
+                  www.pama.co.ke
                 </a>
+                <br />
+                Email:{" "}
+                <a
+                  href="mailto:support@pama.co.ke"
+                  className="text-teal-600 hover:underline"
+                >
+                  support@pama.co.ke
+                </a>
+                <br />
+                Phone: {comp.phone ?? ""}
+              </p>
+
+              <p className="text-center font-semibold mt-4">
+                By purchasing from Pama Collection, you agree to these Terms and
+                Conditions. Thank you for choosing us for your fashion needs!
               </p>
             </div>
           </div>
         </div>
       </div>
-      <footer>
+      <footer className="bg-gray-100">
         <div>
-          <Footersub />
+          <Footer comp={comp} />
         </div>
       </footer>
     </>

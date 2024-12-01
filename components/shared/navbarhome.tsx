@@ -248,7 +248,7 @@ export default function Navbarhome({ userstatus, userId, comp }: NavProps) {
       </div>
       <div>
         <Header />
-        <AppPopup />
+        {/* <AppPopup /> */}
       </div>
     </div>
   );

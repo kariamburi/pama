@@ -5,14 +5,12 @@ import { getallBookmarkByuserId } from "@/lib/actions/bookmark.actions";
 import Image from "next/image";
 import { IProduct } from "@/lib/database/models/product.model";
 import ProductCard from "./ProductCard";
+import ProductCardBookMark from "./ProductCardBookMark";
 type CollectionProps = {
   userId: string;
-  //data: IAd[];
   emptyTitle: string;
   emptyStateSubtext: string;
   limit: number;
-  //page: number | string;
-  //totalPages?: number;
   urlParamName?: string;
   isAdCreator: boolean;
   isVertical: boolean;
@@ -93,8 +91,8 @@ const CollectionBookmark = ({
                       className="flex justify-center"
                     >
                       {/* Render Ad */}
-                      <ProductCard
-                        product={prod}
+                      <ProductCardBookMark
+                        product={prod.adId}
                         userId={userId}
                         index={index}
                         trendingStatus={"Favorite"}
@@ -105,8 +103,8 @@ const CollectionBookmark = ({
                   return (
                     <div key={prod._id} className="flex justify-center">
                       {/* Render Ad */}
-                      <ProductCard
-                        product={prod}
+                      <ProductCardBookMark
+                        product={prod.adId}
                         userId={userId}
                         index={index}
                         trendingStatus={"Favorite"}

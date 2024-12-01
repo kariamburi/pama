@@ -60,7 +60,7 @@ const ProductSelect = ({
               Product
             </label>
             <div className="text-gray-500 text-xs lg:text-sm">
-              {selected || "Select Product"}
+              {selected || "Search"}
             </div>
           </div>
         </div>

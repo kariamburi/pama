@@ -36,6 +36,7 @@ const populateAd = (query: any) => {
       fabricCareInstructions
       sku
       availability
+      organizer
     `
   });
 };
@@ -85,6 +86,7 @@ export async function getallBookmarkByuserId(userId: string, limit = 16, page = 
    const bookmark = await populateAd(Bookmark.find(conditions)
    .skip(skipAmount)
    .limit(limit));
+   console.log(bookmark)
    const AdCount = await Bookmark.countDocuments(conditions)
 
    return { data: JSON.parse(JSON.stringify(bookmark)), totalPages: Math.ceil(AdCount / limit) }
@@ -94,18 +96,6 @@ export async function getallBookmarkByuserId(userId: string, limit = 16, page = 
 }
 // UPDATE
 
-// DELETE
-export async function deletePackage({ _id, path }: DeleteBookmarkParams) {
-  try {
-    await connectToDatabase()
-
-    const deletedBookmark = await Bookmark.findByIdAndDelete(_id)
-    // Delete image from uploadthing
-    if (deletedBookmark) revalidatePath(path)
-  } catch (error) {
-    handleError(error)
-  }
-}
 
 
 // Function to delete a bookmark

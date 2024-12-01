@@ -44,19 +44,18 @@ CollectionProps) => {
             <section className="bg-grey-50 bg-dotted-pattern bg-cover bg-center py-0 md:py-0 rounded-sm">
               <div className="wrapper flex gap-1 items-center justify-center">
                 <BookmarkIcon />
-                <h3 className="font-bold text-[25px] sm:text-left">Bookmark</h3>
+                <h3 className="font-bold text-[25px] sm:text-left">
+                  Favorites
+                </h3>
               </div>
             </section>
             <section className=" my-2">
               <CollectionBookmark
-                // data={data}
-                emptyTitle="No Saved Ad"
+                emptyTitle="No Saved Product"
                 emptyStateSubtext="Go and bookmark your favorite ads"
                 collectionType="Ads_Organized"
                 limit={20}
-                //page={page}
                 urlParamName="adsPage"
-                //totalPages={totalPages}
                 userId={userId}
                 isAdCreator={false}
                 isVertical={isVertical}

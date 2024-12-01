@@ -57,7 +57,7 @@ const CategorySelect = ({
               Category
             </label>
             <div className="text-gray-500 text-xs lg:text-sm">
-              {selected || "Select Category"}
+              {selected || "Search"}
             </div>
           </div>
         </div>

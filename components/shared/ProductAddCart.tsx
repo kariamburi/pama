@@ -196,12 +196,6 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
           path: pathname,
         });
 
-        toast({
-          title: "Alert",
-          description: response,
-          duration: 5000,
-          className: "bg-[#000000] text-white",
-        });
         setIsOpen(true);
       } catch (error) {
         console.error("Error adding to cart! ", error);
@@ -275,15 +269,21 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
               {/* Product Name and Description */}
               <div>
-                <h1 className="text-2xl font-bold">{product.productName}</h1>
-                <p className="mt-2 text-gray-700">{product.description}</p>
+                <h1 className="text-lg lg:text-2xl font-bold">
+                  {product.productName}
+                </h1>
+                <p className="mt-2 text-sm lg:text-base text-gray-700">
+                  {product.description}
+                </p>
               </div>
 
               {/* Product Information */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h2 className="text-lg font-semibold">Details</h2>
-                  <ul className="mt-2 text-gray-600">
+                  <h2 className="text-base lg:text-lg font-semibold">
+                    Details
+                  </h2>
+                  <ul className="mt-2 text-xs lg:text-base text-gray-600">
                     <li>
                       <strong>Occasion:</strong> {product.occasion}
                     </li>
@@ -292,14 +292,16 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                       <strong>Colors:</strong> {product.color.join(", ")}
                     </li>
                     <li>
-                      <strong>Fabric Care:</strong>{" "}
+                      <strong>Material:</strong>{" "}
                       {product.fabricCareInstructions}
                     </li>
                   </ul>
                 </div>
 
                 <div>
-                  <h2 className="text-lg font-semibold">Pricing</h2>
+                  <h2 className="text-base lg:text-lg font-semibold">
+                    Pricing
+                  </h2>
 
                   <ul className="mt-2 text-gray-600">
                     <li>
@@ -322,9 +324,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                         </span>
                       </div>
                     </li>
-                    <li>
-                      <strong>Discount:</strong> {product.discount}%
-                    </li>
+
                     <li>
                       {product.featuredInDeals && (
                         <>
@@ -367,8 +367,10 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
               {/* Features */}
               <div>
-                <h2 className="text-lg font-semibold">Features</h2>
-                <table className="table-auto mt-2 border-collapse w-full">
+                <h2 className="text-base lg:text-lg font-semibold">
+                  Sizes Instock
+                </h2>
+                <table className="text-sm lg:text-base table-auto mt-2 border-collapse w-full">
                   <thead>
                     <tr className="bg-gray-100">
                       <th className="border px-4 py-2">Size</th>
@@ -386,7 +388,9 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                 </table>
               </div>
               <div className="border-t"></div>
-              <h1 className="text-lg font-semibold">Share this Product?</h1>
+              <h1 className="text-base lg:text-lg font-semibold">
+                Share this Product?
+              </h1>
               <div className="flex justify-between w-full items-center">
                 <div className="flex items-center space-x-2">
                   <ShareAd product={product} />
@@ -403,21 +407,29 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
               <div className={`fixed`}>
                 <div className="w-full lg:w-[350px] absolute product-add-cart bg-white shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-white p-5 text-sm lg:mt-5 rounded-xl">
                   <div className="flex justify-between items-center">
-                    <div className="flex items-center gap-1 text-base font-medium text-gray-700">
-                      <span className="font-semibold">
-                        <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} /> Price:
-                      </span>
+                    <span className="ml-2 text-xl text-[#000000] font-bold">
+                      Shop Now
+                    </span>
+                    <div>
+                      <div className="flex items-center gap-1 text-base font-medium text-gray-700">
+                        <span className="text-xs font-semibold">
+                          <LocalOfferOutlinedIcon sx={{ fontSize: 14 }} />{" "}
+                          Price:
+                        </span>
 
-                      <span className="ml-2 text-2xl text-[#000000] font-bold">
-                        Ksh.
-                        {(
-                          product.price -
-                          (product.price * product.discount) / 100
-                        ).toLocaleString()}
-                      </span>
+                        <span className="ml-2 text-xl text-[#000000] font-bold">
+                          Ksh.
+                          {(
+                            product.price -
+                            (product.price * product.discount) / 100
+                          ).toLocaleString()}
+                        </span>
+                      </div>
+                      <div className="text-xs text-gray-600">
+                        Taxes included.
+                      </div>
                     </div>
                   </div>
-                  <div className="text-xs text-gray-600">Taxes included.</div>
                   <div className="mt-2 border-t">
                     <Label htmlFor="quantity">Select Size:</Label>
                   </div>
@@ -601,202 +613,210 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
             </>
           )}
 
-          <div className={`lg:hidden`}>
-            <div className="w-full lg:w-[350px] product-add-cart bg-white shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-white p-5 text-sm lg:mt-5 rounded-xl">
-              <div className="flex justify-between items-center">
-                <div className="flex items-center gap-1 text-base font-medium text-gray-700">
-                  <span className="font-semibold">
-                    <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} /> Price:
-                  </span>
-
+          <div className="lg:hidden">
+            <div className="relative h-[420px]">
+              <div className="w-full absolute lg:w-[350px] product-add-cart bg-white border shadow-[0px_4px_20px_rgba(0,0,0,0.3)] p-5 text-sm lg:mt-5 rounded-xl">
+                <div className="flex justify-between items-center">
                   <span className="ml-2 text-2xl text-[#000000] font-bold">
-                    Ksh.
-                    {(
-                      product.price -
-                      (product.price * product.discount) / 100
-                    ).toLocaleString()}
+                    Shop Now
                   </span>
-                </div>
-              </div>
-              <div className="text-xs text-gray-600">Taxes included.</div>
-              <div className="mt-2 border-t">
-                <Label htmlFor="quantity">Select Size:</Label>
-              </div>
-
-              <div className="flex gap-1 text-gray-700 mb-1 ">
-                {/* Inclusions */}
-                <ul className="flex gap-2 w-full p-3">
-                  {product.features.map((feature: any, index: number) => (
-                    <li
-                      key={index}
-                      className="relative flex gap-1 w-full bg-red"
-                    >
-                      {/* Size Display */}
-                      <span
-                        onClick={() =>
-                          feature.stock > 0 && handleSizeSelect(feature.size)
-                        } // Only set size if in stock
-                        className={`m-1 justify-center flex items-center w-10 h-10 rounded-full cursor-pointer ${
-                          feature.stock > 0
-                            ? selectedSize === feature.size
-                              ? "bg-black text-white border-none shadow-lg" // Highlight selected size
-                              : "text-black border shadow"
-                            : "bg-gray-300 text-gray-500 line-through border" // "Sold Out" style
-                        }`}
-                      >
-                        {feature.size}
+                  <div>
+                    <div className="flex items-center gap-1 text-base font-medium text-gray-700">
+                      <span className="font-semibold">
+                        <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} /> Price:
                       </span>
-                    </li>
-                  ))}
-                </ul>
-              </div>
 
-              <div className="mt-2 p-1  border-t flex flex-col gap-2 items-left gap-4">
-                <div>
-                  <Label htmlFor="quantity">
-                    {totalorders > 0 ? (
-                      <> Quantity ({totalorders} in cart)</>
-                    ) : (
-                      <> Quantity</>
-                    )}
-                  </Label>
-                </div>
-                <div className="flex items-center">
-                  {/* Decrease Button */}
-                  <button
-                    onClick={decreaseQuantity}
-                    className="w-7 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-                  >
-                    -
-                  </button>
-
-                  {/* Input Field */}
-                  <Input
-                    type="number"
-                    className="ml-2 mr-2 w-20 text-center"
-                    value={quantity}
-                    onChange={handleQuantityChange}
-                    placeholder="qty"
-                    min="1" // Ensures the input cannot go below 1
-                  />
-
-                  {/* Increase Button */}
-                  <button
-                    onClick={increaseQuantity}
-                    className="w-7 py-2 bg-gray-200 hover:bg-gray-300 rounded"
-                  >
-                    +
-                  </button>
-                </div>
-
-                <button
-                  onClick={handleAddToCart}
-                  className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-xs rounded-sm text-black h-full hover:bg-gray-100 ${
-                    isSending ? "bg-gray-100" : "bg-white"
-                  }`}
-                  disabled={isSending} // Disable button while sending
-                >
-                  <div className="flex gap-1 items-center justify-center w-full">
-                    {isSending && (
-                      <CircularProgress sx={{ color: "black" }} size={20} />
-                    )}
-                    {isSending ? "Adding to cart..." : " Add to Cart"}
-                  </div>
-                </button>
-                <Link href={`/checkout/${userId}`} passHref>
-                  <button
-                    disabled={!totalorders}
-                    className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-xs rounded-sm text-white h-full hover:bg-gray-800"
-                  >
-                    Check Out
-                  </button>
-                </Link>
-                <div className="flex items-center">
-                  <img
-                    src="/assets/images/visa.png"
-                    alt="Visa"
-                    className="h-6 mr-2"
-                  />
-                  <img
-                    src="/assets/images/mpesa.png"
-                    alt="Mpesa"
-                    className="h-6"
-                  />
-                </div>
-              </div>
-            </div>
-
-            {totalorders > 0 && isOpen && (
-              <>
-                <div className="w-full lg:w-[350px]  absolute h-[300px] flex flex-col p-2 items-center shadow border rounded-lg bg-white">
-                  <div className="flex w-full justify-between items-center mb-1">
-                    <div className="flex items-center gap-1 text-xs text-gray-600">
-                      <DoneOutlinedIcon />
-                      Items added to your cart
+                      <span className="ml-2 text-2xl text-[#000000] font-bold">
+                        Ksh.
+                        {(
+                          product.price -
+                          (product.price * product.discount) / 100
+                        ).toLocaleString()}
+                      </span>
                     </div>
+                    <div className="text-xs text-gray-600">Taxes included.</div>
+                  </div>
+                </div>
+
+                <div className="mt-2 border-t">
+                  <Label htmlFor="quantity">Select Size:</Label>
+                </div>
+
+                <div className="flex gap-1 text-gray-700 mb-1 ">
+                  {/* Inclusions */}
+                  <ul className="flex gap-2 w-full p-3">
+                    {product.features.map((feature: any, index: number) => (
+                      <li
+                        key={index}
+                        className="relative flex gap-1 w-full bg-red"
+                      >
+                        {/* Size Display */}
+                        <span
+                          onClick={() =>
+                            feature.stock > 0 && handleSizeSelect(feature.size)
+                          } // Only set size if in stock
+                          className={`m-1 justify-center flex items-center w-10 h-10 rounded-full cursor-pointer ${
+                            feature.stock > 0
+                              ? selectedSize === feature.size
+                                ? "bg-black text-white border-none shadow-lg" // Highlight selected size
+                                : "text-black border shadow"
+                              : "bg-gray-300 text-gray-500 line-through border" // "Sold Out" style
+                          }`}
+                        >
+                          {feature.size}
+                        </span>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+
+                <div className="mt-2 p-1  border-t flex flex-col gap-2 items-left gap-4">
+                  <div>
+                    <Label htmlFor="quantity">
+                      {totalorders > 0 ? (
+                        <> Quantity ({totalorders} in cart)</>
+                      ) : (
+                        <> Quantity</>
+                      )}
+                    </Label>
+                  </div>
+                  <div className="flex items-center">
+                    {/* Decrease Button */}
                     <button
-                      onClick={() => setIsOpen(false)}
-                      className="flex justify-center items-center h-12 w-12 text-gray-600 hover:text-black"
+                      onClick={decreaseQuantity}
+                      className="w-7 py-2 bg-gray-200 hover:bg-gray-300 rounded"
                     >
-                      <CloseOutlinedIcon />
+                      -
+                    </button>
+
+                    {/* Input Field */}
+                    <Input
+                      type="number"
+                      className="ml-2 mr-2 w-20 text-center"
+                      value={quantity}
+                      onChange={handleQuantityChange}
+                      placeholder="qty"
+                      min="1" // Ensures the input cannot go below 1
+                    />
+
+                    {/* Increase Button */}
+                    <button
+                      onClick={increaseQuantity}
+                      className="w-7 py-2 bg-gray-200 hover:bg-gray-300 rounded"
+                    >
+                      +
                     </button>
                   </div>
-                  <div className="flex p-1 justify-between items-center w-full">
-                    <div className="flex items-center gap-4">
-                      <img
-                        src={product.imageUrls[0]}
-                        alt={`${product.productName}`}
-                        className="w-16 h-16 rounded-sm"
-                      />
-                      <div>
-                        <h2 className="text-[10px] text-gray-700">
-                          Pama-Turkey
-                        </h2>
-                        <p className="text-xs">{`${product.productName}`}</p>
-                        <p className="text-gray-500 text-xs">
-                          Color: {`${product.color}`}
-                        </p>
-                        <p className="text-gray-500 text-xs">
-                          Size: {selectedSize}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="text-[#000000] text-xs font-bold">
-                      Ksh.
-                      {(
-                        product.price -
-                        (product.price * product.discount) / 100
-                      ).toLocaleString()}
-                    </div>
-                  </div>
-                  <Link
-                    href={`/cart/${userId}`}
-                    passHref
-                    className="w-full mt-4"
+
+                  <button
+                    onClick={handleAddToCart}
+                    className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-xs rounded-sm text-black h-full hover:bg-gray-100 ${
+                      isSending ? "bg-gray-100" : "bg-white"
+                    }`}
+                    disabled={isSending} // Disable button while sending
                   >
-                    <button
-                      className={`bg-white bg-white mt-2 border w-full py-3 px-1 text-xs rounded-sm text-black h-full hover:bg-gray-100`}
-                    >
-                      View Cart {"("}
-                      {totalorders}
-                      {")"}
-                    </button>
-                  </Link>
-                  <Link
-                    href={`/checkout/${userId}`}
-                    passHref
-                    className="w-full mt-4"
-                  >
+                    <div className="flex gap-1 items-center justify-center w-full">
+                      {isSending && (
+                        <CircularProgress sx={{ color: "black" }} size={20} />
+                      )}
+                      {isSending ? "Adding to cart..." : " Add to Cart"}
+                    </div>
+                  </button>
+                  <Link href={`/checkout/${userId}`} passHref>
                     <button
                       disabled={!totalorders}
-                      className="bg-[#000000] mt-2 cursor-pointer w-full py-3 px-1 text-xs rounded-sm text-white h-full hover:bg-gray-800"
+                      className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-xs rounded-sm text-white h-full hover:bg-gray-800"
                     >
                       Check Out
                     </button>
                   </Link>
+                  <div className="flex items-center">
+                    <img
+                      src="/assets/images/visa.png"
+                      alt="Visa"
+                      className="h-6 mr-2"
+                    />
+                    <img
+                      src="/assets/images/mpesa.png"
+                      alt="Mpesa"
+                      className="h-6"
+                    />
+                  </div>
                 </div>
-              </>
-            )}
+              </div>
+
+              {totalorders > 0 && isOpen && (
+                <>
+                  <div className="w-full lg:w-[350px] absolute h-[300px] flex flex-col p-2 items-center shadow border rounded-lg bg-white">
+                    <div className="flex w-full justify-between items-center mb-1">
+                      <div className="flex items-center gap-1 text-xs text-gray-600">
+                        <DoneOutlinedIcon />
+                        Items added to your cart
+                      </div>
+                      <button
+                        onClick={() => setIsOpen(false)}
+                        className="flex justify-center items-center h-12 w-12 text-gray-600 hover:text-black"
+                      >
+                        <CloseOutlinedIcon />
+                      </button>
+                    </div>
+                    <div className="flex p-1 justify-between items-center w-full">
+                      <div className="flex items-center gap-4">
+                        <img
+                          src={product.imageUrls[0]}
+                          alt={`${product.productName}`}
+                          className="w-16 h-16 rounded-sm"
+                        />
+                        <div>
+                          <h2 className="text-[10px] text-gray-700">
+                            Pama-Turkey
+                          </h2>
+                          <p className="text-xs">{`${product.productName}`}</p>
+                          <p className="text-gray-500 text-xs">
+                            Color: {`${product.color}`}
+                          </p>
+                          <p className="text-gray-500 text-xs">
+                            Size: {selectedSize}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="text-[#000000] text-xs font-bold">
+                        Ksh.
+                        {(
+                          product.price -
+                          (product.price * product.discount) / 100
+                        ).toLocaleString()}
+                      </div>
+                    </div>
+                    <Link
+                      href={`/cart/${userId}`}
+                      passHref
+                      className="w-full mt-4"
+                    >
+                      <button
+                        className={`bg-white bg-white mt-2 border w-full py-3 px-1 text-xs rounded-sm text-black h-full hover:bg-gray-100`}
+                      >
+                        View Cart {"("}
+                        {totalorders}
+                        {")"}
+                      </button>
+                    </Link>
+                    <Link
+                      href={`/checkout/${userId}`}
+                      passHref
+                      className="w-full mt-4"
+                    >
+                      <button
+                        disabled={!totalorders}
+                        className="bg-[#000000] mt-2 cursor-pointer w-full py-3 px-1 text-xs rounded-sm text-white h-full hover:bg-gray-800"
+                      >
+                        Check Out
+                      </button>
+                    </Link>
+                  </div>
+                </>
+              )}
+            </div>
           </div>
         </div>
       </div>

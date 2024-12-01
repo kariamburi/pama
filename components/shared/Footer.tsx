@@ -7,7 +7,7 @@ import WhatsAppIcon from "@mui/icons-material/WhatsApp";
 import CallIcon from "@mui/icons-material/Call";
 import LocationWindow from "./LocationWindow";
 import LocationOnIcon from "@mui/icons-material/LocationOn";
-import { createSubscribe } from "@/lib/actions/subscriber.actions";
+import { createSubscribe } from "@/lib/actions/notify.actions";
 //import Termspopup from "./termspopup";
 type MobileProps = {
   comp: any;
@@ -97,14 +97,19 @@ const Footer = ({ comp }: MobileProps) => {
               </div>
             </li>
             <li>
-              <a href="#" className=" text-sm hover:underline">
-                How to Shop
-              </a>
+              <Link href="/about" className="text-sm hover:underline">
+                About Us
+              </Link>
             </li>
             <li>
-              <a href="#" className="text-sm hover:underline">
-                Checkout Error
-              </a>
+              <Link href="/terms" className="text-sm hover:underline">
+                <div>Terms & Conditions</div>
+              </Link>
+            </li>
+            <li>
+              <Link href="/privacy" className="text-sm hover:underline">
+                Privacy Policy
+              </Link>
             </li>
           </ul>
         </div>
@@ -136,7 +141,7 @@ const Footer = ({ comp }: MobileProps) => {
         </div>
         <div>
           <h3 className="mb-3 text-sm text-slate-950 font-bold">
-            Subscribe to our emails/SMS
+            Stay updated on new arrivals and offers via email/SMS.
           </h3>
           <form className="flex gap-2" onSubmit={handleSubmit}>
             <input

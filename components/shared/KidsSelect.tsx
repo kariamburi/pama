@@ -57,7 +57,7 @@ const KidsSelect = ({
               Kids
             </label>
             <div className="text-gray-500 text-xs lg:text-sm">
-              {selected || "Select Kids Category"}
+              {selected || "Search"}
             </div>
           </div>
         </div>

@@ -9,6 +9,7 @@ import Image from "next/image";
 import BottomNavigation from "@/components/shared/BottomNavigation";
 import Footersub from "@/components/shared/Footersub";
 import Head from "next/head";
+import Footer from "@/components/shared/Footer";
 
 const Privacy = async () => {
   const { sessionClaims } = auth();
@@ -51,247 +52,171 @@ const Privacy = async () => {
 
         <div className="flex-1">
           <div className="rounded-[20px] bg-white max-w-6xl mx-auto lg:flex-row mt-0 p-1 justify-center">
-            <div className="privacy-policy p-6 text-gray-800">
-              <h1 className="text-2xl font-bold mb-4">Privacy Policy</h1>
-
-              <p className="mb-4">
-                Your privacy is important to us at AutoYard.co.ke. This Privacy
-                Policy explains how we collect, use, disclose, and safeguard
-                your information when you visit our website or use our services.
-                By using our site, you agree to the terms outlined in this
-                policy. If you do not agree with the terms, please do not use
-                our website.
+            <div className="container mx-auto p-6 border text-gray-800 rounded-[20px] ">
+              <h1 className="text-3xl font-bold text-center mb-6 text-black">
+                Privacy Policy for Pama Collection
+              </h1>
+              <p className="text-sm text-center mb-4 text-gray-500">
+                Last Updated: December 1, 2024
               </p>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
+              <p className="mb-4">
+                Pama Collection (“we,” “us,” or “our”) is committed to
+                protecting the privacy of our customers and website users. This
+                Privacy Policy explains how we collect, use, and safeguard your
+                information when you visit our website,{" "}
+                <a
+                  href="https://www.pama.co.ke"
+                  className="text-teal-600 underline"
+                >
+                  www.pama.co.ke
+                </a>
+                .
+              </p>
+              <p className="mb-6">
+                By accessing or using our website, you consent to the practices
+                described in this Privacy Policy.
+              </p>
+
+              <h2 className="text-xl font-semibold mb-4 text-black">
                 1. Information We Collect
               </h2>
-
               <p className="mb-4">
-                <strong>Personal Data:</strong> When you create an account, post
-                a listing, or contact us, we may collect personal information
-                such as:
+                We may collect the following types of information:
               </p>
-              <ul className="list-disc list-inside ml-6 mb-4">
-                <li>Name</li>
-                <li>Email address</li>
-                <li>Phone number</li>
-                <li>Location</li>
-                <li>Vehicle details (e.g., make, model, year)</li>
+              <ul className="list-disc pl-6 mb-6">
+                <li>
+                  <b>Personal Information:</b> Name, contact details (email
+                  address, phone number), delivery address, payment details.
+                </li>
+                <li>
+                  <b>Non-Personal Information:</b> IP address, browser type,
+                  device information, website usage data.
+                </li>
+                <li>
+                  <b>Cookies and Tracking Technologies:</b> We use cookies to
+                  enhance user experience. You can disable cookies in your
+                  browser settings.
+                </li>
               </ul>
 
-              <p className="mb-4">
-                <strong>Usage Data:</strong> We may also collect information on
-                how you access and use our website, including your:
-              </p>
-              <ul className="list-disc list-inside ml-6 mb-4">
-                <li>IP address</li>
-                <li>Browser type and version</li>
-                <li>Pages you visit on our website</li>
-                <li>Time and date of your visits</li>
-                <li>Time spent on those pages</li>
-                <li>Device information</li>
-              </ul>
-
-              <p className="mb-4">
-                <strong>Cookies and Tracking Technologies:</strong> We use
-                cookies, web beacons, and similar technologies to track your
-                activity on our website and store certain information. Cookies
-                are small data files that are placed on your device when you
-                visit a website. You can instruct your browser to refuse all
-                cookies or to indicate when a cookie is being sent, but this may
-                limit your ability to use some features of our website.
-              </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">
+              <h2 className="text-xl font-semibold mb-4 text-black">
                 2. How We Use Your Information
               </h2>
-
-              <p className="mb-4">
-                We use the information we collect in the following ways:
-              </p>
-              <ul className="list-disc list-inside ml-6 mb-4">
-                <li>To create and manage your account</li>
+              <ul className="list-disc pl-6 mb-6">
+                <li>To process orders and payments.</li>
+                <li>To deliver purchased items to your address.</li>
+                <li>To provide customer support and respond to inquiries.</li>
                 <li>
-                  To facilitate the posting and management of your vehicle
-                  listings
+                  To send promotional emails, newsletters, or offers (if you
+                  opt-in).
                 </li>
                 <li>
-                  To communicate with you regarding your account or listings
+                  To improve our website functionality and user experience.
                 </li>
-                <li>
-                  To respond to your inquiries and provide customer support
-                </li>
-                <li>
-                  To send you updates, promotions, and marketing materials (with
-                  your consent)
-                </li>
-                <li>
-                  To monitor and analyze usage trends and improve our website
-                  and services
-                </li>
-                <li>
-                  To protect our website against fraud and unauthorized
-                  activities
-                </li>
-                <li>To comply with legal obligations</li>
+                <li>To comply with legal and regulatory requirements.</li>
               </ul>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                3. Sharing Your Information
+              <h2 className="text-xl font-semibold mb-4 text-black">
+                3. How We Protect Your Information
               </h2>
-
-              <p className="mb-4">
-                We may share your information in the following circumstances:
+              <p className="mb-6">
+                We implement security measures such as encryption, secure
+                payment processing, and regular website audits to safeguard your
+                information.
               </p>
-              <ul className="list-disc list-inside ml-6 mb-4">
+
+              <h2 className="text-xl font-semibold mb-4 text-black">
+                4. Sharing of Information
+              </h2>
+              <p className="mb-6">
+                We do not sell your personal information. However, we may share
+                your information with service providers or for legal compliance.
+              </p>
+
+              <h2 className="text-xl font-semibold mb-4 text-black">
+                5. Your Rights
+              </h2>
+              <ul className="list-disc pl-6 mb-6">
                 <li>
-                  <strong>With Service Providers:</strong> We may share your
-                  information with third-party service providers who assist us
-                  in operating our website, conducting our business, or serving
-                  our users, as long as those parties agree to keep your
-                  information confidential.
+                  <b>Access:</b> Request details of the personal information we
+                  hold about you.
                 </li>
                 <li>
-                  <strong>For Legal Compliance:</strong> We may disclose your
-                  information if required by law, such as to comply with a
-                  subpoena, or similar legal process, or to protect our rights.
+                  <b>Correction:</b> Update or correct your personal
+                  information.
                 </li>
                 <li>
-                  <strong>Business Transfers:</strong> If we are involved in a
-                  merger, acquisition, or sale of all or a portion of our
-                  assets, your information may be transferred as part of that
-                  transaction.
+                  <b>Deletion:</b> Request deletion of your personal
+                  information, subject to legal obligations.
                 </li>
                 <li>
-                  <strong>With Your Consent:</strong> We may share your
-                  information for any other purpose disclosed to you with your
-                  consent.
+                  <b>Opt-Out:</b> Unsubscribe from promotional emails or
+                  newsletters.
                 </li>
               </ul>
+              <p className="mb-6">
+                To exercise these rights, email us at{" "}
+                <a
+                  href="mailto:privacy@pama.co.ke"
+                  className="text-teal-600 underline"
+                >
+                  support@pama.co.ke
+                </a>
+                .
+              </p>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                4. Security of Your Information
+              <h2 className="text-xl font-semibold mb-4 text-black">
+                6. Third-Party Services
               </h2>
-
-              <p className="mb-4">
-                We take reasonable measures to protect your personal information
-                from unauthorized access, use, or disclosure. However, please be
-                aware that no method of transmission over the Internet or method
-                of electronic storage is 100% secure, and we cannot guarantee
-                absolute security of your information.
+              <p className="mb-6">
+                Our website may include links to third-party services. We are
+                not responsible for their privacy practices.
               </p>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                5. Your Data Protection Rights
+              <h2 className="text-xl font-semibold mb-4 text-black">
+                7. Children’s Privacy
               </h2>
-
-              <p className="mb-4">
-                You have the following rights regarding your personal
-                information:
+              <p className="mb-6">
+                Our website is not intended for individuals under 18. We do not
+                knowingly collect data from children.
               </p>
-              <ul className="list-disc list-inside ml-6 mb-4">
-                <li>
-                  <strong>Access:</strong> You have the right to request a copy
-                  of the personal information we hold about you.
-                </li>
-                <li>
-                  <strong>Correction:</strong> You have the right to request
-                  that we correct any information you believe is inaccurate or
-                  complete information you believe is incomplete.
-                </li>
-                <li>
-                  <strong>Deletion:</strong> You have the right to request that
-                  we delete your personal information, under certain conditions.
-                </li>
-                <li>
-                  <strong>Restriction:</strong> You have the right to request
-                  that we restrict the processing of your personal information,
-                  under certain conditions.
-                </li>
-                <li>
-                  <strong>Objection:</strong> You have the right to object to
-                  our processing of your personal information, under certain
-                  conditions.
-                </li>
-                <li>
-                  <strong>Data Portability:</strong> You have the right to
-                  request that we transfer the data that we have collected to
-                  another organization, or directly to you, under certain
-                  conditions.
-                </li>
-              </ul>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                6. Account Deletion Policy
+              <h2 className="text-xl font-semibold mb-4 text-black">
+                8. Changes to This Privacy Policy
               </h2>
-
-              <p className="mb-4">
-                If you choose to delete your account, please note the following:
+              <p className="mb-6">
+                We reserve the right to update this Privacy Policy. Changes will
+                be posted on this page with the “Last Updated” date.
               </p>
-              <ul className="list-disc list-inside ml-6 mb-4">
-                <li>
-                  Your account information and data will be permanently deleted
-                  and cannot be recovered.
-                </li>
-                <li>
-                  You will no longer have access to any data or content
-                  associated with your account.
-                </li>
-                <li>
-                  Any vehicle listings you have posted will be removed from the
-                  website.
-                </li>
-                <li>
-                  To delete your account: Go to &quot;Manage Account &quot; in
-                  your account settings. Select the &quot;Security&quot; tab.
-                  Click on the &quot;Delete Account&quot; button.
-                </li>
-                <li>
-                  Please contact our support team if you need assistance with
-                  account deletion.
-                </li>
-              </ul>
 
-              <h2 className="text-xl font-semibold mt-6 mb-2">
-                7. Changes to This Privacy Policy
+              <h2 className="text-xl font-semibold mb-4 text-black">
+                9. Contact Us
               </h2>
-
-              <p className="mb-4">
-                We may update this Privacy Policy from time to time. We will
-                notify you of any changes by posting the new Privacy Policy on
-                our website. You are advised to review this Privacy Policy
-                periodically for any changes. Changes to this Privacy Policy are
-                effective when they are posted on this page.
-              </p>
-
-              <h2 className="text-xl font-semibold mt-6 mb-2">8. Contact Us</h2>
-
-              <p className="mb-4">
-                If you have any questions about this Privacy Policy, please
-                contact us at:
-              </p>
-              <ul className="list-disc list-inside ml-6 mb-4">
+              <p className="mb-4">For questions or concerns, reach us at:</p>
+              <ul className="list-disc pl-6">
                 <li>
-                  Email:{" "}
-                  <a href="mailto:support@autoyard.co.ke">
-                    support@autoyard.co.ke
+                  <b>Email:</b>{" "}
+                  <a
+                    href="mailto:privacy@pama.co.ke"
+                    className="text-teal-600 underline"
+                  >
+                    support@pama.co.ke
                   </a>
                 </li>
+                <li>
+                  <b>Phone:</b> {comp.phone}
+                </li>
+                <li>
+                  <b>Address:</b> {comp.businessaddress}
+                </li>
               </ul>
-
-              <p className="mb-4">
-                Thank you for visiting AutoYard.co.ke and reviewing our Privacy
-                Policy.
-              </p>
             </div>
           </div>
         </div>
       </div>
-      <footer>
-        <div>
-          <Footersub />
-        </div>
+      <footer className="bg-gray-100">
+        <Footer comp={comp} />
       </footer>
     </>
   );

@@ -63,12 +63,7 @@ const Settings = async () => {
         </div>
       </div>
       <footer>
-        <div className="hidden lg:inline">
-          <Footersub />
-        </div>
-        <div className="lg:hidden">
-          <BottomNavigation userId={userId} />
-        </div>
+        <Footer comp={comp} />
       </footer>
     </>
   );
