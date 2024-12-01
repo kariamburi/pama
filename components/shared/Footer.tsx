@@ -141,7 +141,7 @@ const Footer = ({ comp }: MobileProps) => {
             <input
               type="text"
               placeholder="Email or Phone"
-              className="flex-grow max-w-[300px] lg:w-full p-2 border rounded"
+              className="flex-grow max-w-[250px] lg:w-full p-2 border rounded"
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
