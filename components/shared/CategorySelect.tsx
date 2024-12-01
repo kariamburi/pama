@@ -53,10 +53,10 @@ const CategorySelect = ({
       <PopoverTrigger asChild>
         <div className="p-2 lg:w-[150px] cursor-pointer border-r">
           <div className="flex flex-col items-start">
-            <label className="text-xs lg:text-sm font-medium text-black">
+            <label className="text-sm lg:text-base font-medium text-black">
               Category
             </label>
-            <div className="text-gray-500 text-xs lg:text-sm">
+            <div className="text-gray-500 text-sm lg:text-base">
               {selected || "Search"}
             </div>
           </div>

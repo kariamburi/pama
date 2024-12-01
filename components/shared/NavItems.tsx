@@ -48,7 +48,7 @@ const NavItems = ({ userstatus, userId }: NavItemsProps) => {
                     className={`${
                       isActive &&
                       "bg-black hover:bg-black rounded-xl text-white"
-                    } p-medium-16 whitespace-nowrap rounded-xl`}
+                    } whitespace-nowrap rounded-xl`}
                   >
                     <Link href={userId ? linki : "/sign-in"}>
                       <div className="flex hover:bg-gray-200 hover:rounded-xl p-3 mb-1 hover:cursor-pointer">
@@ -81,7 +81,7 @@ const NavItems = ({ userstatus, userId }: NavItemsProps) => {
                             <ManageAccountsOutlinedIcon className="w-10 p-1 hover:text-white" />
                           </span>
                         )}
-                        <span className="flex-1 text-sm mr-5 hover:no-underline my-auto">
+                        <span className="flex-1 mr-5 hover:no-underline my-auto">
                           {link.label}
                         </span>
                         <span className="text-right my-auto">
@@ -98,7 +98,7 @@ const NavItems = ({ userstatus, userId }: NavItemsProps) => {
                     className={`${
                       isActive &&
                       "bg-gradient-to-b from-[#4DCE7A] to-[#30AF5B] text-white rounded-full"
-                    } p-medium-16 whitespace-nowrap`}
+                    } whitespace-nowrap`}
                   >
                     <Link href="/sign-in">
                       <div className="flex hover:bg-slate-100 hover:rounded-full hover:text-emerald-600 p-3 mb-1 hover:cursor-pointer">
@@ -148,7 +148,7 @@ const NavItems = ({ userstatus, userId }: NavItemsProps) => {
                             <ManageAccountsOutlinedIcon className="w-10 p-1 hover:text-white" />
                           </span>
                         )}
-                        <span className="flex-1 text-sm mr-5 hover:no-underline my-auto">
+                        <span className="flex-1 mr-5 hover:no-underline my-auto">
                           {link.label}
                         </span>
                         <span className="text-right my-auto">

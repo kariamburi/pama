@@ -66,48 +66,48 @@ const Footer = ({ comp }: MobileProps) => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h3 className="mb-3 text-slate-950 font-bold">Find Us</h3>
-          <p className="text-sm">{comp.businessname}</p>
-          <p className="text-sm">
+          <p className="">{comp.businessname}</p>
+          <p className="">
             <strong>Location:</strong> {comp.businessaddress}
           </p>
-          <p className="text-sm">
+          <p className="">
             <strong>Working Days:</strong> {workingDays}
           </p>
-          <p className="text-sm">
+          <p className="">
             <strong>Working Hours:</strong> {openTime} to {closeTime}
           </p>
 
-          <p className="text-sm flex items-center">
+          <p className=" flex items-center">
             <a href={`tel:${comp.phone}`} className="flex items-center">
-              <CallIcon className="w-5 h-5 mr-2 text-sm" />
+              <CallIcon className="w-5 h-5 mr-2 " />
               {comp.phone}
             </a>
           </p>
         </div>
         <div>
           <h3 className="mb-3 text-slate-950 font-bold">Quick links</h3>
-          <ul>
+          <ul className="space-y-4">
             <li>
               <div
                 onClick={handleOpen}
-                className="bg-black flex items-center gap-1 text-white rounded-xl p-2 text-sm cursor-pointer hover:bg-gray-700"
+                className="bg-black flex items-center gap-1 text-white rounded-xl p-2  cursor-pointer hover:bg-gray-700"
               >
                 <LocationOnIcon sx={{ fontSize: 14 }} />{" "}
                 <div>Shop GPS Location</div>
               </div>
             </li>
             <li>
-              <Link href="/about" className="text-sm hover:underline">
+              <Link href="/about" className=" hover:underline">
                 About Us
               </Link>
             </li>
             <li>
-              <Link href="/terms" className="text-sm hover:underline">
+              <Link href="/terms" className=" hover:underline">
                 <div>Terms & Conditions</div>
               </Link>
             </li>
             <li>
-              <Link href="/privacy" className="text-sm hover:underline">
+              <Link href="/privacy" className=" hover:underline">
                 Privacy Policy
               </Link>
             </li>
@@ -116,38 +116,32 @@ const Footer = ({ comp }: MobileProps) => {
         <div className="flex-1">
           <p className="mb-3 text-slate-950 font-bold">Our resources</p>
           <ul className="space-y-4">
-            <li className="transition-colors text-sm hover:underline hover:cursor-pointer">
-              <a
-                href={comp.facebook ?? "#"}
-                className="hover:underline text-sm "
-              >
+            <li className="transition-colors hover:underline hover:cursor-pointer">
+              <a href={comp.facebook ?? "#"} className="hover:underline">
                 Our FB
               </a>
             </li>
-            <li className="transition-colors text-sm  hover:underline hover:cursor-pointer">
-              <a
-                href={comp.instagram ?? "#"}
-                className="hover:underline text-sm "
-              >
+            <li className="transition-colors  hover:underline hover:cursor-pointer">
+              <a href={comp.instagram ?? "#"} className="hover:underline">
                 Our Instagram
               </a>
             </li>
-            <li className="transition-colors text-sm hover:underline hover:cursor-pointer">
-              <a href={comp.tiktok ?? "#"} className="hover:underline text-sm ">
+            <li className="transition-colors hover:underline hover:cursor-pointer">
+              <a href={comp.tiktok ?? "#"} className="hover:underline  ">
                 Our Tiktok
               </a>
             </li>
           </ul>
         </div>
         <div>
-          <h3 className="mb-3 text-sm text-slate-950 font-bold">
+          <h3 className="mb-3 text-slate-950 font-bold">
             Stay updated on new arrivals and offers via email/SMS.
           </h3>
           <form className="flex gap-2" onSubmit={handleSubmit}>
             <input
               type="text"
               placeholder="Email or Phone"
-              className="flex-grow p-2 text-sm border rounded"
+              className="flex-grow max-w-[300px] lg:w-full p-2 border rounded"
               value={input}
               onChange={(e) => setInput(e.target.value)}
             />
@@ -155,7 +149,7 @@ const Footer = ({ comp }: MobileProps) => {
               →
             </button>
           </form>
-          {message && <p className="mt-2 text-sm text-red-500">{message}</p>}
+          {message && <p className="mt-2  text-red-500">{message}</p>}
         </div>
       </div>
 

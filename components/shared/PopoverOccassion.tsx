@@ -48,6 +48,11 @@ export function PopoverOccassion({ category, gender }: occassionProps) {
 
   const handleReset = () => {
     setSelectedoccassion([] as String[]); // Reset selection
+    const newUrl = removeKeysFromQuery({
+      params: searchParams.toString(),
+      keysToRemove: ["occassion"],
+    });
+    router.push(newUrl, { scroll: false });
   };
 
   return (

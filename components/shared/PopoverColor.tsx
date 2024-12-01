@@ -38,7 +38,14 @@ export function PopoverColor() {
 
     router.push(newUrl, { scroll: false });
   };
-
+  const handleReset = () => {
+    setSelectedcolor([]); // Reset selection
+    const newUrl = removeKeysFromQuery({
+      params: searchParams.toString(),
+      keysToRemove: ["color"],
+    });
+    router.push(newUrl, { scroll: false });
+  };
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -52,7 +59,16 @@ export function PopoverColor() {
       <PopoverContent className="w-80">
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">Color</h4>
+            <div className="flex items-center space-y-2 border-b p-2 justify-between">
+              <h4 className="font-medium leading-none">Color</h4>
+              <button
+                onClick={handleReset}
+                className="border text-gray-900 py-1 px-2 text-xs rounded-full hover:bg-gray-100"
+                aria-label="Reset materials selection"
+              >
+                Reset
+              </button>
+            </div>
           </div>
           <div className="mb-1">
             <div className="flex flex-wrap gap-2">

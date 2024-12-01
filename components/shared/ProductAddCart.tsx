@@ -269,21 +269,15 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
               {/* Product Name and Description */}
               <div>
-                <h1 className="text-lg lg:text-2xl font-bold">
-                  {product.productName}
-                </h1>
-                <p className="mt-2 text-sm lg:text-base text-gray-700">
-                  {product.description}
-                </p>
+                <h1 className="text-2xl font-bold">{product.productName}</h1>
+                <p className="mt-2 text-gray-700">{product.description}</p>
               </div>
 
               {/* Product Information */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h2 className="text-base lg:text-lg font-semibold">
-                    Details
-                  </h2>
-                  <ul className="mt-2 text-xs lg:text-base text-gray-600">
+                  <h2 className="font-semibold">Details</h2>
+                  <ul className="mt-2 text-gray-600">
                     <li>
                       <strong>Occasion:</strong> {product.occasion}
                     </li>
@@ -299,16 +293,11 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                 </div>
 
                 <div>
-                  <h2 className="text-base lg:text-lg font-semibold">
-                    Pricing
-                  </h2>
+                  <h2 className="font-semibold">Pricing</h2>
 
                   <ul className="mt-2 text-gray-600">
                     <li>
-                      <div className="flex gap-1 text-xs lg:text-base font-medium text-gray-700">
-                        <span className="font-semibold">
-                          <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
-                        </span>
+                      <div className="flex gap-1 font-medium text-gray-700">
                         <span className="line-through text-gray-500">
                           Ksh. {product.price.toLocaleString()}
                         </span>
@@ -367,10 +356,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
               {/* Features */}
               <div>
-                <h2 className="text-base lg:text-lg font-semibold">
-                  Sizes Instock
-                </h2>
-                <table className="text-sm lg:text-base table-auto mt-2 border-collapse w-full">
+                <h2 className="font-semibold">Sizes Instock</h2>
+                <table className="table-auto mt-2 border-collapse w-full">
                   <thead>
                     <tr className="bg-gray-100">
                       <th className="border px-4 py-2">Size</th>
@@ -388,9 +375,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                 </table>
               </div>
               <div className="border-t"></div>
-              <h1 className="text-base lg:text-lg font-semibold">
-                Share this Product?
-              </h1>
+              <h1 className="font-semibold">Share this Product?</h1>
               <div className="flex justify-between w-full items-center">
                 <div className="flex items-center space-x-2">
                   <ShareAd product={product} />
@@ -407,7 +392,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
               <div className={`fixed`}>
                 <div className="w-full lg:w-[350px] absolute product-add-cart bg-white shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-white p-5 text-sm lg:mt-5 rounded-xl">
                   <div className="flex justify-between items-center">
-                    <span className="ml-2 text-xl text-[#000000] font-bold">
+                    <span className="ml-2 text-lg text-[#000000] font-bold">
                       Shop Now
                     </span>
                     <div>
@@ -503,7 +488,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
                     <button
                       onClick={handleAddToCart}
-                      className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-xs rounded-sm text-black h-full hover:bg-gray-100 ${
+                      className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
                         isSending ? "bg-gray-100" : "bg-white"
                       }`}
                       disabled={isSending} // Disable button while sending
@@ -518,7 +503,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     <Link href={`/checkout/${userId}`} passHref>
                       <button
                         disabled={!totalorders}
-                        className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-xs rounded-sm text-white h-full hover:bg-gray-800"
+                        className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
                       >
                         Check Out
                       </button>
@@ -587,7 +572,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                         className="w-full mt-4"
                       >
                         <button
-                          className={`bg-white bg-white mt-2 border w-full py-3 px-1 text-xs rounded-sm text-black h-full hover:bg-gray-100`}
+                          className={`bg-white bg-white mt-2 border w-full py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100`}
                         >
                           View Cart {"("}
                           {totalorders}
@@ -601,7 +586,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                       >
                         <button
                           disabled={!totalorders}
-                          className="bg-[#000000] mt-2 cursor-pointer w-full py-3 px-1 text-xs rounded-sm text-white h-full hover:bg-gray-800"
+                          className="bg-[#000000] mt-2 cursor-pointer w-full py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
                         >
                           Check Out
                         </button>
@@ -617,7 +602,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
             <div className="relative h-[420px]">
               <div className="w-full absolute lg:w-[350px] product-add-cart bg-white border shadow-[0px_4px_20px_rgba(0,0,0,0.3)] p-5 text-sm lg:mt-5 rounded-xl">
                 <div className="flex justify-between items-center">
-                  <span className="ml-2 text-2xl text-[#000000] font-bold">
+                  <span className="ml-2 text-lg text-[#000000] font-bold">
                     Shop Now
                   </span>
                   <div>
@@ -626,7 +611,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                         <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} /> Price:
                       </span>
 
-                      <span className="ml-2 text-2xl text-[#000000] font-bold">
+                      <span className="ml-2 text-xl text-[#000000] font-bold">
                         Ksh.
                         {(
                           product.price -
@@ -710,7 +695,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
                   <button
                     onClick={handleAddToCart}
-                    className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-xs rounded-sm text-black h-full hover:bg-gray-100 ${
+                    className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
                       isSending ? "bg-gray-100" : "bg-white"
                     }`}
                     disabled={isSending} // Disable button while sending
@@ -725,7 +710,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                   <Link href={`/checkout/${userId}`} passHref>
                     <button
                       disabled={!totalorders}
-                      className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-xs rounded-sm text-white h-full hover:bg-gray-800"
+                      className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
                     >
                       Check Out
                     </button>
@@ -794,7 +779,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                       className="w-full mt-4"
                     >
                       <button
-                        className={`bg-white bg-white mt-2 border w-full py-3 px-1 text-xs rounded-sm text-black h-full hover:bg-gray-100`}
+                        className={`bg-white bg-white mt-2 border w-full py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100`}
                       >
                         View Cart {"("}
                         {totalorders}
@@ -808,7 +793,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     >
                       <button
                         disabled={!totalorders}
-                        className="bg-[#000000] mt-2 cursor-pointer w-full py-3 px-1 text-xs rounded-sm text-white h-full hover:bg-gray-800"
+                        className="bg-[#000000] mt-2 cursor-pointer w-full py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
                       >
                         Check Out
                       </button>

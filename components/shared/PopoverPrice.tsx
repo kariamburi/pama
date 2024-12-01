@@ -64,7 +64,19 @@ export function PopoverPrice() {
       <PopoverContent className="w-80">
         <div className="grid gap-4">
           <div className="space-y-2">
-            <h4 className="font-medium leading-none">Price range</h4>
+            <div className="flex items-center space-y-2 border-b p-2 justify-between">
+              <div>
+                <h4 className="font-medium leading-none">Price range</h4>
+              </div>
+              <div>
+                <button
+                  onClick={onSelectPriceClear}
+                  className="border text-gray-900 py-1 px-2 text-xs rounded-full hover:bg-gray-100"
+                >
+                  Reset
+                </button>
+              </div>
+            </div>
           </div>
           <div className="grid gap-2">
             <div className="grid grid-cols-3 items-center gap-4">
@@ -85,16 +97,7 @@ export function PopoverPrice() {
                 className="col-span-2 h-8"
               />
             </div>
-            <div className="grid grid-cols-2 items-center gap-4">
-              <button
-                type="submit"
-                onClick={() => onSelectPriceClear()}
-                className="bg-gray-400 w-full p-1 text-xs rounded-sm text-white h-full"
-              >
-                <CloseIcon className="text-white" sx={{ fontSize: 24 }} />
-                Clear Price
-              </button>
-
+            <div className="grid grid-cols-1 items-center gap-4">
               <button
                 type="submit"
                 onClick={() => handlebutton()}
