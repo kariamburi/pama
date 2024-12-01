@@ -19,28 +19,25 @@ const About = async () => {
   return (
     <>
       <Head>
-        <title>Pama | Buy Pure Turkey Ware in Kenya</title>
+        <title>About Us - Pama Collection</title>
         <meta
           name="description"
-          content="Pama is Kenya's premier online store specializing in Pure Turkey ware. Shop for the best quality clothes and accessories at affordable prices."
+          content="Discover more about Pama Collection, your trusted source for high-quality Turkish wear, specializing in ladies' clothing. Learn about our mission, values, and commitment to fashion excellence."
         />
-        <meta
-          property="og:title"
-          content="Pama | Pure Turkey Ware Store in Kenya"
-        />
-        <meta
-          property="og:description"
-          content="Pama offers the finest Pure Turkey ware in Kenya. Browse our selection of high-quality clothes, and accessories available for delivery nationwide."
-        />
-        <meta property="og:image" content="/assets/images/logo.png" />
-        <meta property="og:url" content="https://pama.co.ke" />
-        <meta property="og:type" content="website" />
         <meta
           name="keywords"
-          content="Pama, Pure Turkey ware, Turkey collections, Turkey clothes,Turkey accessories, Kenya"
+          content="About Pama Collection, Turkish wear, ladies' clothing, high-quality fashion, Pama Collection mission"
         />
-        <meta name="author" content="Pama" />
-        <link rel="canonical" href="https://pama.co.ke" />
+        <meta name="author" content="Pama Collection" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:title" content="About Us - Pama Collection" />
+        <meta
+          property="og:description"
+          content="Learn more about Pama Collection, your go-to store for premium Turkish wear and ladies' fashion. Discover our journey and commitment to quality."
+        />
+        <meta property="og:url" content="https://www.pama.co.ke/about" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/asets/images/logo.png" />
       </Head>
 
       <div className="z-10 top-0 fixed w-full">

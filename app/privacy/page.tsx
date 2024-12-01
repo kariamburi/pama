@@ -20,28 +20,25 @@ const Privacy = async () => {
   return (
     <>
       <Head>
-        <title>Pama | Buy Pure Turkey Ware in Kenya</title>
+        <title>Privacy Policy - Pama Collection</title>
         <meta
           name="description"
-          content="Pama is Kenya's premier online store specializing in Pure Turkey ware. Shop for the best quality clothes and accessories at affordable prices."
+          content="Read Pama Collection's Privacy Policy to understand how we collect, use, and protect your personal information when you shop with us."
         />
-        <meta
-          property="og:title"
-          content="Pama | Pure Turkey Ware Store in Kenya"
-        />
-        <meta
-          property="og:description"
-          content="Pama offers the finest Pure Turkey ware in Kenya. Browse our selection of high-quality clothes, and accessories available for delivery nationwide."
-        />
-        <meta property="og:image" content="/assets/images/logo.png" />
-        <meta property="og:url" content="https://pama.co.ke" />
-        <meta property="og:type" content="website" />
         <meta
           name="keywords"
-          content="Pama, Pure Turkey ware, Turkey collections, Turkey clothes,Turkey accessories, Kenya"
+          content="Privacy Policy, Pama Collection, personal information, data protection, customer privacy"
         />
-        <meta name="author" content="Pama" />
-        <link rel="canonical" href="https://pama.co.ke" />
+        <meta name="author" content="Pama Collection" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta property="og:title" content="Privacy Policy - Pama Collection" />
+        <meta
+          property="og:description"
+          content="Learn how Pama Collection values your privacy and handles your personal information. Review our policies on data usage and protection."
+        />
+        <meta property="og:url" content="https://www.pama.co.ke/privacy" />
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content="/assets/images/logo.png" />
       </Head>
       <div className="z-10 top-0 fixed w-full">
         <Navbar userstatus="User" comp={comp} userId={userId} />
