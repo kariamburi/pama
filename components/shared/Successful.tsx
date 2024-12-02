@@ -33,8 +33,8 @@ const Successful = ({ comp, orders }: MobileProps) => {
   };
 
   return (
-    <div className="min-h-screen p-6 bg-gray-100">
-      <div className="max-w-4xl mx-auto bg-white p-6 rounded shadow-md">
+    <div className="min-h-screen p-0 lg:p-6 bg-gray-100">
+      <div className="w-full lg:max-w-4xl lg:mx-auto bg-white p-6 rounded shadow-md">
         <div className="flex items-center justify-between mb-6">
           <div>
             <img
@@ -44,15 +44,17 @@ const Successful = ({ comp, orders }: MobileProps) => {
             />
           </div>
           <div className="text-center">
-            <h1 className="text-2xl font-bold">{comp.businessname}</h1>
-            <p className="text-gray-600">Phone: {comp.phone}</p>
-            <p className="text-gray-600">
+            <h1 className="lg:text-2xl font-bold">{comp.businessname}</h1>
+            <p className="text-xs lg:text-base text-gray-600">
+              Phone: {comp.phone}
+            </p>
+            <p className="text-xs lg:text-base text-gray-600">
               Website:{" "}
               <a href="https://www.pama.co.ke" className="text-blue-600">
                 www.pama.co.ke
               </a>
             </p>
-            <p className="text-gray-600">
+            <p className="text-xs lg:text-base text-gray-600">
               Email:{" "}
               <a href="mailto:support@pama.co.ke" className="text-blue-600">
                 support@pama.co.ke
@@ -61,9 +63,9 @@ const Successful = ({ comp, orders }: MobileProps) => {
           </div>
         </div>
 
-        <h1 className="text-2xl font-bold mb-4">Order Receipt</h1>
+        <h1 className="lg:text-2xl font-bold mb-4">Order Receipt</h1>
 
-        <div className="mb-4 flex flex-col">
+        <div className="text-xs lg:text-base mb-4 flex flex-col">
           <p>
             <strong>Customer Name:</strong> {orders[0].firstname}{" "}
             {orders[0].lastname}
@@ -79,7 +81,7 @@ const Successful = ({ comp, orders }: MobileProps) => {
           </p>
         </div>
 
-        <table className="table-auto w-full text-left border-collapse border border-gray-200">
+        <table className="text-xs lg:text-base table-auto w-full text-left border-collapse border border-gray-200">
           <thead>
             <tr>
               <th className="border border-gray-300 px-4 py-2">Product</th>
@@ -113,20 +115,20 @@ const Successful = ({ comp, orders }: MobileProps) => {
         </table>
 
         <div className="mt-6 text-right">
-          <p className="text-lg font-bold">
+          <p className="text-sm lg:text-lg font-bold">
             Total Amount: KES {calculateTotalAmount().toLocaleString()}
           </p>
         </div>
 
         <div className="mt-6 flex justify-between">
           <button
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-700"
+            className="text-sm lg:text-base bg-black text-white px-4 py-2 rounded hover:bg-gray-700"
             onClick={() => router.push("/")}
           >
             Home
           </button>
           <button
-            className="bg-black text-white px-4 py-2 rounded hover:bg-gray-700"
+            className="text-sm lg:text-base bg-black text-white px-4 py-2 rounded hover:bg-gray-700"
             onClick={handlePrint}
           >
             Print Receipt
@@ -134,7 +136,7 @@ const Successful = ({ comp, orders }: MobileProps) => {
         </div>
 
         <div className="mt-8 text-center text-gray-600">
-          <p className="text-lg font-semibold">
+          <p className="text-sm lg:text-lg font-semibold">
             Thank you for shopping with us!
           </p>
         </div>
