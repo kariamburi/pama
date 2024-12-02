@@ -60,7 +60,7 @@ const MobileNav = ({ userstatus, userId, comp }: MobileProps) => {
             </div>
           </SheetTitle>
           <Separator className="border border-gray-50" />
-          <div className="flex gap-1">
+          <div className="lg:hidden flex gap-1">
             <SignedIn>
               {userstatus === "Admin" && (
                 <>
