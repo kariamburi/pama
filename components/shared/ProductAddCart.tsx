@@ -189,6 +189,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
             userId: userId,
             productId: product._id,
             size: selectedSize,
+            buyprice: product.buyprice,
             price: product.price - (product.price * product.discount) / 100,
             qty: quantity,
             status: "pending",
@@ -268,6 +269,61 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
               </div>
 
               {/* Product Name and Description */}
+              <div className="justify-between flex items-center p-1">
+                <div className="flex gap-1 font-medium text-gray-700">
+                  <span className="font-semibold">
+                    <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} /> Price:
+                  </span>
+
+                  <span className="line-through text-gray-500">
+                    Ksh. {product.price.toLocaleString()}
+                  </span>
+                  <span className="ml-2 text-xl text-[#000000] font-bold">
+                    Ksh.
+                    {(
+                      product.price -
+                      (product.price * product.discount) / 100
+                    ).toLocaleString()}
+                  </span>
+                  <span className="text-[#000000]">(-{product.discount}%)</span>
+                </div>
+
+                {product.featuredInDeals && (
+                  <>
+                    {product.featuredInDeals === "Sale" && (
+                      <>
+                        <div className="w-[70px] flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-black text-white text-xs p-1 rounded-full shadow-md">
+                          <div>
+                            <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
+                          </div>
+                          <div>{product.featuredInDeals}</div>
+                        </div>
+                      </>
+                    )}
+                    {product.featuredInDeals === "Clearance" && (
+                      <>
+                        <div className="w-[70px] flex gap-1 flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-blue-800  text-white text-xs p-1 rounded-full shadow-md">
+                          <div>
+                            <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
+                          </div>
+                          <div>{product.featuredInDeals}</div>
+                        </div>
+                      </>
+                    )}
+                    {product.featuredInDeals === "Bundles" && (
+                      <>
+                        <div className="w-[70px] shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-orange-400 text-white text-xs p-1 rounded-full shadow-md">
+                          <div>
+                            <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
+                          </div>
+                          <div>{product.featuredInDeals}</div>
+                        </div>
+                      </>
+                    )}
+                  </>
+                )}
+              </div>
+
               <div>
                 <h1 className="text-2xl font-bold">{product.productName}</h1>
                 <p className="mt-2 text-gray-700">{product.description}</p>
@@ -276,7 +332,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
               {/* Product Information */}
               <div className="grid grid-cols-2 gap-4">
                 <div>
-                  <h2 className="font-semibold">Details</h2>
+                  <h2 className="text-lg font-semibold">Details</h2>
                   <ul className="mt-2 text-gray-600">
                     <li>
                       <strong>Occasion:</strong> {product.occasion}
@@ -292,71 +348,12 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                   </ul>
                 </div>
 
-                <div>
-                  <h2 className="font-semibold">Pricing</h2>
-
-                  <ul className="mt-2 text-gray-600">
-                    <li>
-                      <div className="flex gap-1 font-medium text-gray-700">
-                        <span className="line-through text-gray-500">
-                          Ksh. {product.price.toLocaleString()}
-                        </span>
-                        <span className="ml-2 text-[#000000] font-bold">
-                          Ksh.
-                          {(
-                            product.price -
-                            (product.price * product.discount) / 100
-                          ).toLocaleString()}
-                        </span>
-                        <span className="text-[#000000]">
-                          (-{product.discount}%)
-                        </span>
-                      </div>
-                    </li>
-
-                    <li>
-                      {product.featuredInDeals && (
-                        <>
-                          {product.featuredInDeals === "Sale" && (
-                            <>
-                              <div className="w-[70px] flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-black text-white text-xs p-1 rounded-full shadow-md">
-                                <div>
-                                  <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                                </div>
-                                <div>{product.featuredInDeals}</div>
-                              </div>
-                            </>
-                          )}
-                          {product.featuredInDeals === "Clearance" && (
-                            <>
-                              <div className="w-[70px] flex gap-1 flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-blue-800  text-white text-xs p-1 rounded-full shadow-md">
-                                <div>
-                                  <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                                </div>
-                                <div>{product.featuredInDeals}</div>
-                              </div>
-                            </>
-                          )}
-                          {product.featuredInDeals === "Bundles" && (
-                            <>
-                              <div className="w-[70px] shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-orange-400 text-white text-xs p-1 rounded-full shadow-md">
-                                <div>
-                                  <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                                </div>
-                                <div>{product.featuredInDeals}</div>
-                              </div>
-                            </>
-                          )}
-                        </>
-                      )}
-                    </li>
-                  </ul>
-                </div>
+                <div></div>
               </div>
 
               {/* Features */}
               <div>
-                <h2 className="font-semibold">Sizes Instock</h2>
+                <h2 className="text-lg font-semibold">Sizes Instock</h2>
                 <table className="table-auto mt-2 border-collapse w-full">
                   <thead>
                     <tr className="bg-gray-100">
@@ -375,7 +372,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                 </table>
               </div>
               <div className="border-t"></div>
-              <h1 className="font-semibold">Share this Product?</h1>
+              <h1 className="text-lg font-semibold">Share this Product?</h1>
               <div className="flex justify-between w-full items-center">
                 <div className="flex items-center space-x-2">
                   <ShareAd product={product} />
@@ -452,7 +449,15 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     <div>
                       <Label htmlFor="quantity">
                         {totalorders > 0 ? (
-                          <> Quantity ({totalorders} in cart)</>
+                          <>
+                            <Link
+                              href={`/checkout/${userId}`}
+                              passHref
+                              className="hover:underline"
+                            >
+                              Quantity ({totalorders} in cart)
+                            </Link>
+                          </>
                         ) : (
                           <> Quantity</>
                         )}
@@ -486,28 +491,68 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                       </button>
                     </div>
 
-                    <button
-                      onClick={handleAddToCart}
-                      className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
-                        isSending ? "bg-gray-100" : "bg-white"
-                      }`}
-                      disabled={isSending} // Disable button while sending
-                    >
-                      <div className="flex gap-1 items-center justify-center w-full">
-                        {isSending && (
-                          <CircularProgress sx={{ color: "black" }} size={20} />
-                        )}
-                        {isSending ? "Adding to cart..." : " Add to Cart"}
-                      </div>
-                    </button>
-                    <Link href={`/checkout/${userId}`} passHref>
+                    <SignedIn>
                       <button
-                        disabled={!totalorders}
-                        className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
+                        onClick={handleAddToCart}
+                        className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
+                          isSending ? "bg-gray-100" : "bg-white"
+                        }`}
+                        disabled={isSending} // Disable button while sending
                       >
-                        Check Out
+                        <div className="flex gap-1 items-center justify-center w-full">
+                          {isSending && (
+                            <CircularProgress
+                              sx={{ color: "black" }}
+                              size={20}
+                            />
+                          )}
+                          {isSending ? "Adding to cart..." : " Add to Cart"}
+                        </div>
                       </button>
-                    </Link>
+                    </SignedIn>
+
+                    <SignedOut>
+                      <Link href="/sign-in">
+                        <button
+                          className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
+                            isSending ? "bg-gray-100" : "bg-white"
+                          }`}
+                          disabled={isSending} // Disable button while sending
+                        >
+                          <div className="flex gap-1 items-center justify-center w-full">
+                            {isSending && (
+                              <CircularProgress
+                                sx={{ color: "black" }}
+                                size={20}
+                              />
+                            )}
+                            {isSending ? "Adding to cart..." : " Add to Cart"}
+                          </div>
+                        </button>
+                      </Link>
+                    </SignedOut>
+
+                    <SignedIn>
+                      <Link href={`/checkout/${userId}`} passHref>
+                        <button
+                          disabled={!totalorders}
+                          className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
+                        >
+                          Check Out
+                        </button>
+                      </Link>
+                    </SignedIn>
+
+                    <SignedOut>
+                      <Link href="/sign-in">
+                        <button
+                          disabled={!totalorders}
+                          className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
+                        >
+                          Check Out
+                        </button>
+                      </Link>
+                    </SignedOut>
                     <div className="flex items-center">
                       <img
                         src="/assets/images/visa.png"
@@ -693,28 +738,65 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     </button>
                   </div>
 
-                  <button
-                    onClick={handleAddToCart}
-                    className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
-                      isSending ? "bg-gray-100" : "bg-white"
-                    }`}
-                    disabled={isSending} // Disable button while sending
-                  >
-                    <div className="flex gap-1 items-center justify-center w-full">
-                      {isSending && (
-                        <CircularProgress sx={{ color: "black" }} size={20} />
-                      )}
-                      {isSending ? "Adding to cart..." : " Add to Cart"}
-                    </div>
-                  </button>
-                  <Link href={`/checkout/${userId}`} passHref>
+                  <SignedIn>
                     <button
-                      disabled={!totalorders}
-                      className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
+                      onClick={handleAddToCart}
+                      className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
+                        isSending ? "bg-gray-100" : "bg-white"
+                      }`}
+                      disabled={isSending} // Disable button while sending
                     >
-                      Check Out
+                      <div className="flex gap-1 items-center justify-center w-full">
+                        {isSending && (
+                          <CircularProgress sx={{ color: "black" }} size={20} />
+                        )}
+                        {isSending ? "Adding to cart..." : " Add to Cart"}
+                      </div>
                     </button>
-                  </Link>
+                  </SignedIn>
+
+                  <SignedOut>
+                    <Link href="/sign-in">
+                      <button
+                        className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
+                          isSending ? "bg-gray-100" : "bg-white"
+                        }`}
+                        disabled={isSending} // Disable button while sending
+                      >
+                        <div className="flex gap-1 items-center justify-center w-full">
+                          {isSending && (
+                            <CircularProgress
+                              sx={{ color: "black" }}
+                              size={20}
+                            />
+                          )}
+                          {isSending ? "Adding to cart..." : " Add to Cart"}
+                        </div>
+                      </button>
+                    </Link>
+                  </SignedOut>
+
+                  <SignedIn>
+                    <Link href={`/checkout/${userId}`} passHref>
+                      <button
+                        disabled={!totalorders}
+                        className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
+                      >
+                        Check Out
+                      </button>
+                    </Link>
+                  </SignedIn>
+
+                  <SignedOut>
+                    <Link href="/sign-in">
+                      <button
+                        disabled={!totalorders}
+                        className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
+                      >
+                        Check Out
+                      </button>
+                    </Link>
+                  </SignedOut>
                   <div className="flex items-center">
                     <img
                       src="/assets/images/visa.png"

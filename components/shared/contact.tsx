@@ -69,7 +69,7 @@ const Contact = ({ product, userId, userName, userImage }: chatProps) => {
         <div className="flex gap-1 items-center p-1 lg:mr-10">
           <SignedIn>
             <button
-              className="hover:bg-gray-700 bg-[#000000] text-white text-xs mt-2 p-2 rounded-lg shadow"
+              className="hover:bg-gray-700 bg-[#000000] text-white mt-2 p-4 rounded-lg shadow"
               onClick={handleShowPhoneClick}
             >
               <CallIcon sx={{ fontSize: 24 }} />
@@ -79,7 +79,7 @@ const Contact = ({ product, userId, userName, userImage }: chatProps) => {
           </SignedIn>
           <SignedOut>
             <a href={`/sign-in`}>
-              <button className="hover:bg-gray-700 bg-[#000000] text-white text-xs mt-2 p-2 rounded-lg shadow">
+              <button className="hover:bg-gray-700 bg-[#000000] text-white mt-2 p-4 rounded-lg shadow">
                 <CallIcon sx={{ fontSize: 24 }} />
                 <div className="hidden lg:inline">Call</div>
               </button>
@@ -91,7 +91,7 @@ const Contact = ({ product, userId, userName, userImage }: chatProps) => {
               <SignedIn>
                 <button
                   onClick={handlewhatsappClick}
-                  className="hover:bg-emerald-700 bg-[#30AF5B] text-white text-xs mt-2 p-2 rounded-lg shadow"
+                  className="hover:bg-emerald-700 bg-[#30AF5B] text-white mt-2 p-4 rounded-lg shadow"
                 >
                   <WhatsAppIcon sx={{ fontSize: 24 }} />
 
@@ -100,7 +100,7 @@ const Contact = ({ product, userId, userName, userImage }: chatProps) => {
               </SignedIn>
               <SignedOut>
                 <a href={`/sign-in`}>
-                  <button className="hover:bg-emerald-700 bg-[#30AF5B] text-white text-xs mt-2 p-2 rounded-lg shadow">
+                  <button className="hover:bg-emerald-700 bg-[#30AF5B] text-white mt-2 p-4 rounded-lg shadow">
                     <WhatsAppIcon sx={{ fontSize: 24 }} />
 
                     <div className="hidden lg:inline">WhatsApp</div>

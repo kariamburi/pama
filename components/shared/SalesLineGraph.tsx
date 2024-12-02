@@ -71,19 +71,19 @@ const SalesLineGraph: React.FC = () => {
       {/* Time Frame Selection */}
       <div className="time-frame-select flex gap-3">
         <button
-          className="w-[100px] bg-black text-white text-xs p-1 rounded-lg hover:bg-gray-700"
+          className="w-[100px] bg-black text-white text-xs p-1 rounded-sm hover:bg-gray-700"
           onClick={() => setTimeFrame("day")}
         >
           Day
         </button>
         <button
-          className="w-[100px] bg-black text-white text-xs p-1 rounded-lg hover:bg-gray-700"
+          className="w-[100px] bg-black text-white text-xs p-1 rounded-sm hover:bg-gray-700"
           onClick={() => setTimeFrame("week")}
         >
           Week
         </button>
         <button
-          className="w-[100px] bg-black text-white text-xs p-1 rounded-lg hover:bg-gray-700"
+          className="w-[100px] bg-black text-white text-xs p-1 rounded-sm hover:bg-gray-700"
           onClick={() => setTimeFrame("month")}
         >
           Month

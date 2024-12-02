@@ -17,6 +17,7 @@ const Privacy = async () => {
   const feedback = await getUserDetails(userId);
   const comp = feedback.adminUser;
   const user = feedback.user;
+
   return (
     <>
       <Head>

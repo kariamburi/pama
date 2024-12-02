@@ -38,6 +38,7 @@ import { createProduct, updateProduct } from "@/lib/actions/ad.product";
 import { useToast } from "../ui/use-toast";
 import ProductQRCode from "./ProductQRCode";
 import ProductQRwindow from "./ProductQRwindow";
+import { SoldConfirmation } from "./SoldConfirmation";
 // Infer the form data type from Zod schema
 type ProductFormData = z.infer<typeof ProductSchema>;
 type ProductFormProps = {
@@ -614,6 +615,25 @@ export const ProductForm = ({
           <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
+              name="buyprice"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormControl>
+                    <div className="flex item-center w-full gap-1 overflow-hidden rounded-full px-4 py-2">
+                      <TextField
+                        {...field}
+                        label="Buy Price"
+                        className="w-full"
+                        value={formatToCurrency(field.value ?? 0)} // Format value as money
+                      />
+                    </div>
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
               name="price"
               render={({ field }) => (
                 <FormItem className="w-full">
@@ -621,7 +641,7 @@ export const ProductForm = ({
                     <div className="flex item-center w-full gap-1 overflow-hidden rounded-full px-4 py-2">
                       <TextField
                         {...field}
-                        label="Price"
+                        label="Sell Price"
                         className="w-full"
                         value={formatToCurrency(field.value ?? 0)} // Format value as money
                       />
@@ -694,7 +714,7 @@ export const ProductForm = ({
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  <div
+                                  {/*   <div
                                     className="text-xs bg-gray-300 px-2 py-1 cursor-pointer rounded"
                                     onClick={() => {
                                       const updatedFeatures = [...field.value];
@@ -705,9 +725,17 @@ export const ProductForm = ({
                                     }}
                                   >
                                     Mark Sold
-                                  </div>
+                                  </div>*/}
+                                  <SoldConfirmation
+                                    userId={userId}
+                                    product={product}
+                                    selectedSize={feature.size}
+                                    quantity={1}
+                                    instock={feature.stock}
+                                  />
                                   <input
                                     type="number"
+                                    disabled
                                     className="border p-1 w-16 text-center"
                                     value={feature.stock}
                                     onChange={(e) => {
@@ -721,7 +749,6 @@ export const ProductForm = ({
                                       )
                                         ? 0
                                         : newStock;
-                                      alert(updatedFeatures);
                                       field.onChange(updatedFeatures);
                                     }}
                                     placeholder="Stock"

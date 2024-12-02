@@ -101,7 +101,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
           animation: `fadeIn 0.3s ease-out ${(index + 1) * 0.1}s forwards`,
           opacity: 0,
         }}
-        className="w-full max-w-[400px] border rounded-xl bg-white"
+        className="shadow-lg w-full max-w-[400px] rounded-xl bg-white"
       >
         {/* Product Image */}
         <div className="w-full overflow-hidden  rounded-t-xl">
@@ -191,14 +191,26 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
             )}
 
             {isLoadingpopup && (
-              <div className="absolute inset-0 flex items-center justify-center bg-[#000000] bg-opacity-50 rounded-t-xl ">
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-t-xl ">
                 {/* Spinner or loading animation */}
                 <CircularProgress sx={{ color: "white" }} />
               </div>
             )}
             <div className={isZoomed ? "hidden" : "block"}>
               <Link href={`/product/${product._id}`} passHref>
-                <Image
+                <img
+                  src={product.imageUrls?.[0] || "/placeholder-image.png"} // Safely access the first image or fallback
+                  alt={product.productName || "Product image"} // Provide a fallback for alt text
+                  onMouseEnter={() => setHoveredIndex(index)}
+                  onMouseLeave={() => setHoveredIndex(null)}
+                  className={`rounded-t-xl object-cover h-full w-full ${
+                    isLoadingpopup ? "opacity-0" : "opacity-100"
+                  } transition-opacity transition-transform duration-300 transform ${
+                    hoveredIndex === index ? "scale-105" : ""
+                  }`}
+                  onLoad={() => setIsLoadingpopup(false)} // Use onLoad for plain <img>
+                />
+                {/*   <Image
                   src={product.imageUrls[0] || "/placeholder-image.png"}
                   alt={product.productName}
                   width={400}
@@ -212,7 +224,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                   }`}
                   onLoadingComplete={() => setIsLoadingpopup(false)}
                   placeholder="empty"
-                />
+                /> */}
               </Link>
             </div>
             {/* Zoom Wrapper */}

@@ -6,6 +6,8 @@ import Image from "next/image";
 import { IProduct } from "@/lib/database/models/product.model";
 import ProductCard from "./ProductCard";
 import ProductCardBookMark from "./ProductCardBookMark";
+import SkeletonCardMobile from "./SkeletonCardMobile";
+import SkeletonCard from "./SkeletonCard";
 type CollectionProps = {
   userId: string;
   emptyTitle: string;
@@ -165,15 +167,20 @@ const CollectionBookmark = ({
         )
       )}
       {loading && (
-        <div>
-          <div className="w-full mt-10 h-full flex flex-col items-center justify-center">
-            <Image
-              src="/assets/icons/loading2.gif"
-              alt="loading"
-              width={40}
-              height={40}
-              unoptimized
-            />
+        <div className="flex items-center justify-center w-full">
+          <div className="hidden lg:inline mt-2 grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
+            <div className="mt-2 grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </div>
+          </div>
+          <div className="lg:hidden mt-2 grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
+            <SkeletonCardMobile />
+            <SkeletonCardMobile />
+            <SkeletonCardMobile />
+            <SkeletonCardMobile />
           </div>
         </div>
       )}

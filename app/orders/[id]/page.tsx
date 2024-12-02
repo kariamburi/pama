@@ -19,6 +19,7 @@ import CollectionCart from "@/components/shared/CollectionCart";
 import { SearchParamProps } from "@/types";
 import Link from "next/link";
 import { getUserDetails } from "@/lib/actions/user.actions";
+import OrdersPageSkeleton from "@/components/shared/OrdersPageSkeleton";
 type payProps = {
   params: {
     id: string;
@@ -42,6 +43,13 @@ const Cart = async ({ searchParams }: SearchParamProps) => {
   const totalAmount = cart.data.reduce((total: any, item: any) => {
     return total + item.qty * item.price;
   }, 0);
+  if (!cart || !feedback) {
+    return (
+      <div>
+        <OrdersPageSkeleton />
+      </div>
+    );
+  }
   return (
     <>
       <div className="top-0 z-10  w-full">
@@ -80,21 +88,6 @@ const Cart = async ({ searchParams }: SearchParamProps) => {
                 />
                 <Toaster />
               </div>
-
-              {/* Cart Summary
-              <div className="lg:w-[30%] bg-white p-6 shadow rounded-lg">
-                <h2 className="text-lg font-semibold mb-4">Estimated total</h2>
-                <div className="text-xl font-bold">
-                  KSh {totalAmount.toLocaleString()}
-                </div>
-                <p className="text-sm text-gray-600">Taxes included.</p>
-
-                <Link href={`/checkout/${userId}`} passHref>
-                  <button className="w-full bg-black text-white py-2 mt-4 rounded">
-                    Check out
-                  </button>
-                </Link>
-              </div> */}
             </div>
           </main>
 

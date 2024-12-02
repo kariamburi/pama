@@ -16,23 +16,19 @@ export interface IProduct extends Document {
   //size?: { size: string; available: boolean }[],
   features: Feature[];
   color?: string[];
+  buyprice: number;
   price: number;
   discount?: string | number;
-  //stockQuantity: string | number;
-  //tags?: string; // Ensure this matches your schema
   featuredInDeals?: string;
   customizationOptions?: string;
   imageUrls: string[]; // Ensure it is always an array
   fabricCareInstructions?: string;
   sku?: string;
- // trendingStatus?: string;
   views:number;
- // inquiries:number;
 whatsapp:number;
 calls:number;
 shared:number;
 bookmarked:number;
-//abused:number;
   organizer: {
     photo: string | undefined; _id: string, firstName: string, lastName: string,phone: string ,whatsapp: string  
 }
@@ -48,10 +44,7 @@ const FeatureSchema = new Schema({
     required: true, // Each feature must have a stock count
     min: 0, // Stock cannot be negative
   },
- // checked: {
- //   type: Boolean,
- //   default: true, // Optional, indicates if the size is available for sale
- // },
+ 
 });
 
 const ProductSchema: Schema = new Schema(
@@ -64,6 +57,7 @@ const ProductSchema: Schema = new Schema(
     genderAgeGroup: { type: String },
     features: [FeatureSchema],
     color: { type: [String], required: true },
+    buyprice: { type: Number, required: true },
     price: { type: Number, required: true },
     discount: { type: Number, default: 0 },
     featuredInDeals:  { type: String },

@@ -1,10 +1,11 @@
 import mongoose, { Document, Schema, model, models } from "mongoose";
 
-export interface ICategory extends Document {
+export interface IOrder extends Document {
   _id: string;
   userId: string;
   productId: string;
   qty: number;
+  buyprice: number;
   price: number;
   size:string;
   status: string;
@@ -21,6 +22,7 @@ const OrderSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
   size: { type: String },
   qty: { type: Number, required: true },
+  buyprice: { type: Number, required: true },
   price: { type: Number, required: true },
   status: { type: String },
   orderId: { type: String }, // Default value for orderId

@@ -15,6 +15,7 @@ import BottomNavigation from "@/components/shared/BottomNavigation";
 import Navbarhome from "@/components/shared/navbarhome";
 
 import Head from "next/head";
+import HomepageSkeleton from "@/components/shared/HomepageSkeleton";
 
 export default async function RootLayout({
   children,
@@ -26,6 +27,13 @@ export default async function RootLayout({
   const feedback = await getUserDetails(userId);
   const comp = feedback.adminUser;
   const user = feedback.user;
+  if (!feedback) {
+    return (
+      <div>
+        <HomepageSkeleton />
+      </div>
+    );
+  }
   return (
     <div className="min-h-screen">
       <Head>
@@ -77,7 +85,7 @@ export default async function RootLayout({
         <main className="flex-1">{children}</main>
         <Toaster />
 
-        <footer className="bg-gray-100">
+        <footer className="bg-white lg:bg-gray-100 border-t">
           <Footer comp={comp} />
           {/*<div className="hidden lg:inline">
             <Footer comp={comp} />

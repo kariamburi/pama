@@ -12,6 +12,7 @@ import { getAllDeliveries } from "@/lib/actions/delivery.actions";
 import { CheckoutForm } from "@/components/shared/CheckoutForm";
 import { getUserDetails } from "@/lib/actions/user.actions";
 import Footer from "@/components/shared/Footer";
+import CheckoutPageSkeleton from "@/components/shared/CheckoutPageSkeleton";
 type payProps = {
   params: {
     id: string;
@@ -41,6 +42,13 @@ const Checkout = async ({ searchParams }: SearchParamProps) => {
     return total + item.qty * item.price;
   }, 0);
   //console.log(cart);
+  if (!deliv || !cart || !feedback) {
+    return (
+      <div>
+        <CheckoutPageSkeleton />
+      </div>
+    );
+  }
   return (
     <>
       <div className="top-0 z-10  w-full">

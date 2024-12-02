@@ -18,11 +18,14 @@ import CollectionCart from "@/components/shared/CollectionCart";
 import { SearchParamProps } from "@/types";
 import Link from "next/link";
 import { getUserDetails } from "@/lib/actions/user.actions";
+import dynamic from "next/dynamic";
+import CartPageSkeleton from "@/components/shared/CartPageSkeleton";
 type payProps = {
   params: {
     id: string;
   };
 };
+
 const Cart = async ({ searchParams }: SearchParamProps) => {
   //const trans = await getpayTransaction(id);
   const { sessionClaims } = auth();
@@ -42,6 +45,13 @@ const Cart = async ({ searchParams }: SearchParamProps) => {
   const totalAmount = cart.data.reduce((total: any, item: any) => {
     return total + item.qty * item.price;
   }, 0);
+  if (!cart || !feedback) {
+    return (
+      <div>
+        <CartPageSkeleton />
+      </div>
+    );
+  }
   return (
     <>
       <div className="top-0 z-10  w-full">

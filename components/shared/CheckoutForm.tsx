@@ -40,7 +40,7 @@ export const CheckoutForm = ({
   const [country, setCountry] = useState("Kenya");
   const [contact, setContact] = useState("");
   const [enablenewoffers, setEnablenewoffers] = useState(true);
-
+  const [isSending, setIsSending] = useState(false);
   const [errorsfirstname, seterrorsfirstname] = useState("");
   const [errorslastname, seterrorslastname] = useState("");
   const [errorsaddress, seterrorsaddress] = useState("");
@@ -168,6 +168,8 @@ export const CheckoutForm = ({
     };
 
     try {
+      setIsSending(true); // Disable the button and show progress
+
       // Send the order details to the API
       const response = await requestOrder(orderDetails);
 
@@ -199,7 +201,10 @@ export const CheckoutForm = ({
       } else {
         console.error("Error in redirect URL");
       }
+      setIsSending(false); // Disable the button and show progress
     } catch (error) {
+      setIsSending(false); // Disable the button and show progress
+
       console.error("Error processing order:", error);
     }
   };
@@ -229,6 +234,7 @@ export const CheckoutForm = ({
         <TipSection
           selected={tip}
           total={totalAmount}
+          isSending={isSending}
           onClick={handleTipOnclick}
           handlePayNow={handlePay}
         />
@@ -241,6 +247,7 @@ export const CheckoutForm = ({
           totalAmount={totalAmount}
           shipping={shipping}
           tip={tip}
+          isSending={isSending}
           handlePayNow={handlePay}
         />
         <Toaster />

@@ -64,11 +64,12 @@ export default async function Home({ searchParams }: SearchParamProps) {
   const [minPrice, maxPrice] = price.split("-");
 
   const feedback = product ? gender + "-" + product : "Product";
+
   return (
     <main>
-      <div className="max-w-6xl mx-auto flex mt-0">
+      <div className="max-w-6xl bg-gray-100 lg:bg-white mx-auto flex mt-0">
         <div className="flex-1">
-          <div className="p-2 mt-[195px] lg:mt-0 mb-20 lg:mb-0">
+          <div className="p-2 mt-[195px] lg:mt-0 mb-5 lg:mb-0">
             <div className="flex justify-between m-2">
               <div className="flex font-bold items-center gap-1">
                 {category && (

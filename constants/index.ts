@@ -341,6 +341,7 @@ export const ProductDefaultValues = {
   genderAgeGroup: "",
   features: [] as Feature[],
   color: [],
+  buyprice: 0,
   price: 0,
   discount: "",
   featuredInDeals: "Sale",

@@ -30,7 +30,7 @@ const ShareAd: React.FC<shareProps> = ({ product }) => {
     setIsOpen(!isOpen);
   };
 
-  const shareUrl = `https://pama.co.ke/product/${product._id}`;
+  const shareUrl = `https://www.pama.co.ke/product/${product._id}`;
   const shareTitle = `${product.productName}, Price: Ksh ${(
     product.price -
     (product.price * Number(product.discount)) / 100
@@ -63,7 +63,7 @@ const ShareAd: React.FC<shareProps> = ({ product }) => {
         <meta name="twitter:image" content={product.imageUrls[0]} />
         <meta name="twitter:url" content={shareUrl} />
       </Head>
-      <div className="flex gap-1 w-full p-1">
+      <div className="flex gap-5 w-full p-1">
         <FacebookShareButton
           url={shareUrl}
           title={shareTitle}

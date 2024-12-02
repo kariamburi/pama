@@ -4,11 +4,13 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { useToast } from "../ui/use-toast";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import CircularProgress from "@mui/material/CircularProgress";
 type CartProps = {
   cart: any;
   totalAmount: number;
   shipping: number;
   tip: number;
+  isSending: boolean;
   handlePayNow: () => void;
   //  userImage: string;
   //  userName: string;
@@ -18,6 +20,7 @@ const OrderSummary = ({
   totalAmount,
   shipping,
   tip,
+  isSending,
   handlePayNow,
 }: CartProps) => {
   const pathname = usePathname();
@@ -120,9 +123,15 @@ const OrderSummary = ({
       </div>
       <button
         onClick={() => handlePayNow()}
-        className="lg:hidden bg-[#000000] mt-2 cursor-pointer w-full py-4 px-1 font-bold rounded-sm text-white h-full hover:bg-gray-800"
+        className={`g:hidden bg-black mt-2 cursor-pointer w-full py-4 px-1 font-bold rounded-sm text-white h-full hover:bg-gray-800 ${
+          isSending ? "bg-gray-800" : "bg-black"
+        }`}
+        disabled={isSending} // Disable button while sending
       >
-        Pay Now
+        <div className="flex gap-1 items-center justify-center w-full">
+          {isSending && <CircularProgress sx={{ color: "white" }} size={20} />}
+          {isSending ? "Payment Processing..." : " Pay Now"}
+        </div>
       </button>
     </div>
   );

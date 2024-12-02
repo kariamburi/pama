@@ -9,7 +9,7 @@
 export interface Feature  {
   size: string // Represents the size (e.g., "44", "48")
   stock: number // Number of items available for this size
- // checked: boolean; // Indicates if the size is currently available for sale
+ 
 };
 export type CreateProductParams = {
   userId: string
@@ -19,21 +19,17 @@ export type CreateProductParams = {
     category:string
     subCategory?:string
     occasion?:string
-   // material?:string
     genderAgeGroup?:string
     features: Feature[]
     color?: string[]
+    buyprice?:number
     price?:number
     discount?:string | number
-   // stockQuantity:string | number
-    //tags?: string
-   // trendingStatus?:string
     featuredInDeals?: string
     customizationOptions?: string
     imageUrls: string[]
     fabricCareInstructions?:string
     sku?:string
-   // availability?:string
   }
   path: string
 }
@@ -47,21 +43,17 @@ export type UpdateProductParams = {
     category:string
     subCategory?:string
     occasion?:string
-   // material?:string
     genderAgeGroup?:string
     features: Feature[]
     color?: string[]
+    buyprice?:number
     price?:number
     discount?:string | number
-   // stockQuantity:string | number
-   // tags?: string
-   // trendingStatus?:string
     featuredInDeals?: string
     customizationOptions?: string
     imageUrls: string[]
     fabricCareInstructions?:string
     sku?:string
-   // availability?:string
  
   }
   path: string
@@ -103,9 +95,12 @@ export type CreateOrderParams = {
     userId: string
     productId: string
     size:string
+    buyprice:number
     price: number
     qty: number
     status: string
+    orderId?:string
+    referenceId?:string
   }
   path: string
 }
@@ -115,9 +110,12 @@ export type UpdateOrderParams = {
     userId: string
     productId: string
     size:string
+    buyprice:number
     price: number
     qty: number
     status: string
+    orderId?:string
+    referenceId?:string
   }
   path: string
 }

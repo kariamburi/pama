@@ -18,6 +18,7 @@ import { getAllProducts, getProductById } from "@/lib/actions/ad.product";
 //import ProductAddCart from "@/components/shared/ProductAddCart";
 import { ProductAddCart } from "@/components/shared/ProductAddCart";
 import { getUserDetails } from "@/lib/actions/user.actions";
+import ProductPageSkeleton from "@/components/shared/ProductPageSkeleton";
 const CollectionRelated = dynamic(
   () => import("@/components/shared/CollectionRelated"),
   {
@@ -50,6 +51,13 @@ const AdDetails = async ({
   const feedback = await getUserDetails(userId);
   const comp = feedback.adminUser;
   const user = feedback.user;
+  if (!product || !feedback) {
+    return (
+      <div>
+        <ProductPageSkeleton />
+      </div>
+    );
+  }
   return (
     <>
       <div className="top-0 z-10 fixed w-full">

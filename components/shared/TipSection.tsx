@@ -1,16 +1,18 @@
 "use client";
 import React, { useState } from "react";
-
+import CircularProgress from "@mui/material/CircularProgress";
 const TipSection = ({
   selected,
   onClick,
   handlePayNow,
   total,
+  isSending,
 }: {
   selected: number;
   onClick: (value: number) => void;
   handlePayNow: () => void;
   total: number;
+  isSending: boolean;
 }) => {
   const tips = ["1%", "3%", "5%", "10%", "None"];
 
@@ -78,14 +80,17 @@ const TipSection = ({
           </div>
         )}
       </div>
-
       <button
-        onClick={() => {
-          handlePayNow(); // Call the parent function
-        }}
-        className="hidden lg:inline bg-[#000000] mt-2 cursor-pointer w-full py-4 px-1 font-bold rounded-sm text-white h-full hover:bg-gray-800"
+        onClick={() => handlePayNow()}
+        className={`hidden lg:inline bg-black mt-2 cursor-pointer w-full py-4 px-1 font-bold rounded-sm text-white h-full hover:bg-gray-800 ${
+          isSending ? "bg-gray-800" : "bg-black"
+        }`}
+        disabled={isSending} // Disable button while sending
       >
-        Pay Now
+        <div className="flex gap-1 items-center justify-center w-full">
+          {isSending && <CircularProgress sx={{ color: "white" }} size={20} />}
+          {isSending ? "Payment Processing..." : " Pay Now"}
+        </div>
       </button>
     </div>
   );

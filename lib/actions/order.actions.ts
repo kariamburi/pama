@@ -29,6 +29,7 @@ const populateAd = (query: any) => {
       genderAgeGroup
       features
       color
+      buyprice
       price
       discount
       stockQuantity
@@ -95,9 +96,70 @@ export const createOrder = async ({ order, path }: CreateOrderParams) => {
   }
 };
 
-// GET ONE Ad BY ID
-type Item = {
-  _id: string; // MongoDB Object ID as a string
+export const ProductSold = async ({ order, path }: CreateOrderParams) => {
+  try {
+    // Connect to the database
+    await connectToDatabase();
+    // console.log("order; "+order)
+    // Define query conditions to check for existing orders
+    const conditions = {
+      $and: [
+        { productId: order.productId },
+        { userId: order.userId },
+        { size: order.size },
+        { status: { $in: ["completed", "successful"] } }, // Match completed or successful status
+      ],
+    };
+    // Find an existing order matching the conditions
+    const existingOrder = await Order.findOne(conditions);
+   // console.log("existingOrder: "+existingOrder)
+    // Declare variables for new order and response message
+    let newOrder;
+    let response = "Order already exists";
+
+    // Create a new order or update the existing one
+    if (!existingOrder) {
+      newOrder = await Order.create({ ...order });
+      response = "Order Created";
+     // console.log("newOrder: "+newOrder)
+      const { productId, size, qty } = newOrder;
+      const product = await Product.findById(productId);
+      if (!product) {
+        throw new Error("Product not found");
+      }
+  
+      // Step 4: Update the stock for the specific size in the features array
+      const featureIndex = product.features.findIndex(
+        (feature :any) => feature.size === size
+      );
+      if (featureIndex === -1) {
+        throw new Error(`Size ${size} not found in product features`);
+      }
+  
+      // Subtract the quantity sold
+      product.features[featureIndex].stock -= qty;
+  
+      // Ensure stock does not go negative
+      if (product.features[featureIndex].stock < 0) {
+        throw new Error(
+          `Insufficient stock for size ${size}. Current stock: ${product.features[featureIndex].stock + qty}`
+        );
+      }
+  
+      // Step 5: Save the updated product
+      await product.save();
+    } 
+
+    // Revalidate the path for Next.js caching
+    await revalidatePath(path);
+
+    // Return the response message
+    return response;
+  } catch (error) {
+    // Handle errors gracefully
+    handleError(error);
+    throw new Error("Failed to create or update order");
+  }
 };
 
 export async function updateOrdersByIds(
@@ -137,12 +199,85 @@ export async function updatePendingOrdersToSuccessful(orderId: string) {
       { orderId, status: "pending" }, // Matching condition
       { $set: { status: "successful" } } // Fields to update
     );
-    return result; // Return the update result for further processing
+ // console.log("result: "+result)
+    return JSON.parse(JSON.stringify(result)); // Return the update result for further processing
   } catch (error) {
     console.error("Error updating orders:", error);
     throw error; // Re-throw the error for the caller to handle
   }
 }
+
+
+export async function updateProductStock(orderId :string) {
+  try {
+    // Step 1: Connect to the database
+    await connectToDatabase();
+    // Step 2: Fetch the order details
+   // const conditions = {
+   //   $and: [
+    //    { orderId: orderId },
+     //   { status: { $in: ["completed", "successful"] } }, // Match completed or successful status
+     // ],
+   // };
+    const conditions = {
+      $and: [
+        { orderId: orderId },
+        { status: "pending"}, // Match completed or successful status
+      ],
+    };
+    // Step 2: Fetch all orders with the same orderId
+    const orders = await Order.find(conditions);
+    if (orders.length === 0) {
+      console.log("No orders found with the provided orderId");
+    }
+   
+    // Step 3: Process each order
+    for (const order of orders) {
+      const { productId, size, qty } = order;
+
+      // Step 4: Fetch the product using productId
+      const product = await Product.findById(productId);
+      if (!product) {
+        console.log(`Product not found for productId: ${productId}`);
+        continue; // Skip to the next order if the product doesn't exist
+      }
+    //  console.log("product: "+product)
+      // Step 5: Update the stock for the specific size in the features array
+      const featureIndex = product.features.findIndex(
+        (feature:any) => feature.size === size
+      );
+    //  console.log("featureIndex: "+featureIndex)
+      if (featureIndex === -1) {
+        console.log(
+          `Size ${size} not found in features for productId: ${productId}`
+        );
+        continue; // Skip to the next order if the size doesn't exist
+      }
+
+      // Subtract the quantity sold
+      //console.log( product.features[featureIndex].size+": "+ product.features[featureIndex].stock)
+    //  product.features[featureIndex].stock -= qty;
+      
+      // Ensure stock does not go negative
+      if (product.features[featureIndex].stock > 0) {
+        product.features[featureIndex].stock -= qty;
+       // console.log( product.features[featureIndex].size+":NEW : "+ product.features[featureIndex].stock)
+      }
+
+      // Step 6: Save the updated product
+      await product.save();
+     // console.log(
+     //   `Stock updated for productId: ${productId}, size: ${size}, qty: ${qty}`
+     // );
+    }
+   // console.log("Stock updated for all matching orders")
+    return { success: true, message: "Stock updated for all matching orders" };
+  } catch (error) {
+    console.error("Error updating product stock:", error);
+    return { success: false, message: error };
+  }
+}
+
 export async function updateDispatchedOrders(_id: string) {
   try {
     // Connect to the database
@@ -275,25 +410,34 @@ export async function getStatusOrders() {
           _id: "$status", // Group by status
           count: { $sum: 1 }, // Count the number of orders in each status
           totalWorth: { $sum: { $multiply: ["$price", "$qty"] } }, // Sum up the worth of orders
+          totalProfit: { // Calculate and sum the profit
+            $sum: {
+              $cond: [
+                { $in: ["$status", ["completed", "successful"]] }, // Include only completed or successful orders
+                { $multiply: [{ $subtract: ["$price", "$buyprice"] }, "$qty"] }, // Profit for each order
+                0, // Otherwise, add 0 to the sum
+              ],
+            },
+          },
         },
       },
     ]);
 
     // Transform the aggregation result into a more accessible format
-    const statusData = result.reduce((acc, { _id, count, totalWorth }) => {
-      acc[_id] = { count, totalWorth };
+    const statusData = result.reduce((acc, { _id, count, totalWorth, totalProfit }) => {
+      acc[_id] = { count, totalWorth, totalProfit };
       return acc;
     }, {});
 
     // Return default values for statuses that might not exist in the result
     return {
-      pending: statusData.pending || { count: 0, totalWorth: 0 },
-      completed: statusData.completed || { count: 0, totalWorth: 0 },
-      successful: statusData.successful || { count: 0, totalWorth: 0 },
+      pending: statusData.pending || { count: 0, totalWorth: 0, totalProfit: 0 },
+      completed: statusData.completed || { count: 0, totalWorth: 0, totalProfit: 0 },
+      successful: statusData.successful || { count: 0, totalWorth: 0, totalProfit: 0 },
     };
   } catch (error) {
-    console.error("Error fetching order statuses with worth:", error);
-    throw new Error("Unable to fetch order statuses with worth");
+    console.error("Error fetching order statuses with worth and profit:", error);
+    throw new Error("Unable to fetch order statuses with worth and profit");
   }
 }
 

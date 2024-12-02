@@ -8,6 +8,7 @@ export interface PieChartProps {
   value: {
     count: number;
     totalWorth: number;
+    totalProfit: number;
   };
 }
 
@@ -26,11 +27,21 @@ const TotalCardOrders = ({ title, value }: PieChartProps) => {
           <div className={`h-3 w-3 rounded-full ${getStatusStyles()}`}></div>
           <div className="text-xs lg:text-sm">{title}</div>
         </div>
-        <div className="mt-1 text-base lg:text-xl font-bold text-gray-900">
-          {value.count}
+        <div className="flex gap-2 items-center text-gray-900">
+          <div className="text-xs lg:text-sm ">No.</div>
+          <div className="font-bold text-base lg:text-xl ">{value.count}</div>
         </div>
-        <div className="mt-1 text-sm lg:text-xl font-bold text-gray-900">
-          KES {value.totalWorth.toLocaleString()}
+        <div className="flex gap-2 items-center text-gray-900">
+          <div className="text-xs lg:text-sm ">Total Worth KES.</div>
+          <div className="font-bold text-base lg:text-xl ">
+            {value.totalWorth.toLocaleString()}
+          </div>
+        </div>
+        <div className="flex gap-2 items-center text-gray-900">
+          <div className="text-xs lg:text-sm "> Profit KES.</div>
+          <div className="font-bold text-base lg:text-xl ">
+            {value.totalProfit.toLocaleString()}
+          </div>
         </div>
       </div>
     </div>

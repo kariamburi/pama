@@ -1,5 +1,6 @@
 "use server";
 
+import DashboardSkeleton from "@/components/shared/DashboardSkeleton";
 import HomeDashboard from "@/components/shared/HomeDashboard";
 import Navbar from "@/components/shared/navbar";
 import { Toaster } from "@/components/ui/toaster";
@@ -73,6 +74,21 @@ const Home = async ({ searchParams }: SearchParamProps) => {
   const feedback = await getUserDetails(userId);
   const comp = feedback.adminUser;
   const user = feedback.user;
+  if (
+    !Products ||
+    !feedback ||
+    !orders ||
+    !users ||
+    !deliveries ||
+    !prodSum ||
+    !orderSum
+  ) {
+    return (
+      <div>
+        <DashboardSkeleton />
+      </div>
+    );
+  }
   return (
     <>
       <div className="fixed z-10 top-0 w-full">

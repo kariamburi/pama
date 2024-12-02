@@ -36,7 +36,7 @@ const NavItems = ({ userstatus, userId }: NavItemsProps) => {
           .map((link) => {
             const isActive = pathname === link.route;
             let linki = link.route;
-            if (link.label === "My Shop") {
+            if (link.label === "My Orders") {
               linki = link.route + "/" + userId;
             }
 
