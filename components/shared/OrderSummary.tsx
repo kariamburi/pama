@@ -123,7 +123,7 @@ const OrderSummary = ({
       </div>
       <button
         onClick={() => handlePayNow()}
-        className={`g:hidden bg-black mt-2 cursor-pointer w-full py-4 px-1 font-bold rounded-sm text-white h-full hover:bg-gray-800 ${
+        className={`lg:hidden bg-black mt-2 cursor-pointer w-full py-4 px-1 font-bold rounded-sm text-white h-full hover:bg-gray-800 ${
           isSending ? "bg-gray-800" : "bg-black"
         }`}
         disabled={isSending} // Disable button while sending

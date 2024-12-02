@@ -15,6 +15,9 @@ import NavItems from "./NavItems";
 import StyledBrandName from "./StyledBrandName";
 import Link from "next/link";
 import { IUser } from "@/lib/database/models/user.model";
+import { SignedIn, SignedOut } from "@clerk/nextjs";
+import LockPersonOutlinedIcon from "@mui/icons-material/LockPersonOutlined";
+import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 type MobileProps = {
   userstatus: string;
   userId: string;
@@ -57,6 +60,32 @@ const MobileNav = ({ userstatus, userId, comp }: MobileProps) => {
             </div>
           </SheetTitle>
           <Separator className="border border-gray-50" />
+          <div className="flex gap-1">
+            <SignedIn>
+              {userstatus === "Admin" && (
+                <>
+                  <Link href="/home">
+                    <button
+                      className={`flex gap-1 items-center text-black px-4 py-2 rounded-full bg-white hover:bg-gray-100`}
+                    >
+                      <SettingsOutlinedIcon /> Dashboard
+                    </button>
+                  </Link>
+                </>
+              )}
+            </SignedIn>
+
+            <SignedOut>
+              <Link href="/sign-in">
+                <button
+                  className={`flex gap-1 items-center  text-black px-4 py-2 border rounded-full bg-[#ffffff] hover:bg-gray-100`}
+                >
+                  <LockPersonOutlinedIcon /> Login | Sign In
+                </button>
+              </Link>
+            </SignedOut>
+          </div>
+
           <NavItems userstatus={userstatus} userId={userId} />
           <Separator className="border border-gray-50" />
           <div className="flex text-xs">

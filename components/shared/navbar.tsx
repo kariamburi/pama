@@ -86,7 +86,7 @@ export default function Navbar({ userstatus, userId, comp }: NavProps) {
         <div className="flex items-center">
           {!isActive && (
             <div
-              className="mr-5 w-5 h-8 flex items-center justify-center rounded-sm text-white tooltip tooltip-bottom hover:cursor-pointer"
+              className="mr-5 w-5 h-8 flex items-center justify-center rounded-sm text-gray-600 tooltip tooltip-bottom hover:cursor-pointer"
               data-tip="Back"
               onClick={() => router.back()}
             >
