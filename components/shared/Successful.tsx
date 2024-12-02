@@ -34,7 +34,7 @@ const Successful = ({ comp, orders }: MobileProps) => {
 
   return (
     <div className="min-h-screen p-0 lg:p-6 bg-gray-100">
-      <div className="w-full lg:max-w-4xl lg:mx-auto bg-white p-6 rounded shadow-md">
+      <div className="w-full lg:max-w-4xl lg:mx-auto bg-white p-1 lg:p-6 rounded shadow-md">
         <div className="flex items-center justify-between mb-6">
           <div>
             <img
