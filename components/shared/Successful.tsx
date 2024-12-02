@@ -122,13 +122,13 @@ const Successful = ({ comp, orders }: MobileProps) => {
 
         <div className="mt-6 flex justify-between">
           <button
-            className="text-sm lg:text-base bg-black text-white px-4 py-2 rounded hover:bg-gray-700"
+            className="text-xs lg:text-base bg-black text-white px-4 py-2 rounded hover:bg-gray-700"
             onClick={() => router.push("/")}
           >
             Home
           </button>
           <button
-            className="text-sm lg:text-base bg-black text-white px-4 py-2 rounded hover:bg-gray-700"
+            className="text-xs lg:text-base bg-black text-white px-4 py-2 rounded hover:bg-gray-700"
             onClick={handlePrint}
           >
             Print Receipt

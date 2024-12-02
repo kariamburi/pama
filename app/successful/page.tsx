@@ -59,10 +59,7 @@ const Receipt = async ({ searchParams }: SearchParamProps) => {
   }
   return (
     <>
-      <div className="top-0 z-10  w-full">
-        <Navbar userstatus="User" comp={comp} userId={userId} />
-      </div>
-      <div className="min-h-screen p-4 bg-gray-100">
+      <div className="min-h-screen p-1 lg:p-4 bg-gray-100">
         <div className="min-h-screen flex flex-col">
           {/* Navbar */}
 
@@ -70,11 +67,6 @@ const Receipt = async ({ searchParams }: SearchParamProps) => {
           <main className="flex-grow">
             <Successful orders={orders} comp={comp} />
           </main>
-
-          {/* Footer */}
-          <footer className="bg-gray-100">
-            <Footer comp={comp} />
-          </footer>
         </div>
       </div>
     </>
