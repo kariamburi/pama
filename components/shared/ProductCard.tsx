@@ -109,21 +109,21 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
             <div className="absolute top-2 left-2 z-10 w-full">
               <SignedIn>
                 <div
-                  className="w-8 h-8 p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center rounded-full bg-white text-black tooltip tooltip-bottom hover:cursor-pointer hover:bg-gray-200"
+                  className="w-10 h-10 p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center rounded-full bg-white text-black tooltip tooltip-bottom hover:cursor-pointer hover:bg-gray-200"
                   data-tip="Favorite"
                   onClick={() => handle(product._id)}
                 >
-                  <FavoriteOutlinedIcon sx={{ fontSize: 16 }} />
+                  <FavoriteOutlinedIcon />
                 </div>
               </SignedIn>
 
               <SignedOut>
                 <Link href="/sign-in">
                   <div
-                    className="w-8 h-8 p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center rounded-full bg-white text-black tooltip tooltip-bottom hover:cursor-pointer hover:bg-gray-200"
+                    className="w-10 h-10 p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center rounded-full bg-white text-black tooltip tooltip-bottom hover:cursor-pointer hover:bg-gray-200"
                     data-tip="Favorite"
                   >
-                    <FavoriteOutlinedIcon sx={{ fontSize: 16 }} />
+                    <FavoriteOutlinedIcon />
                   </div>
                 </Link>
               </SignedOut>
@@ -131,10 +131,10 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
             {/* Zoom Button */}
             <div className="absolute top-2 right-2 z-10">
               <button
-                className="w-8 h-8 flex items-center justify-center bg-white text-black rounded-full shadow hover:bg-gray-200"
+                className="w-10 h-10 flex items-center justify-center bg-white text-black rounded-full shadow hover:bg-gray-200"
                 onClick={handleZoomChange} // Trigger Zoom modal
               >
-                <ZoomInOutlinedIcon sx={{ fontSize: 16 }} />
+                <ZoomInOutlinedIcon />
               </button>
             </div>
             <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 right-2 bg-white text-black text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
@@ -176,7 +176,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
               </>
             )}
             {isAdCreator && (
-              <div className="absolute right-2 top-12 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all z-10">
+              <div className="absolute right-2 top-14 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all z-10">
                 <div
                   onClick={handleOpen}
                   className="cursor-pointer hover:text-green-600"
@@ -193,12 +193,12 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
             {isLoadingpopup && (
               <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-t-xl ">
                 {/* Spinner or loading animation */}
-                <CircularProgress sx={{ color: "white" }} />
+                <CircularProgress sx={{ color: "black" }} />
               </div>
             )}
             <div className={isZoomed ? "hidden" : "block"}>
               <Link href={`/product/${product._id}`} passHref>
-                <img
+                {/*  <img
                   src={product.imageUrls?.[0] || "/placeholder-image.png"} // Safely access the first image or fallback
                   alt={product.productName || "Product image"} // Provide a fallback for alt text
                   onMouseEnter={() => setHoveredIndex(index)}
@@ -209,8 +209,8 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                     hoveredIndex === index ? "scale-105" : ""
                   }`}
                   onLoad={() => setIsLoadingpopup(false)} // Use onLoad for plain <img>
-                />
-                {/*   <Image
+                />*/}
+                <Image
                   src={product.imageUrls[0] || "/placeholder-image.png"}
                   alt={product.productName}
                   width={400}
@@ -224,7 +224,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                   }`}
                   onLoadingComplete={() => setIsLoadingpopup(false)}
                   placeholder="empty"
-                /> */}
+                />
               </Link>
             </div>
             {/* Zoom Wrapper */}

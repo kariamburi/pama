@@ -43,12 +43,10 @@ const Receipt = async ({ searchParams }: SearchParamProps) => {
   const feedback = await getUserDetails(userId);
   const comp = feedback.adminUser;
   const user = feedback.user;
-  // const page = Number(searchParams?.page) || 1;
-  // const limit = Number(searchParams?.limit) || 10;
-  // const orderId = searchParams.get("OrderTrackingId");
+  const phone = comp.phone;
   const orderId = searchParams?.OrderTrackingId as string;
   const ps = await updateProductStock(orderId);
-  const pt = await updatePendingOrdersToSuccessful(orderId);
+  const pt = await updatePendingOrdersToSuccessful(orderId, phone);
   const orders = await getOrdersByOrderId(orderId);
   if (!orders || !feedback || !ps || !pt) {
     return (

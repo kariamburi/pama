@@ -40,7 +40,16 @@ const LocationWindow: React.FC<ChatWindowProps> = ({
       <div className="bg-white rounded-lg p-6 w-full max-w-5xl md:max-w-3xl lg:max-w-4xl h-[90vh] flex flex-col">
         {/* Header */}
         <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Location</h3>
+          <h3 className="text-lg font-semibold">Shop Location</h3>
+
+          <button
+            onClick={handleDirectionClick}
+            className="hover:bg-gray-700 bg-[#000000] text-white text-xs mt-2 p-2 rounded-lg shadow"
+          >
+            <AssistantDirectionIcon sx={{ marginRight: "5px" }} />
+            Get Direction
+          </button>
+
           <button
             onClick={onClose}
             className="flex justify-center items-center h-12 w-12 text-black hover:bg-black hover:text-white rounded-full"
@@ -50,11 +59,7 @@ const LocationWindow: React.FC<ChatWindowProps> = ({
         </div>
 
         <div className="bg-white p-0 text-l rounded-lg overflow-hidden">
-          <div className="">
-            <p className="text-xs lg:text-sm font-bold">Shop Location</p>
-            <p className="mb-1 lg:text-xs text-[10px]">
-              <LocationOnIcon sx={{ fontSize: 20 }} /> GPS Location
-            </p>
+          <div>
             <StreetmapOfice
               name={user?.businessname}
               address={user?.businessaddress}
@@ -63,15 +68,6 @@ const LocationWindow: React.FC<ChatWindowProps> = ({
               lng={user?.longitude}
               id={user._id}
             />
-            <div className="justify-between flex w-full mb-5">
-              <button
-                onClick={handleDirectionClick}
-                className="hover:bg-gray-700 bg-[#000000] text-white text-xs mt-2 p-2 rounded-lg shadow"
-              >
-                <AssistantDirectionIcon sx={{ marginRight: "5px" }} />
-                Get Direction
-              </button>
-            </div>
           </div>
         </div>
       </div>

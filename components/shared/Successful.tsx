@@ -14,12 +14,6 @@ type MobileProps = {
 };
 const Successful = ({ comp, orders }: MobileProps) => {
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const [isLoading, setIsLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
-  // const [orders, setOrders] = useState<any[]>([]);
-
-  //const orderId = searchParams.get("OrderTrackingId");
 
   const handlePrint = () => {
     window.print();
@@ -34,7 +28,7 @@ const Successful = ({ comp, orders }: MobileProps) => {
 
   return (
     <div className="min-h-screen p-0 lg:p-6 bg-gray-100">
-      <div className="w-full lg:max-w-4xl lg:mx-auto bg-white p-1 lg:p-6 rounded shadow-md">
+      <div className="w-full mt-5 lg:max-w-4xl lg:mx-auto bg-white p-1 lg:p-6 rounded-sm">
         <div className="flex items-center justify-between mb-6">
           <div>
             <img

@@ -90,7 +90,7 @@ const Footer = ({ comp }: MobileProps) => {
             <li>
               <div
                 onClick={handleOpen}
-                className="bg-black flex items-center gap-1 text-white rounded-xl p-2  cursor-pointer hover:bg-gray-700"
+                className="flex items-center gap-1 cursor-pointer hover:bg-gray-700"
               >
                 <LocationOnIcon sx={{ fontSize: 14 }} />{" "}
                 <div>Shop GPS Location</div>

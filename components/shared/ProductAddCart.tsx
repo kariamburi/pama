@@ -87,7 +87,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
   const [isSending, setIsSending] = useState(false);
   const [totalorders, setTotalorders] = useState<number>(0);
   const [isOpen, setIsOpen] = useState(false);
-
+  const [isLoadingpopup, setIsLoadingpopup] = useState(true);
+  const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
   const pathname = usePathname();
   const { toast } = useToast();
 
@@ -259,23 +260,46 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
               >
                 {product.imageUrls.map((url: string, index: number) => (
                   <Zoom key={index}>
-                    <img
+                    {/*   <img
                       src={url}
                       alt={product.productName}
                       className="rounded-lg max-h-[600px] shadow-lg"
-                    />
+                    />*/}
+                    <div className="relative">
+                      {isLoadingpopup && (
+                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-t-xl ">
+                          {/* Spinner or loading animation */}
+                          <CircularProgress sx={{ color: "black" }} />
+                        </div>
+                      )}
+                      <Image
+                        src={product.imageUrls[0] || "/placeholder-image.png"}
+                        alt={product.productName}
+                        width={400}
+                        height={400}
+                        onMouseEnter={() => setHoveredIndex(index)}
+                        onMouseLeave={() => setHoveredIndex(null)}
+                        className={`rounded-lg max-h-[600px] shadow-lg object-cover w-full ${
+                          isLoadingpopup ? "opacity-0" : "opacity-100"
+                        } transition-opacity  transition-transform duration-300 transform ${
+                          hoveredIndex === index ? "scale-105" : ""
+                        }`}
+                        onLoadingComplete={() => setIsLoadingpopup(false)}
+                        placeholder="empty"
+                      />
+                    </div>
                   </Zoom>
                 ))}
               </div>
 
               {/* Product Name and Description */}
               <div className="justify-between flex items-center p-1">
-                <div className="flex gap-1 font-medium text-gray-700">
-                  <span className="font-semibold">
-                    <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} /> Price:
+                <div className="flex gap-1 items-center font-medium text-gray-700">
+                  <span className="text-sm font-semibold">
+                    <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
                   </span>
 
-                  <span className="line-through text-gray-500">
+                  <span className="text-lg line-through text-gray-500">
                     Ksh. {product.price.toLocaleString()}
                   </span>
                   <span className="ml-2 text-xl text-[#000000] font-bold">
@@ -543,10 +567,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
                     <SignedOut>
                       <Link href="/sign-in">
-                        <button
-                          disabled={!totalorders}
-                          className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
-                        >
+                        <button className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800">
                           Check Out
                         </button>
                       </Link>
@@ -787,10 +808,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
                   <SignedOut>
                     <Link href="/sign-in">
-                      <button
-                        disabled={!totalorders}
-                        className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800"
-                      >
+                      <button className="bg-[#000000] cursor-pointer w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-white h-full hover:bg-gray-800">
                         Check Out
                       </button>
                     </Link>

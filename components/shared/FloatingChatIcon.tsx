@@ -14,9 +14,9 @@ const FloatingChatIcon: React.FC<FloatingChatIconProps> = ({ phone }) => {
     <>
       <button
         onClick={handlewhatsappClick}
-        className="fixed bottom-10 right-2 lg:right-5 h-12 w-12 hover:bg-emerald-700 bg-[#00B53F] text-white text-xs mt-2 p-2 rounded-full cursor-pointer z-10"
+        className="fixed bottom-[70px] right-2 lg:right-5 h-12 w-12 hover:bg-emerald-700 bg-[#00B53F] text-white text-xs mt-2 p-2 rounded-full cursor-pointer z-10"
       >
-        <WhatsAppIcon sx={{ fontSize: 24 }} />
+        <WhatsAppIcon />
       </button>
     </>
   );

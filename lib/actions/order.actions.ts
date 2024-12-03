@@ -12,6 +12,7 @@ import Product from "../database/models/product.model"
 import Order from "../database/models/order.model"
 import { ObjectId } from "mongodb";
 import Delivery from "../database/models/delivery.model"
+import axios from "axios"
 
 const populateAd = (query: any) => {
   return query
@@ -188,7 +189,7 @@ export async function updateOrdersByIds(
     throw error; // Re-throw error to be handled by the caller
   }
 }
-export async function updatePendingOrdersToSuccessful(orderId: string) {
+export async function updatePendingOrdersToSuccessful(orderId: string,phone:string) {
   try {
     // Connect to the database
     
@@ -200,6 +201,18 @@ export async function updatePendingOrdersToSuccessful(orderId: string) {
       { $set: { status: "successful" } } // Fields to update
     );
  // console.log("result: "+result)
+ const message="Your have a new order placed on pama.co.ke."
+ const smsUrl = `http://107.20.199.106/sms/1/text/query?username=Ezeshatrans&password=5050Martin.com&from=Ezesha&text=${encodeURIComponent(
+  message
+)}&to=${phone}`;
+
+const requestHeaders = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+};
+
+await axios.get(smsUrl, { headers: requestHeaders });
+
     return JSON.parse(JSON.stringify(result)); // Return the update result for further processing
   } catch (error) {
     console.error("Error updating orders:", error);

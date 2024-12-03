@@ -15,6 +15,8 @@ import ProductCard from "./ProductCard";
 import SkeletonCard from "./SkeletonCard";
 import SkeletonCardMobile from "./SkeletonCardMobile";
 import { IProduct } from "@/lib/database/models/product.model";
+import FloatingCall from "./FloatingCall";
+import FloatingLocation from "./FloatingLocation";
 
 type CollectionProps = {
   emptyTitle: string;
@@ -34,12 +36,14 @@ type CollectionProps = {
   occassion: string;
   price: string;
   color: string;
+  comp: any;
 };
 
 const CollectionInfinite = ({
   emptyTitle,
   emptyStateSubtext,
   gender,
+  comp,
   userId,
   userName,
   userImage,
@@ -179,7 +183,9 @@ const CollectionInfinite = ({
               }
             })}
           </div>
+          <FloatingLocation comp={comp} />
           <FloatingChatIcon phone={data[0].organizer.whatsapp ?? ""} />
+          <FloatingCall phone={data[0].organizer.phone ?? ""} />
         </div>
       ) : (
         loading === false && (

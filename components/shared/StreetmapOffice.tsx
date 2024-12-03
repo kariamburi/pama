@@ -33,7 +33,7 @@ const StreetmapOfice = ({
       center={[parseFloat(lat), parseFloat(lng)]}
       zoom={18}
       scrollWheelZoom={false}
-      className="map h-72 w-full rounded-lg z-0"
+      className="map h-[90vh] w-full rounded-lg z-0"
     >
       <TileLayer
         // attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
