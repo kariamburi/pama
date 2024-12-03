@@ -258,20 +258,20 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     : "grid grid-cols-2 gap-4"
                 }`}
               >
-                {product.imageUrls.map((url: string, index: number) => (
-                  <Zoom key={index}>
-                    {/*   <img
+                {/*   <img
                       src={url}
                       alt={product.productName}
                       className="rounded-lg max-h-[600px] shadow-lg"
                     />*/}
-                    <div className="relative">
-                      {isLoadingpopup && (
-                        <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-t-xl ">
-                          {/* Spinner or loading animation */}
-                          <CircularProgress sx={{ color: "black" }} />
-                        </div>
-                      )}
+                {product.imageUrls.map((url: string, index: number) => (
+                  <div className="relative" key={index}>
+                    {isLoadingpopup && (
+                      <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-t-xl ">
+                        {/* Spinner or loading animation */}
+                        <CircularProgress sx={{ color: "black" }} />
+                      </div>
+                    )}
+                    <Zoom>
                       <Image
                         src={product.imageUrls[0] || "/placeholder-image.png"}
                         alt={product.productName}
@@ -287,8 +287,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                         onLoadingComplete={() => setIsLoadingpopup(false)}
                         placeholder="empty"
                       />
-                    </div>
-                  </Zoom>
+                    </Zoom>
+                  </div>
                 ))}
               </div>
 
@@ -352,7 +352,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
               </div>
 
               {/* Product Information */}
-              <div className="grid grid-cols-2 gap-4">
+              <div className="w-full gap-4">
                 <div>
                   <h2 className="text-lg font-semibold">Details</h2>
                   <ul className="mt-2 text-gray-600">
