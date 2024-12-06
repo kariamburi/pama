@@ -298,18 +298,29 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                   <span className="text-sm font-semibold">
                     <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
                   </span>
-
-                  <span className="text-lg line-through text-gray-500">
-                    Ksh. {product.price.toLocaleString()}
-                  </span>
-                  <span className="ml-2 text-xl text-[#000000] font-bold">
-                    Ksh.
-                    {(
-                      product.price -
-                      (product.price * product.discount) / 100
-                    ).toLocaleString()}
-                  </span>
-                  <span className="text-[#000000]">(-{product.discount}%)</span>
+                  {product.discount ? (
+                    <>
+                      <span className="text-lg line-through text-gray-500">
+                        Ksh. {product.price.toLocaleString()}
+                      </span>
+                      <span className="ml-2 text-xl text-[#000000] font-bold">
+                        Ksh.
+                        {(
+                          product.price -
+                          (product.price * product.discount) / 100
+                        ).toLocaleString()}
+                      </span>
+                      <span className="text-[#000000]">
+                        (-{product.discount}%)
+                      </span>
+                    </>
+                  ) : (
+                    <>
+                      <span className="ml-2 text-xl text-[#000000] font-bold">
+                        Ksh. {product.price.toLocaleString()}
+                      </span>
+                    </>
+                  )}
                 </div>
               </div>
               {product.featuredInDeals && (
@@ -363,10 +374,14 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     <li>
                       <strong>Colors:</strong> {product.color.join(", ")}
                     </li>
-                    <li>
-                      <strong>Material:</strong>{" "}
-                      {product.fabricCareInstructions}
-                    </li>
+                    {product.fabricCareInstructions && (
+                      <>
+                        <li>
+                          <strong>Material:</strong>
+                          {product.fabricCareInstructions}
+                        </li>
+                      </>
+                    )}
                   </ul>
                 </div>
 
@@ -423,10 +438,16 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
                         <span className="ml-2 text-xl text-[#000000] font-bold">
                           Ksh.
-                          {(
-                            product.price -
-                            (product.price * product.discount) / 100
-                          ).toLocaleString()}
+                          {product.discount ? (
+                            <>
+                              {(
+                                product.price -
+                                (product.price * product.discount) / 100
+                              ).toLocaleString()}
+                            </>
+                          ) : (
+                            <>{product.price}</>
+                          )}
                         </span>
                       </div>
                       <div className="text-xs text-gray-600">
@@ -624,10 +645,16 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                         </div>
                         <div className="text-[#000000] text-xs font-bold">
                           Ksh.
-                          {(
-                            product.price -
-                            (product.price * product.discount) / 100
-                          ).toLocaleString()}
+                          {product.discount ? (
+                            <>
+                              {(
+                                product.price -
+                                (product.price * product.discount) / 100
+                              ).toLocaleString()}
+                            </>
+                          ) : (
+                            <>{product.price}</>
+                          )}
                         </div>
                       </div>
                       <Link
@@ -677,10 +704,16 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
 
                       <span className="ml-2 text-xl text-[#000000] font-bold">
                         Ksh.
-                        {(
-                          product.price -
-                          (product.price * product.discount) / 100
-                        ).toLocaleString()}
+                        {product.discount ? (
+                          <>
+                            {(
+                              product.price -
+                              (product.price * product.discount) / 100
+                            ).toLocaleString()}
+                          </>
+                        ) : (
+                          <>{product.price}</>
+                        )}
                       </span>
                     </div>
                     <div className="text-xs text-gray-600">Taxes included.</div>
@@ -865,10 +898,16 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                       </div>
                       <div className="text-[#000000] text-xs font-bold">
                         Ksh.
-                        {(
-                          product.price -
-                          (product.price * product.discount) / 100
-                        ).toLocaleString()}
+                        {product.discount ? (
+                          <>
+                            {(
+                              product.price -
+                              (product.price * product.discount) / 100
+                            ).toLocaleString()}
+                          </>
+                        ) : (
+                          <>{product.price}</>
+                        )}
                       </div>
                     </div>
                     <Link

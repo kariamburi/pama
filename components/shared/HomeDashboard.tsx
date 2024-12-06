@@ -14,7 +14,7 @@ import GroupsOutlinedIcon from "@mui/icons-material/GroupsOutlined";
 import ChatBubbleOutlineOutlinedIcon from "@mui/icons-material/ChatBubbleOutlineOutlined";
 import CoPresentOutlinedIcon from "@mui/icons-material/CoPresentOutlined";
 import DiamondIcon from "@mui/icons-material/Diamond";
-import { ScrollArea } from "../ui/scroll-area";
+import { ScrollArea, ScrollBar } from "../ui/scroll-area";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { ProductForm } from "./ProductForm";
@@ -236,21 +236,18 @@ homeProps) => {
       <div className="flex-1 rounded-lg">
         <div className="bg-white rounded-lg lg:hidden">
           <div>
-            <ul className="grid grid-cols-3 md:grid-cols-3 lg:grid-cols-8 m-1 gap-1 p-1">
+            <ul className="grid grid-cols-2 m-1 gap-1 p-1">
               {adminLinks.map((link) => {
                 //  const isActive = pathname === link.route;
 
                 return (
-                  <li
-                    key={link.route}
-                    className={`${
-                      activeTab === link.label &&
-                      "bg-black text-white rounded-xl"
-                    } p-medium-16 whitespace-nowrap border rounded-xl`}
-                  >
+                  <li key={link.route}>
                     <div
                       onClick={() => handle(link.label)}
-                      className="flex hover:bg-gray-200 hover:rounded-xl hover:text-gray-700 p-3 mb-1 hover:cursor-pointer"
+                      className={`${
+                        activeTab === link.label &&
+                        "bg-black text-white rounded-xl"
+                      } flex border p-3 items-center p-medium-16 whitespace-nowrap rounded-xl hover:cursor-pointer hover:bg-gray-200`}
                     >
                       <span className="text-right my-auto">
                         {link.label === "Home" && (
@@ -290,7 +287,7 @@ homeProps) => {
                         )}
                       </span>
 
-                      <span className="flex-1 text-xs mr-5 hover:no-underline my-auto">
+                      <span className="flex text-xs hover:no-underline">
                         {link.label}
                       </span>
                     </div>
@@ -353,7 +350,7 @@ homeProps) => {
             <div className="container mx-auto p-4 border rounded-xl">
               <h1 className="text-2xl font-bold mb-4">Categories</h1>
 
-              <div className="p-2">
+              <div className="p-0">
                 <AccordionTree data={CATEGORIES} />
               </div>
             </div>
@@ -378,16 +375,19 @@ homeProps) => {
                 {/* Search Form */}
               </div>
               {/* Date Filter Section */}
+              <ScrollArea className="p-2 w-[400px] md:w-[500px] lg:w-full">
+                <CollectionProducts
+                  data={Products}
+                  emptyTitle={`No Product Found`}
+                  emptyStateSubtext="Come back later"
+                  limit={limit}
+                  page={page}
+                  userId={userId}
+                  totalPages={totalPagesProducts}
+                />
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
 
-              <CollectionProducts
-                data={Products}
-                emptyTitle={`No Product Found`}
-                emptyStateSubtext="Come back later"
-                limit={limit}
-                page={page}
-                userId={userId}
-                totalPages={totalPagesProducts}
-              />
               <ProductWindow
                 isOpen={isOpen}
                 onClose={handleClose}
@@ -414,7 +414,7 @@ homeProps) => {
                       id="startDate"
                       value={startDate || ""}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="border p-2 rounded"
+                      className="text-sm border p-2 rounded"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -429,7 +429,7 @@ homeProps) => {
                       id="endDate"
                       value={endDate || ""}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="border p-2 rounded"
+                      className="text-sm border p-2 rounded"
                     />
                   </div>
                   <div className="flex flex-col">
@@ -441,7 +441,7 @@ homeProps) => {
                     </label>
                     <button
                       onClick={handleSearchDates}
-                      className="bg-black text-white px-4 py-2 rounded"
+                      className="text-sm bg-black text-white px-4 py-2 rounded"
                     >
                       Search
                     </button>
@@ -465,17 +465,17 @@ homeProps) => {
                           placeholder="Search by Order ID"
                           value={search}
                           onChange={(e) => setSearch(e.target.value)}
-                          className="border p-2 flex rounded-md"
+                          className="text-sm border p-2 flex rounded-md"
                         />
                         <button
                           type="submit"
-                          className="bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
+                          className="text-sm bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
                         >
                           Search
                         </button>
                         <div
                           onClick={handleClear}
-                          className="bg-black items-center justify-center cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-800"
+                          className="text-sm bg-black items-center justify-center cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-800"
                         >
                           Clear
                         </div>
@@ -486,14 +486,17 @@ homeProps) => {
               </div>
               {/* Date Filter Section */}
 
-              <CollectionOrder
-                data={orders}
-                emptyTitle={`No Order Found`}
-                emptyStateSubtext="Come back later"
-                limit={limit}
-                page={page}
-                totalPages={totalPages}
-              />
+              <ScrollArea className="p-2 w-[400px] md:w-[500px] lg:w-full">
+                <CollectionOrder
+                  data={orders}
+                  emptyTitle={`No Order Found`}
+                  emptyStateSubtext="Come back later"
+                  limit={limit}
+                  page={page}
+                  totalPages={totalPages}
+                />
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
             </div>
           </>
         )}
@@ -517,7 +520,7 @@ homeProps) => {
               </div>
               {/* Date Filter Section */}
 
-              <ScrollArea className="p-2 h-[500px]">
+              <ScrollArea className="p-2 w-[400px] md:w-[500px] lg:w-full">
                 <CollectionMethods
                   data={deliveries}
                   emptyTitle={`No Method Found`}
@@ -527,6 +530,7 @@ homeProps) => {
                   userId={userId}
                   totalPages={1}
                 />
+                <ScrollBar orientation="horizontal" />
               </ScrollArea>
 
               <MethodsWindow
@@ -545,15 +549,18 @@ homeProps) => {
               <div className="flex flex-col lg:flex-row gap-3"></div>
               {/* Date Filter Section */}
 
-              <CollectionUsers
-                data={users.data}
-                emptyTitle={`No User Found`}
-                emptyStateSubtext="Come back later"
-                limit={limit}
-                page={page}
-                userId={userId}
-                totalPages={users.totalPages}
-              />
+              <ScrollArea className="p-2 w-[400px] md:w-[500px] lg:w-full">
+                <CollectionUsers
+                  data={users.data}
+                  emptyTitle={`No User Found`}
+                  emptyStateSubtext="Come back later"
+                  limit={limit}
+                  page={page}
+                  userId={userId}
+                  totalPages={users.totalPages}
+                />
+                <ScrollBar orientation="horizontal" />
+              </ScrollArea>
               <ProductWindow
                 isOpen={isOpen}
                 onClose={handleClose}

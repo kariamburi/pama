@@ -32,7 +32,7 @@ import {
 } from "@/constants";
 import { useUploadThing } from "@/lib/uploadthing";
 import { Textarea } from "../ui/textarea";
-import { TextField } from "@mui/material";
+import { Box, Chip, InputAdornment, TextField } from "@mui/material";
 import { Checkbox } from "../ui/checkbox";
 import { createProduct, updateProduct } from "@/lib/actions/ad.product";
 import { useToast } from "../ui/use-toast";
@@ -238,11 +238,23 @@ export const ProductForm = ({
   }) => {
     setNewListingTitle(event.target.value);
   };
+
+  const [selectedColors, setSelectedColors] = useState<any[]>([]); // For multiple primary colors
+  const [selectedSubcolors, setSelectedSubcolors] = useState<any[]>([]); // For subcolors
+
+  const handleColorChange = (event: any, newValue: any) => {
+    setSelectedColors(newValue); // Set selected primary colors
+    setSelectedSubcolors([]); // Reset subcolors when primary colors change
+  };
+
+  const handleSubcolorChange = (event: any, newValue: any) => {
+    setSelectedSubcolors(newValue); // Set multiple subcolors
+  };
   return (
     <Form {...form}>
       <form
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex p-1 flex-col gap-5"
+        className="flex p-1 flex-col gap-0"
       >
         <div className="flex border-b justify-between">
           <h2 className="font-bold p-2 text-[30px]">Product Details</h2>
@@ -264,6 +276,26 @@ export const ProductForm = ({
               </>
             )}
           </div>
+        </div>
+
+        <div className="flex flex-col gap-5">
+          <FormField
+            control={form.control}
+            name="imageUrls"
+            render={({ field }) => (
+              <FormItem className="w-full p-3">
+                <FormControl>
+                  <FileUploader
+                    onFieldChange={field.onChange}
+                    imageUrls={field.value}
+                    setFiles={setFiles}
+                    userName={""}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
         </div>
         <div className="flex flex-col gap-5 md:flex-row">
           {/* Product Name */}
@@ -454,7 +486,10 @@ export const ProductForm = ({
                             field.onChange(newValue ? newValue : null);
                           }}
                           renderInput={(field) => (
-                            <TextField {...field} label="Fabric/Material*" />
+                            <TextField
+                              {...field}
+                              label="Material (Optional)*"
+                            />
                           )}
                         />
                       </div>
@@ -511,53 +546,62 @@ export const ProductForm = ({
             <FormField
               control={form.control}
               name="color"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <div className="w-full overflow-hidden rounded-full px-4 py-2">
-                      <Autocomplete
-                        multiple
-                        id="color"
-                        options={COLORS}
-                        getOptionLabel={(option) => option.title}
-                        value={
-                          COLORS.filter(
-                            (c) => field.value && field.value.includes(c.title)
-                          ) || []
-                        }
-                        onChange={(event, newValue) => {
-                          const selectedTitles = newValue.map(
-                            (color) => color.title
-                          ); // Ensure we get an array of titles
-                          field.onChange(selectedTitles); // Update form state with an array of selected color titles
-                        }}
-                        renderOption={(props, option) => (
-                          <li
-                            {...props}
-                            key={option.title}
-                            className="flex p-2 cursor-pointer items-center space-x-2"
-                          >
-                            <span
-                              style={{
-                                backgroundColor: option.code,
-                                width: "16px",
-                                height: "16px",
-                                borderRadius: "50%",
-                                border: "1px solid #ccc",
-                              }}
+              render={({ field }) => {
+                // Map `string[]` to objects expected by Autocomplete
+                const selectedSubcolors = (field.value || [])
+                  .map((subcolorTitle) =>
+                    COLORS.flatMap((color) => color.subcolors).find(
+                      (subcolor) => subcolor.title === subcolorTitle
+                    )
+                  )
+                  .filter(Boolean) as { title: string; code: string }[];
+
+                return (
+                  <FormItem className="w-full">
+                    <FormControl>
+                      <div className="w-full overflow-hidden rounded-full px-4 py-2">
+                        <Autocomplete
+                          multiple
+                          value={selectedSubcolors} // Pass objects for selected subcolors
+                          onChange={(event, newValue) =>
+                            // Convert selected objects back to `string[]`
+                            field.onChange(
+                              newValue.map((option) => option.title)
+                            )
+                          }
+                          options={COLORS.flatMap((color) => color.subcolors)} // Provide all subcolors
+                          getOptionLabel={(option) => option?.title || ""} // Handle undefined case
+                          renderOption={(props, option) =>
+                            option ? ( // Ensure option is defined
+                              <li {...props}>
+                                <div className="flex items-center gap-2">
+                                  <span
+                                    style={{
+                                      width: 20,
+                                      height: 20,
+                                      backgroundColor: option.code,
+                                      borderRadius: "50%",
+                                    }}
+                                  ></span>
+                                  {option.title}
+                                </div>
+                              </li>
+                            ) : null
+                          }
+                          renderInput={(params) => (
+                            <TextField
+                              {...params}
+                              label="Select Colors"
+                              placeholder="Choose Colors"
                             />
-                            <span>{option.title}</span>
-                          </li>
-                        )}
-                        renderInput={(params) => (
-                          <TextField {...params} label="Colors*" />
-                        )}
-                      />
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
+                          )}
+                        />
+                      </div>
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                );
+              }}
             />
 
             {/* Customization Options */}
@@ -772,71 +816,62 @@ export const ProductForm = ({
                             ))}
                         </ul>
 
-                        <div className="flex items-center justify-between mt-4">
-                          <Input
-                            className="ml-2 mr-2"
-                            value={newListingTitle}
-                            onChange={handleInputChange}
-                            placeholder="Add a size (e.g., 44)"
-                          />
-                          <Input
-                            type="number"
-                            className="ml-2 mr-2 w-20"
-                            value={newListingStock}
-                            onChange={(e) =>
-                              setNewListingStock(Number(e.target.value))
-                            }
-                            placeholder="Stock"
-                          />
-                          <Image
-                            src="/assets/icons/add.svg"
-                            alt="add"
-                            className="cursor-pointer"
-                            width={35}
-                            height={35}
-                            onClick={() => {
-                              if (
-                                newListingTitle.trim() !== "" &&
-                                newListingStock > 0
-                              ) {
-                                const updatedFeatures = [
-                                  ...(field.value || []),
-                                  {
-                                    size: newListingTitle.trim(),
-                                    stock: Number(newListingStock),
-                                  },
-                                ];
-                                field.onChange(updatedFeatures);
-                                setNewListingTitle("");
-                                setNewListingStock(0);
+                        <div className="grid grid-cols-3 p-1 items-center justify-between mt-4">
+                          <div className="flex flex-col">
+                            <div className="ml-3 p-1 text-xs text-gray-500">
+                              Add Size
+                            </div>
+                            <Input
+                              className="w-full "
+                              value={newListingTitle}
+                              onChange={handleInputChange}
+                              placeholder=""
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="ml-3 p-1 text-xs text-gray-500">
+                              Qty
+                            </div>
+                            <Input
+                              type="text"
+                              className="ml-2 mr-2 w-20"
+                              value={newListingStock}
+                              onChange={(e) =>
+                                setNewListingStock(Number(e.target.value))
                               }
-                            }}
-                          />
+                              placeholder=""
+                            />
+                          </div>
+                          <div className="flex flex-col">
+                            <div className="ml-3 p-1 text-xs text-white">.</div>
+                            <Image
+                              src="/assets/icons/add.svg"
+                              alt="add"
+                              className="cursor-pointer"
+                              width={50}
+                              height={50}
+                              onClick={() => {
+                                if (
+                                  newListingTitle.trim() !== "" &&
+                                  newListingStock > 0
+                                ) {
+                                  const updatedFeatures = [
+                                    ...(field.value || []),
+                                    {
+                                      size: newListingTitle.trim(),
+                                      stock: Number(newListingStock),
+                                    },
+                                  ];
+                                  field.onChange(updatedFeatures);
+                                  setNewListingTitle("");
+                                  setNewListingStock(0);
+                                }
+                              }}
+                            />
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          <div className="border-b">
-            <h2 className="font-bold p-2 text-[30px]">Images</h2>
-          </div>
-          <div className="flex flex-col gap-5">
-            <FormField
-              control={form.control}
-              name="imageUrls"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <FileUploader
-                      onFieldChange={field.onChange}
-                      imageUrls={field.value}
-                      setFiles={setFiles}
-                      userName={""}
-                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

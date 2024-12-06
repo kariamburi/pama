@@ -11,6 +11,7 @@ import { deleteProduct } from "@/lib/actions/ad.product";
 import { DeleteConfirmation } from "./DeleteConfirmation";
 import ProductWindowUpdate from "./ProductWindowUpdate";
 import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
+
 type CollectionProps = {
   data: any[];
   emptyTitle: string;
@@ -42,6 +43,7 @@ const CollectionProducts = ({
   const closeModal = () => {
     setSelectedOrder(null); // Close the modal
   };
+
   const [isOpen, setIsOpen] = useState(false);
   const handleOpen = () => {
     setIsOpen(true);
@@ -50,11 +52,12 @@ const CollectionProducts = ({
   const handleClose = () => {
     setIsOpen(false);
   };
+
   return (
     <div>
       {data.length > 0 ? (
-        <div>
-          <table className="min-w-full border-collapse border border-gray-300">
+        <div className="overflow-x-auto">
+          <table className="min-w-full table-auto border-collapse border border-gray-300">
             <thead className="text-sm bg-gray-200">
               <tr>
                 <th className="border border-gray-300 px-4 py-2">
@@ -90,15 +93,25 @@ const CollectionProducts = ({
                   <td className="border border-gray-300 px-4 py-2">
                     KES {product.price.toLocaleString()}
                   </td>
-                  <td className="border border-gray-300 px-4 py-2">
-                    {(
-                      product.price -
-                      (product.price * product.discount) / 100
-                    ).toLocaleString() +
-                      " (-" +
-                      product.discount +
-                      "%)" || "N/A"}
-                  </td>
+                  {product.discount ? (
+                    <>
+                      <td className="border border-gray-300 px-4 py-2">
+                        {(
+                          product.price -
+                          (product.price * product.discount) / 100
+                        ).toLocaleString() +
+                          " (-" +
+                          product.discount +
+                          "%)" || "N/A"}
+                      </td>
+                    </>
+                  ) : (
+                    <>
+                      <td className="border border-gray-300 px-4 py-2">
+                        KES 0
+                      </td>
+                    </>
+                  )}
                   <td className="border border-gray-300 px-4 py-2">
                     {product.color.join(", ")}
                   </td>
