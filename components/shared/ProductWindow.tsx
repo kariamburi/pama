@@ -33,8 +33,7 @@ const ProductWindow: React.FC<ChatWindowProps> = ({
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
       <div className="bg-white rounded-lg p-0 lg:p-6 w-full md:max-w-3xl lg:max-w-4xl h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex justify-between items-center mb-4">
-          <h3 className="text-lg font-semibold">Add Product</h3>
+        <div className="flex justify-end items-center mb-4">
           <button
             onClick={onClose}
             className="flex justify-center items-center h-12 w-12 text-black hover:bg-black hover:text-white rounded-full"

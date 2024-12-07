@@ -448,6 +448,7 @@ export const CATEGORIES = {
       "Blouses & Tops",
       "Dresses",
       "Skirts",
+      "Skirtset",
       "Suits",
       "Trousers",
       "Activewear",

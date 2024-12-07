@@ -534,10 +534,11 @@ export const ProductForm = ({
             </>
           )}
         </div>
-        {/* Additional Fields */}
+        {/* Additional Fields 
         <div className="border-b">
           <h2 className="font-bold p-2 text-[30px]">Attribute</h2>
         </div>
+        */}
         <div className="flex flex-col gap-5">
           {/* Occasion, Season, and Fabric Care Instructions */}
 
@@ -716,13 +717,14 @@ export const ProductForm = ({
             />
           </div>
 
-          {/* Meta Title and Meta Description */}
+          {/* Meta Title and Meta Description 
 
           <div className="border-b">
-            <h2 className="font-bold p-2 text-[30px]">
+            <h2 className="font-bold p-2 text-">
               Stock and Availability
             </h2>
           </div>
+          */}
           <div className="flex flex-col gap-5 md:flex-row">
             {/* Stock Quantity */}
             <FormField
@@ -736,12 +738,12 @@ export const ProductForm = ({
                         <div className="flex items-center font-bold">
                           <h1>Sizes & Stock</h1>
                         </div>
-                        <ul className="grid grid-cols-2 gap-2 w-full">
+                        <ul className="grid grid-cols-1 lg:grid-cols-2 gap-2 w-full">
                           {field.value &&
                             field.value.map((feature, index) => (
                               <li
                                 key={index}
-                                className="flex flex-col border p-2 rounded-lg gap-2"
+                                className="justify-between flex flex-col border p-2 rounded-lg gap-2"
                               >
                                 <div className="flex items-center gap-2">
                                   <span className="font-bold">
@@ -879,11 +881,11 @@ export const ProductForm = ({
             />
           </div>
         </div>
-
+        {/* 
         <div className="border-b">
           <h2 className="font-bold p-2 text-[30px]">Marketing & Promotions</h2>
         </div>
-
+*/}
         <div className="flex flex-col gap-5 md:flex-row">
           {/* Tags */}
           {/* Featured in Deals */}

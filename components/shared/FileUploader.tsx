@@ -209,7 +209,7 @@ export function FileUploader({
   };
 
   return (
-    <div className="flex-center flex cursor-pointer p-3 flex-col overflow-hidden rounded-xl bg-gray-100">
+    <div className="flex-center flex cursor-pointer p-3 flex-col overflow-hidden rounded-xl">
       <input {...getInputProps()} className="cursor-pointer" />
       <div className="text-left text-sm w-full mx-auto">
         <div className="font-semibold">Add Photo</div>
