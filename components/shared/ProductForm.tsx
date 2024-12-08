@@ -198,8 +198,11 @@ export const ProductForm = ({
           setSelectedKidsCategory((product.genderAgeGroup as any) || null);
           setItemOptions(["Girls", "Boys", "Babies"]);
         } else if (product.category && product.genderAgeGroup) {
-          const subcategories =
-            CATEGORIES[product.category][product.genderAgeGroup] || {};
+          const category = product.category as keyof typeof CATEGORIES;
+          const genderAgeGroup =
+            product.genderAgeGroup as keyof (typeof CATEGORIES)[typeof category];
+
+          const subcategories = CATEGORIES[category][genderAgeGroup] || {};
           const options = Array.isArray(subcategories)
             ? subcategories
             : Object.values(subcategories).flat();
