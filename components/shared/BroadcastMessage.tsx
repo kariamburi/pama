@@ -31,7 +31,7 @@ function BroadcastMessage() {
   };
 
   return (
-    <div className="p-4 bg-gray-100 rounded shadow">
+    <div className="p-1 lg:p-4 rounded shadow">
       <div className="mb-4">
         <label className="block mb-2 font-medium">Message Type:</label>
         <select

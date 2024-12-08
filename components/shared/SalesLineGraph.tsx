@@ -65,7 +65,7 @@ const SalesLineGraph: React.FC = () => {
   ];
 
   return (
-    <div className="chart-container bg-gray-100 p-2 rounded-xl">
+    <div className="bg-gray-100 p-2 w-full rounded-xl">
       <h2 className="title font-bold m-2">Sales Line Graph</h2>
 
       {/* Time Frame Selection */}

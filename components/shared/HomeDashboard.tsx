@@ -245,44 +245,45 @@ homeProps) => {
                     <div
                       onClick={() => handle(link.label)}
                       className={`${
-                        activeTab === link.label &&
-                        "bg-black text-white rounded-xl"
-                      } flex border p-3 items-center p-medium-16 whitespace-nowrap rounded-xl hover:cursor-pointer hover:bg-gray-200`}
+                        activeTab === link.label
+                          ? "items-center p-3 flex gap-1 bg-black text-white rounded-xl hover:cursor-pointers"
+                          : "items-center p-3 flex gap-1 border rounded-xl bg-white text-black hover:cursor-pointer hover:bg-gray-200"
+                      }`}
                     >
                       <span className="text-right my-auto">
                         {link.label === "Home" && (
                           <span>
-                            <CottageOutlinedIcon className="w-10 p-1 hover:text-white" />
+                            <CottageOutlinedIcon className="w-10 p-1" />
                           </span>
                         )}
                         {link.label === "Categories" && (
                           <span>
-                            <DiamondIcon className="w-10 p-1 hover:text-white" />
+                            <DiamondIcon className="w-10 p-1" />
                           </span>
                         )}
                         {link.label === "Products" && (
                           <span>
-                            <ClassOutlinedIcon className="w-10 p-1 hover:text-white" />
+                            <ClassOutlinedIcon className="w-10 p-1" />
                           </span>
                         )}
                         {link.label === "Orders" && (
                           <span>
-                            <ChecklistOutlinedIcon className="w-10 p-1 hover:text-white" />
+                            <ChecklistOutlinedIcon className="w-10 p-1" />
                           </span>
                         )}
                         {link.label === "Delivery Methods" && (
                           <span>
-                            <AirportShuttleOutlinedIcon className="w-10 p-1 hover:text-white" />
+                            <AirportShuttleOutlinedIcon className="w-10 p-1" />
                           </span>
                         )}
                         {link.label === "Users Profile" && (
                           <span>
-                            <GroupsOutlinedIcon className="w-10 p-1 hover:text-white" />
+                            <GroupsOutlinedIcon className="w-10 p-1" />
                           </span>
                         )}
                         {link.label === "Communication" && (
                           <span>
-                            <NotificationsActiveOutlinedIcon className="w-10 p-1 hover:text-white" />
+                            <NotificationsActiveOutlinedIcon className="w-10 p-1" />
                           </span>
                         )}
                       </span>
@@ -300,7 +301,7 @@ homeProps) => {
 
         {activeTab === "Home" && (
           <>
-            <div className="container mx-auto p-4 border rounded-xl">
+            <div className="container mx-auto p-1 lg:p-4 border rounded-xl">
               <h1 className="text-2xl font-bold mb-4">Dashboard</h1>
 
               <Box>
@@ -402,7 +403,7 @@ homeProps) => {
               <h1 className="text-2xl font-bold mb-4">Orders</h1>
               <div className="flex flex-col lg:flex-row gap-3">
                 <div className="flex flex-col lg:flex-row items-center gap-4 mb-4">
-                  <div className="flex flex-col">
+                  <div className="flex flex-col w-full">
                     <label
                       className="text-sm font-semibold mb-1"
                       htmlFor="startDate"
@@ -417,7 +418,7 @@ homeProps) => {
                       className="text-sm border p-2 rounded"
                     />
                   </div>
-                  <div className="flex flex-col">
+                  <div className="flex flex-col w-full">
                     <label
                       className="text-sm font-semibold mb-1"
                       htmlFor="endDate"
@@ -432,7 +433,7 @@ homeProps) => {
                       className="text-sm border p-2 rounded"
                     />
                   </div>
-                  <div className="flex flex-col">
+                  <div className="flex flex-col w-full">
                     <label
                       className="text-sm font-semibold mb-1"
                       htmlFor="endDate"
@@ -459,7 +460,7 @@ homeProps) => {
                       >
                         OrderId
                       </label>
-                      <div className="flex gap-1">
+                      <div className="flex gap-1 flex-col lg:flex-row">
                         <input
                           type="text"
                           placeholder="Search by Order ID"

@@ -330,7 +330,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                     (product.price * product.discount) / 100
                   ).toLocaleString()}
                 </span>
-                <span className="text-[#000000]">(-{product.discount}%)</span>
+                {/*  <span className="text-[#000000]">(-{product.discount}%)</span> */}
               </div>
             </>
           ) : (
@@ -340,7 +340,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                   <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
                 </span>
 
-                <span className="ml-2 text-[#000000] font-bold">
+                <span className="text-[#000000] font-bold">
                   Ksh.
                   {product.price.toLocaleString()}
                 </span>

@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { FileUploader } from "./FileUploader";
-import { SetStateAction, useState } from "react";
+import { SetStateAction, useEffect, useState } from "react";
 import Image from "next/image";
 import { ProductSchema } from "@/lib/validator";
 import { IProduct } from "@/lib/database/models/product.model";
@@ -184,6 +184,30 @@ export const ProductForm = ({
   const [selectedSubcategory, setSelectedSubcategory] = useState(null); // Unisex, Men, Women, Kids...
   const [selectedKidsCategory, setSelectedKidsCategory] = useState(null); // Girls, Boys, Babies
   const [itemOptions, setItemOptions] = useState<string[]>([]); // Final list of items (typed as string[])
+
+  useEffect(() => {
+    if (product) {
+      if (product.category) {
+        setSelectedType(product.category as any);
+      }
+
+      if (product.genderAgeGroup) {
+        setSelectedSubcategory(product.genderAgeGroup as any);
+
+        if (product.genderAgeGroup === "Kids") {
+          setSelectedKidsCategory((product.genderAgeGroup as any) || null);
+          setItemOptions(["Girls", "Boys", "Babies"]);
+        } else if (product.category && product.genderAgeGroup) {
+          const subcategories =
+            CATEGORIES[product.category][product.genderAgeGroup] || {};
+          const options = Array.isArray(subcategories)
+            ? subcategories
+            : Object.values(subcategories).flat();
+          setItemOptions(options.sort() as string[]);
+        }
+      }
+    }
+  }, [product]);
 
   const handleTypeChange = (event: any, newValue: any) => {
     setSelectedType(newValue);
