@@ -37,6 +37,7 @@ export async function broadcastMessage(type: string, message: string) {
 
     // Handle email sending
     if (type === 'email') {
+     // console.log("email")
       const transporter = nodemailer.createTransport({
         host: process.env.SMTP_HOST,
         port: 587,
@@ -46,16 +47,18 @@ export async function broadcastMessage(type: string, message: string) {
           pass: process.env.SMTP_PASS,
         },
       });
-
+    //  console.log("transporter: "+transporter)
       for (const email of recipients) {
+       // console.log(email)
         const mailOptions = {
-          from: '"Pama" <no-reply@pama.co.ke>',
+          from: '"Pama" <support@pama.co.ke>',
           to: email,
           subject: 'Important Notification',
           text: message,
         };
 
-        await transporter.sendMail(mailOptions);
+      const response =  await transporter.sendMail(mailOptions);
+       // console.log(response)
       }
     }
 
