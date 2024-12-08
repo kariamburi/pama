@@ -118,6 +118,11 @@ export const ProductForm = ({
         });
         if (newProduct) {
           form.reset();
+          setSelectedType(null);
+          setSelectedSubcategory(null);
+          setSelectedKidsCategory(null);
+          setItemOptions([]);
+          setFiles([]);
           toast({
             title: "Submited!",
             description: "Product created successfully",
