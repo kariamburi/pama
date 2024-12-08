@@ -460,8 +460,8 @@ export const CATEGORIES = {
     Women: [
       //"Abayas & Modest Wear",
       "Blouses & Tops",
-      //"Dresses",
-     // "Skirts",
+      "Straight dress",
+      "Circular dress",
       "Skirtset",
       "Jeans",
       "Shirt dress",
