@@ -316,7 +316,10 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
           )}
           {product.discount ? (
             <>
-              <div className="flex gap-1 text-xs lg:text-base font-medium text-gray-700">
+              <div className="flex gap-1 mb-1 mt-1 text-xs lg:text-base font-medium text-gray-700">
+                <span className="text-xs font-semibold">
+                  <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
+                </span>
                 <span className="line-through text-gray-500">
                   Ksh. {product.price.toLocaleString()}
                 </span>
@@ -332,7 +335,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
             </>
           ) : (
             <>
-              <div className="flex items-center gap-1 text-xs lg:text-base font-medium text-gray-700">
+              <div className="flex mb-1 mt-1 items-center gap-1 text-xs lg:text-base font-medium text-gray-700">
                 <span className="text-xs font-semibold">
                   <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
                 </span>

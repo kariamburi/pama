@@ -31,9 +31,9 @@ const ProductWindow: React.FC<ChatWindowProps> = ({
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-50 z-50">
-      <div className="bg-white rounded-lg p-0 lg:p-6 w-full md:max-w-3xl lg:max-w-4xl h-[90vh] flex flex-col">
+      <div className="bg-white rounded-lg p-1 lg:p-6 w-full md:max-w-3xl lg:max-w-4xl h-[90vh] flex flex-col">
         {/* Header */}
-        <div className="flex justify-end items-center mb-4">
+        <div className="flex justify-end items-center mb-1">
           <button
             onClick={onClose}
             className="flex justify-center items-center h-12 w-12 text-black hover:bg-black hover:text-white rounded-full"
@@ -43,7 +43,7 @@ const ProductWindow: React.FC<ChatWindowProps> = ({
         </div>
 
         {/* Scrollable Form */}
-        <ScrollArea className="p-2">
+        <ScrollArea>
           <ProductForm type={"Create"} userId={userId} />
         </ScrollArea>
       </div>

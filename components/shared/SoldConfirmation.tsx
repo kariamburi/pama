@@ -43,7 +43,7 @@ export const SoldConfirmation = ({
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <div className="text-xs bg-gray-300 px-2 py-1 cursor-pointer rounded">
+        <div className="text-xs bg-black hover:bg-gray-700 text-white p-2 cursor-pointer rounded">
           Mark Sold
         </div>
       </AlertDialogTrigger>

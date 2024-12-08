@@ -256,14 +256,14 @@ export const ProductForm = ({
         onSubmit={form.handleSubmit(onSubmit)}
         className="flex p-1 flex-col gap-0"
       >
-        <div className="flex border-b justify-between">
-          <h2 className="font-bold p-2 text-[30px]">Product Details</h2>
-          <div className="flex items-center">
+        <div className="flex flex-col lg:flex-row border-b lg:justify-between">
+          <h2 className="font-bold p-2 text-lg">Product Details</h2>
+          <div className="flex items-center p-1">
             {product?.sku && (
               <>
                 <div
                   onClick={handleOpen}
-                  className={`flex border gap-1 text-xs rounded-full items-center cursor-pointer text-gray-800 p-2 hover:bg-gray-100`}
+                  className={`flex border gap-1 text-[10px] lg:text-xs rounded-full items-center cursor-pointer text-gray-800 p-1 hover:bg-gray-100`}
                 >
                   Print QR Code [{product?.sku}]
                 </div>
@@ -605,7 +605,7 @@ export const ProductForm = ({
               }}
             />
 
-            {/* Customization Options */}
+            {/* Customization Options 
             <FormField
               control={form.control}
               name="customizationOptions"
@@ -653,7 +653,7 @@ export const ProductForm = ({
                   <FormMessage />
                 </FormItem>
               )}
-            />
+            />*/}
           </div>
 
           {/* SKU, Weight, and Dimensions */}
@@ -705,7 +705,7 @@ export const ProductForm = ({
                   <FormControl>
                     <div className="flex item-center w-full gap-1 overflow-hidden rounded-full px-4 py-2">
                       <TextField
-                        label="Discount %"
+                        label="Discount % (Optional)"
                         {...field}
                         className="w-full"
                       />

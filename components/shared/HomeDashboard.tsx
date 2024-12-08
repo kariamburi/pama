@@ -347,7 +347,7 @@ homeProps) => {
         )}
         {activeTab === "Categories" && (
           <>
-            <div className="container mx-auto p-4 border rounded-xl">
+            <div className="container mx-auto p-1 lg:p-4 border rounded-xl">
               <h1 className="text-2xl font-bold mb-4">Categories</h1>
 
               <div className="p-0">
@@ -358,7 +358,7 @@ homeProps) => {
         )}
         {activeTab === "Products" && (
           <>
-            <div className="container mx-auto p-4 border rounded-xl">
+            <div className="container mx-auto p-1 lg:p-4 border rounded-xl">
               <h1 className="text-2xl font-bold mb-4">Products</h1>
               <div className="flex flex-col lg:flex-row gap-3">
                 <div className="flex items-center gap-4 mb-4">
@@ -375,7 +375,7 @@ homeProps) => {
                 {/* Search Form */}
               </div>
               {/* Date Filter Section */}
-              <ScrollArea className="p-2 w-[400px] md:w-[500px] lg:w-full">
+              <ScrollArea className="w-[350px] lg:w-full">
                 <CollectionProducts
                   data={Products}
                   emptyTitle={`No Product Found`}
@@ -398,10 +398,10 @@ homeProps) => {
         )}
         {activeTab === "Orders" && (
           <>
-            <div className="container mx-auto p-4 border rounded-xl">
+            <div className="container mx-auto p-1 lg:p-4 border rounded-xl">
               <h1 className="text-2xl font-bold mb-4">Orders</h1>
               <div className="flex flex-col lg:flex-row gap-3">
-                <div className="flex items-center gap-4 mb-4">
+                <div className="flex flex-col lg:flex-row items-center gap-4 mb-4">
                   <div className="flex flex-col">
                     <label
                       className="text-sm font-semibold mb-1"
@@ -451,7 +451,7 @@ homeProps) => {
                 {/* Search Form */}
 
                 <form onSubmit={handleSearch}>
-                  <div className="flex gap-1">
+                  <div className="flex flex-col lg:flex-row gap-1">
                     <div className="flex flex-col">
                       <label
                         className="text-sm font-semibold mb-1"
@@ -486,7 +486,7 @@ homeProps) => {
               </div>
               {/* Date Filter Section */}
 
-              <ScrollArea className="p-2 w-[400px] md:w-[500px] lg:w-full">
+              <ScrollArea className="w-[350px] lg:w-full">
                 <CollectionOrder
                   data={orders}
                   emptyTitle={`No Order Found`}
@@ -502,7 +502,7 @@ homeProps) => {
         )}
         {activeTab === "Delivery Methods" && (
           <>
-            <div className="container mx-auto p-4 border rounded-xl">
+            <div className="container mx-auto p-1 lg:p-4 border rounded-xl">
               <h1 className="text-2xl font-bold mb-4">Delivery Methods</h1>
               <div className="flex flex-col lg:flex-row gap-3">
                 <div className="flex items-center gap-4 mb-4">
@@ -520,7 +520,7 @@ homeProps) => {
               </div>
               {/* Date Filter Section */}
 
-              <ScrollArea className="p-2 w-[400px] md:w-[500px] lg:w-full">
+              <ScrollArea className="w-[350px] lg:w-full">
                 <CollectionMethods
                   data={deliveries}
                   emptyTitle={`No Method Found`}
@@ -544,12 +544,12 @@ homeProps) => {
         )}
         {activeTab === "Users Profile" && (
           <>
-            <div className="container mx-auto p-4 border rounded-xl">
+            <div className="container mx-auto p-1 lg:p-4 border rounded-xl">
               <h1 className="text-2xl font-bold mb-4">Users Profile</h1>
               <div className="flex flex-col lg:flex-row gap-3"></div>
               {/* Date Filter Section */}
 
-              <ScrollArea className="p-2 w-[400px] md:w-[500px] lg:w-full">
+              <ScrollArea className="w-[350px] lg:w-full">
                 <CollectionUsers
                   data={users.data}
                   emptyTitle={`No User Found`}
@@ -571,88 +571,12 @@ homeProps) => {
         )}
         {activeTab === "Communication" && (
           <>
-            <div className="container mx-auto p-4 border rounded-xl">
+            <div className="container mx-auto p-1 lg:p-4 border rounded-xl">
               <h1 className="text-2xl font-bold mb-4">
                 Send Broadcast Message
               </h1>
               <div className="flex flex-col lg:flex-row gap-3"></div>
               <BroadcastMessage />
-            </div>
-          </>
-        )}
-        {activeTab === "Transactions" && (
-          <>
-            <div className="p-2 rounded-lg bg-white max-w-6xl mx-auto flex flex-col lg:flex-row mt-3">
-              <div className="flex flex-col border shadow-lg rounded-lg bg-gray-100 p-2 mb-2 w-full">
-                <p className="font-bold text-[25px]">History</p>
-                <div className="grid grid-cols-6 text-grey-600 text-xs text-[#000000] rounded-t-lg p-1">
-                  <div className="justify-center items-center flex flex-col">
-                    Status
-                  </div>
-
-                  <div className="justify-center items-center flex flex-col">
-                    Order Tracking Id
-                  </div>
-                  <div className="justify-center items-center flex flex-col">
-                    Plan
-                  </div>
-                  <div className="justify-center items-center flex flex-col">
-                    Period
-                  </div>
-                  <div className="justify-center items-center flex flex-col">
-                    Amount KES
-                  </div>
-                  <div className="justify-center items-center flex flex-col">
-                    Date
-                  </div>
-                </div>
-                <ScrollArea className="h-[350px]">
-                  <ul className="w-full">
-                    {alltrans.map((trans: any, index: any) => {
-                      return (
-                        <li
-                          className="w-full  bg-grey-100 p-1 text-gray-600"
-                          key={index}
-                        >
-                          <div
-                            className={`p-1 mt-1 rounded-sm grid grid-cols-6 gap-1 w-full text-xs`}
-                          >
-                            <div className="flex">
-                              <div
-                                className={`flex flex-col p-1 text-white justify-center items-center w-[70px] rounded-full ${
-                                  trans.status === "Pending"
-                                    ? "bg-yellow-600"
-                                    : trans.status === "Failed"
-                                    ? "bg-red-600 "
-                                    : "bg-green-600"
-                                }`}
-                              >
-                                {trans.status}
-                              </div>
-                            </div>
-
-                            <div className="justify-center items-center flex flex-col">
-                              {trans.orderTrackingId}
-                            </div>
-                            <div className="justify-center items-center flex flex-col">
-                              {trans.plan}
-                            </div>
-                            <div className="justify-center items-center flex flex-col">
-                              {trans.period}
-                            </div>
-                            <div className="justify-center items-center flex flex-col">
-                              KES {trans.amount.toFixed(2)}
-                            </div>
-                            <div className="justify-center items-center flex flex-col">
-                              {trans.createdAt}
-                            </div>
-                          </div>
-                        </li>
-                      );
-                    })}
-                  </ul>
-                </ScrollArea>
-              </div>
             </div>
           </>
         )}
