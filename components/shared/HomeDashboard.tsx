@@ -376,7 +376,7 @@ homeProps) => {
                 {/* Search Form */}
               </div>
               {/* Date Filter Section */}
-              <ScrollArea className="w-[350px] lg:w-full">
+              <ScrollArea className="w-[340px] lg:w-full">
                 <CollectionProducts
                   data={Products}
                   emptyTitle={`No Product Found`}
@@ -415,7 +415,7 @@ homeProps) => {
                       id="startDate"
                       value={startDate || ""}
                       onChange={(e) => setStartDate(e.target.value)}
-                      className="text-sm border p-2 rounded"
+                      className="text-sm border p-2 w-full rounded"
                     />
                   </div>
                   <div className="flex flex-col w-full">
@@ -430,12 +430,12 @@ homeProps) => {
                       id="endDate"
                       value={endDate || ""}
                       onChange={(e) => setEndDate(e.target.value)}
-                      className="text-sm border p-2 rounded"
+                      className="text-sm border w-full p-2 rounded"
                     />
                   </div>
                   <div className="flex flex-col w-full">
                     <label
-                      className="text-sm font-semibold mb-1"
+                      className="text-sm text-white font-semibold mb-1"
                       htmlFor="endDate"
                     >
                       .
@@ -451,43 +451,42 @@ homeProps) => {
 
                 {/* Search Form */}
 
-                <form onSubmit={handleSearch}>
-                  <div className="flex flex-col lg:flex-row gap-1">
-                    <div className="flex flex-col">
-                      <label
-                        className="text-sm font-semibold mb-1"
-                        htmlFor="endDate"
+                <div className="flex flex-col lg:flex-row gap-1">
+                  <div className="flex flex-col">
+                    <label
+                      className="text-sm font-semibold mb-1"
+                      htmlFor="endDate"
+                    >
+                      OrderId
+                    </label>
+                    <div className="flex gap-1 flex-col lg:flex-row">
+                      <input
+                        type="text"
+                        placeholder="Search by Order ID"
+                        value={search}
+                        onChange={(e) => setSearch(e.target.value)}
+                        className="text-sm border p-2 flex rounded-md"
+                      />
+                      <button
+                        type="submit"
+                        onClick={handleSearch}
+                        className="text-sm bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
                       >
-                        OrderId
-                      </label>
-                      <div className="flex gap-1 flex-col lg:flex-row">
-                        <input
-                          type="text"
-                          placeholder="Search by Order ID"
-                          value={search}
-                          onChange={(e) => setSearch(e.target.value)}
-                          className="text-sm border p-2 flex rounded-md"
-                        />
-                        <button
-                          type="submit"
-                          className="text-sm bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
-                        >
-                          Search
-                        </button>
-                        <div
-                          onClick={handleClear}
-                          className="text-sm bg-black items-center justify-center cursor-pointer text-white px-4 py-2 rounded-md hover:bg-gray-800"
-                        >
-                          Clear
-                        </div>
-                      </div>
+                        Search
+                      </button>
+                      <button
+                        onClick={handleClear}
+                        className="text-sm bg-black text-white px-4 py-2 rounded-md hover:bg-gray-800"
+                      >
+                        Clear
+                      </button>
                     </div>
                   </div>
-                </form>
+                </div>
               </div>
               {/* Date Filter Section */}
 
-              <ScrollArea className="w-[350px] lg:w-full">
+              <ScrollArea className="w-[340px] lg:w-full">
                 <CollectionOrder
                   data={orders}
                   emptyTitle={`No Order Found`}
@@ -521,7 +520,7 @@ homeProps) => {
               </div>
               {/* Date Filter Section */}
 
-              <ScrollArea className="w-[350px] lg:w-full">
+              <ScrollArea className="w-[340px] lg:w-full">
                 <CollectionMethods
                   data={deliveries}
                   emptyTitle={`No Method Found`}
@@ -550,7 +549,7 @@ homeProps) => {
               <div className="flex flex-col lg:flex-row gap-3"></div>
               {/* Date Filter Section */}
 
-              <ScrollArea className="w-[350px] lg:w-full">
+              <ScrollArea className="w-[340px] lg:w-full">
                 <CollectionUsers
                   data={users.data}
                   emptyTitle={`No User Found`}

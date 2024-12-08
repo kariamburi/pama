@@ -232,7 +232,7 @@ const CollectionOrder = ({
           {/* Modal for displaying order details */}
           {selectedOrder && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-              <div className="bg-white w-4/5 md:w-1/2 p-6 rounded shadow-lg relative">
+              <div className="bg-white w-full lg:w-4/5 p-2 lg:p-6 rounded shadow-lg relative">
                 <button
                   className="absolute top-2 right-2 text-gray-600"
                   onClick={closeModal}
