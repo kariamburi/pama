@@ -787,24 +787,24 @@ export const ProductForm = ({
                                   </span>
                                 </div>
                                 <div className="flex items-center gap-2">
-                                  {/*   <div
-                                    className="text-xs bg-gray-300 px-2 py-1 cursor-pointer rounded"
-                                    onClick={() => {
-                                      const updatedFeatures = [...field.value];
-                                      if (updatedFeatures[index].stock > 0) {
-                                        updatedFeatures[index].stock -= 1;
-                                      }
-                                      field.onChange(updatedFeatures);
-                                    }}
-                                  >
-                                    Mark Sold
-                                  </div>*/}
                                   <SoldConfirmation
                                     userId={userId}
                                     product={product}
                                     selectedSize={feature.size}
                                     quantity={1}
                                     instock={feature.stock}
+                                    onStockUpdate={(size, newStock) => {
+                                      const updatedFeatures = [...field.value];
+                                      const featureIndex =
+                                        updatedFeatures.findIndex(
+                                          (f) => f.size === size
+                                        );
+                                      if (featureIndex !== -1) {
+                                        updatedFeatures[featureIndex].stock =
+                                          newStock;
+                                        field.onChange(updatedFeatures);
+                                      }
+                                    }}
                                   />
                                   <input
                                     type="number"

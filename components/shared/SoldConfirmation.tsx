@@ -2,8 +2,6 @@
 
 import { useState, useTransition } from "react";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,37 +14,71 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
-import { deleteProduct } from "@/lib/actions/ad.product";
 import { ProductSold } from "@/lib/actions/order.actions";
+
 type soldProps = {
   userId: string;
   product: any;
   selectedSize: string;
   quantity: number;
   instock: number;
+  onStockUpdate: (size: string, newStock: number) => void; // Callback to update parent state
 };
+
 export const SoldConfirmation = ({
   selectedSize,
   quantity,
-  instock,
+  instock: initialStock,
   userId,
   product,
+  onStockUpdate,
 }: soldProps) => {
   const pathname = usePathname();
+  const [instock, setInstock] = useState(initialStock);
   let [isPending, startTransition] = useTransition();
+
   function generateRandomOrderId() {
-    const timestamp = Date.now(); // Current timestamp in milliseconds
-    const randomString = Math.random().toString(36).substring(2, 8); // Random alphanumeric string
+    const timestamp = Date.now();
+    const randomString = Math.random().toString(36).substring(2, 8);
     return `ORDER_${timestamp}_${randomString.toUpperCase()}`;
   }
 
+  const handleMarkSold = async () => {
+    const response = await ProductSold({
+      order: {
+        userId: userId,
+        productId: product._id,
+        size: selectedSize,
+        buyprice: product.buyprice,
+        price: product.price - (product.price * product.discount) / 100,
+        qty: quantity,
+        status: "completed",
+        orderId: generateRandomOrderId(),
+        referenceId: generateRandomOrderId(),
+      },
+      path: pathname,
+    });
+
+    if (response === "Order Created") {
+      const newStock = instock - quantity;
+      setInstock(newStock); // Update local state
+      onStockUpdate(selectedSize, newStock); // Update parent state
+    }
+  };
+
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
-        <div className="text-xs bg-black hover:bg-gray-700 text-white p-2 cursor-pointer rounded">
+      {instock > 0 ? (
+        <AlertDialogTrigger>
+          <div className="text-xs bg-black hover:bg-gray-700 text-white p-2 cursor-pointer rounded">
+            Mark Sold
+          </div>
+        </AlertDialogTrigger>
+      ) : (
+        <div className="text-xs bg-gray-400 text-white p-2 rounded">
           Mark Sold
         </div>
-      </AlertDialogTrigger>
+      )}
 
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader>
@@ -61,30 +93,7 @@ export const SoldConfirmation = ({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-          <AlertDialogAction
-            onClick={() =>
-              startTransition(async () => {
-                const response = await ProductSold({
-                  order: {
-                    userId: userId,
-                    productId: product._id,
-                    size: selectedSize,
-                    buyprice: product.buyprice,
-                    price:
-                      product.price - (product.price * product.discount) / 100,
-                    qty: quantity,
-                    status: "completed",
-                    orderId: generateRandomOrderId(),
-                    referenceId: generateRandomOrderId(),
-                  },
-                  path: pathname,
-                });
-                if (response === "Order Created") {
-                  instock = instock - quantity;
-                }
-              })
-            }
-          >
+          <AlertDialogAction onClick={() => startTransition(handleMarkSold)}>
             {isPending ? "Order processing..." : "Confirm Sold"}
           </AlertDialogAction>
         </AlertDialogFooter>
