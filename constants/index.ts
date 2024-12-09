@@ -610,7 +610,7 @@ export const ProductDefaultValues = {
   color: [],
   buyprice: 0,
   price: 0,
-  discount: "",
+  discount: 0,
   featuredInDeals: "Sale",
   customizationOptions: "Made-to-Measure",
   imageUrls: [],

@@ -34,6 +34,7 @@ import ProductSelect from "./ProductSelect";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import CloseIcon from "@mui/icons-material/Close";
 import SearchIcon from "@mui/icons-material/Search";
+import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
 import {
   formUrlQuery,
   formUrlQuerymultiple,
@@ -244,7 +245,14 @@ export const FilterPopup = () => {
       <AlertDialogContent className="bg-white w-full lg:w-[80vw] lg:max-w-[800px]">
         <AlertDialogHeader>
           <AlertDialogTitle>
-            <h2 className="text-lg font-bold mb-4">Filters</h2>
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-bold mb-4">Filters</h2>
+              <AlertDialogAction className="bg-white hover:bg-white">
+                <button className="flex justify-center items-center h-12 w-12 text-black hover:bg-black hover:text-white rounded-full">
+                  <CloseOutlinedIcon />
+                </button>
+              </AlertDialogAction>
+            </div>
           </AlertDialogTitle>
           <AlertDialogDescription className="text-grey-600">
             <ScrollArea className="p-2 h-[70vh]">
@@ -299,10 +307,10 @@ export const FilterPopup = () => {
                           type="number"
                           value={minPrice}
                           defaultValue=""
-                          className="border rounded-sm"
+                          className="col-span-2 rounded-sm"
                         />
                       </div>
-                      <div className="grid grid-cols-2 items-center gap-1">
+                      <div className="grid grid-cols-2 items-center gap-4">
                         <label htmlFor="maxWidth" className="text-xs">
                           Max. Price
                         </label>
@@ -312,7 +320,7 @@ export const FilterPopup = () => {
                           type="number"
                           value={maxPrice}
                           defaultValue=""
-                          className="border rounded-sm"
+                          className="col-span-2 rounded-sm"
                         />
                       </div>
                       <button
@@ -448,9 +456,7 @@ export const FilterPopup = () => {
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        <AlertDialogFooter>
-          <AlertDialogAction>Close</AlertDialogAction>
-        </AlertDialogFooter>
+        <AlertDialogFooter></AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
   );
