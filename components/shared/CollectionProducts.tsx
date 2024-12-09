@@ -52,6 +52,18 @@ const CollectionProducts = ({
   const handleClose = () => {
     setIsOpen(false);
   };
+  const [selectedDelivery, setSelectedDelivery] = useState<any | null>(null); // State for selected delivery
+  const [isOpenMethods, setIsOpenMethods] = useState(false);
+
+  const handleOpenMethods = (delivery: any) => {
+    setSelectedDelivery(delivery); // Set the selected delivery item
+    setIsOpenMethods(true); // Open the modal
+  };
+
+  const handleCloseMethods = () => {
+    setSelectedDelivery(null); // Clear the selected delivery
+    setIsOpenMethods(false); // Close the modal
+  };
 
   return (
     <div>
@@ -123,24 +135,17 @@ const CollectionProducts = ({
 
                   <td className="flex gap-2 border border-gray-300 px-4 py-2">
                     <div
-                      onClick={handleOpen}
+                      onClick={() => handleOpenMethods(product)} // Pass the specific delivery
                       className="cursor-pointer hover:text-green-600"
                     >
                       <ModeEditOutlinedIcon />
                     </div>
+
                     <DeleteConfirmation
                       adId={product._id}
                       imageUrls={product.imageUrls}
                     />
                     {/* Modal for displaying order details */}
-                    <ProductWindowUpdate
-                      isOpen={isOpen}
-                      onClose={handleClose}
-                      userId={userId}
-                      type={"Update"}
-                      product={product}
-                      productId={product._id}
-                    />
                   </td>
                 </tr>
               ))}
@@ -160,6 +165,16 @@ const CollectionProducts = ({
           <h3 className="font-bold text-[16px] lg:text-[25px]">{emptyTitle}</h3>
           <p className="text-sm lg:p-regular-14">{emptyStateSubtext}</p>
         </div>
+      )}
+      {selectedDelivery && (
+        <ProductWindowUpdate
+          isOpen={isOpenMethods}
+          onClose={handleCloseMethods}
+          userId={userId}
+          type={"Update"}
+          product={selectedDelivery}
+          productId={selectedDelivery._id}
+        />
       )}
     </div>
   );

@@ -227,6 +227,18 @@ const SettingsEdit = ({ user, type, userId }: setingsProp) => {
       return numberString;
     }
   }
+  const [isUserCheck, setIsUserCheck] = useState(false);
+
+  useEffect(() => {
+    let check = false;
+
+    if (user) {
+      check = userId === user._id;
+    }
+
+    setIsUserCheck(check); // Update the state based on the check
+  }, [user, userId]); // Dependencies ensure the effect runs when user or userId changes
+
   return (
     <Form {...form}>
       <form
@@ -239,11 +251,15 @@ const SettingsEdit = ({ user, type, userId }: setingsProp) => {
             <AccordionContent>
               <div className="p-1 m-1 bg-white">
                 <div className="m-3">
-                  <div className="flex flex-col gap-5 mb-5 md:flex-row">
-                    <SignedIn>
-                      <UserButton afterSignOutUrl="/" />
-                    </SignedIn>
-                  </div>
+                  {isUserCheck && (
+                    <>
+                      <div className="flex flex-col gap-5 mb-5 md:flex-row">
+                        <SignedIn>
+                          <UserButton afterSignOutUrl="/" />
+                        </SignedIn>
+                      </div>
+                    </>
+                  )}
                   <div className="flex flex-col gap-5 mb-5 md:flex-row gap-1">
                     <FormField
                       control={form.control}

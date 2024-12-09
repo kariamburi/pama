@@ -60,6 +60,18 @@ const CollectionUsers = ({
   const handleCloseUser = () => {
     setIsOpenUser(false);
   };
+  const [selectedDelivery, setSelectedDelivery] = useState<any | null>(null); // State for selected delivery
+  const [isOpenMethods, setIsOpenMethods] = useState(false);
+
+  const handleOpenMethods = (delivery: any) => {
+    setSelectedDelivery(delivery); // Set the selected delivery item
+    setIsOpenMethods(true); // Open the modal
+  };
+
+  const handleCloseMethods = () => {
+    setSelectedDelivery(null); // Clear the selected delivery
+    setIsOpenMethods(false); // Close the modal
+  };
   return (
     <div>
       {data.length > 0 ? (
@@ -104,19 +116,12 @@ const CollectionUsers = ({
 
                   <td className="border border-gray-300 px-4 py-2">
                     <div
-                      onClick={handleOpenUser}
+                      onClick={() => handleOpenMethods(user)} // Pass the specific delivery
                       className="cursor-pointer hover:text-green-600"
                     >
                       <ModeEditOutlinedIcon />
                     </div>
                   </td>
-                  <UsersWindowUpdate
-                    isOpen={isOpenUser}
-                    onClose={handleCloseUser}
-                    userId={user._id}
-                    type={"Update"}
-                    user={user}
-                  />
                 </tr>
               ))}
             </tbody>
@@ -135,6 +140,15 @@ const CollectionUsers = ({
           <h3 className="font-bold text-[16px] lg:text-[25px]">{emptyTitle}</h3>
           <p className="text-sm lg:p-regular-14">{emptyStateSubtext}</p>
         </div>
+      )}
+      {selectedDelivery && (
+        <UsersWindowUpdate
+          isOpen={isOpenMethods}
+          onClose={handleCloseMethods}
+          userId={selectedDelivery._id}
+          type={"Update"}
+          user={selectedDelivery}
+        />
       )}
     </div>
   );
