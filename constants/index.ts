@@ -469,7 +469,7 @@ export const CATEGORIES = {
       "Gowns",
       "Shift dress",
       "Suits",
-      //"Oficial",
+      "Maxi dress",
       //"Trousers",
      // "Activewear",
       "Sweaters & Coats",

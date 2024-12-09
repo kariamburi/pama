@@ -329,26 +329,51 @@ const ProductCardBookMark = ({
             </ul>
           </div>
 
-          <div className="flex items-center text-[10px] lg:text-xs gap-1 font-medium text-gray-700">
-            <div className="flex items-center gap-1">Material:</div>
+          {product.fabricCareInstructions && (
+            <>
+              <div className="flex items-center text-[10px] lg:text-xs gap-1 font-medium text-gray-700">
+                <div className="flex items-center gap-1">Material:</div>
 
-            <div className="flex font-semibold items-center gap-1">
-              {product.fabricCareInstructions}
-            </div>
-          </div>
-          <div className="flex gap-1 text-xs lg:text-base font-medium text-gray-700">
-            <span className="line-through text-gray-500">
-              Ksh. {product.price.toLocaleString()}
-            </span>
-            <span className="ml-2 text-[#000000] font-bold">
-              Ksh.
-              {(
-                product.price -
-                (product.price * product.discount) / 100
-              ).toLocaleString()}
-            </span>
-            <span className="text-[#000000]">(-{product.discount}%)</span>
-          </div>
+                <div className="flex font-semibold items-center gap-1">
+                  {product.fabricCareInstructions}
+                </div>
+              </div>
+            </>
+          )}
+
+          {product.discount ? (
+            <>
+              <div className="flex gap-1 mb-1 mt-1 text-xs lg:text-base font-medium text-gray-700">
+                <span className="text-xs font-semibold">
+                  <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
+                </span>
+                <span className="line-through text-gray-500">
+                  Ksh. {product.price.toLocaleString()}
+                </span>
+                <span className="ml-2 text-[#000000] font-bold">
+                  Ksh.
+                  {(
+                    product.price -
+                    (product.price * product.discount) / 100
+                  ).toLocaleString()}
+                </span>
+                {/*  <span className="text-[#000000]">(-{product.discount}%)</span> */}
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="flex mb-1 mt-1 items-center gap-1 text-xs lg:text-base font-medium text-gray-700">
+                <span className="text-xs font-semibold">
+                  <LocalOfferOutlinedIcon sx={{ fontSize: 18 }} />
+                </span>
+
+                <span className="text-[#000000] font-bold">
+                  Ksh.
+                  {product.price.toLocaleString()}
+                </span>
+              </div>
+            </>
+          )}
 
           {/*
          <p className="text-sm font-medium text-gray-700">

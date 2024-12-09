@@ -121,6 +121,7 @@ const CollectionInfinite = ({
     fetchAds();
   }, [
     page,
+    searchText,
     sortby,
     category,
     gender,

@@ -22,13 +22,15 @@ const Search = ({
       // alert(query);
       if (query) {
         newUrl = formUrlQuery({
-          params: searchParams.toString(),
+          //params: searchParams.toString(),
+          params: "",
           key: "query",
           value: query,
         });
       } else {
         newUrl = removeKeysFromQuery({
-          params: searchParams.toString(),
+          //params: searchParams.toString(),
+          params: "",
           keysToRemove: ["query"],
         });
       }
@@ -47,7 +49,7 @@ const Search = ({
     router.push(newUrl, { scroll: false });
   };
   return (
-    <div className="flex justify-between items-center bg-white p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] rounded-full w-full">
+    <div className="flex lg:w-[550px] justify-between items-center bg-white p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] rounded-full w-full">
       <div>
         <button
           onClick={() =>
@@ -60,7 +62,7 @@ const Search = ({
               { scroll: false }
             )
           }
-          className="flex justify-center items-center h-12 w-12 text-white bg-emerald-700 rounded-full"
+          className="flex justify-center items-center h-12 w-12 text-white bg-black rounded-full"
         >
           <SearchOutlinedIcon />
         </button>

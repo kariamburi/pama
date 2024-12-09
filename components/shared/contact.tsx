@@ -58,7 +58,7 @@ const Contact = ({ product, userId, userName, userImage }: chatProps) => {
             <img
               src={product.organizer.photo}
               alt={`${product.organizer.firstName} ${product.organizer.lastName}`}
-              className="w-16 h-16 rounded-full"
+              className="w-16 h-16 object-cover rounded-full"
             />
             <div>
               <h2 className="font-semibold">Contact</h2>

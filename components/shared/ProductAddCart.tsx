@@ -240,6 +240,15 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
       setQuantity(newQuantity); // Only set quantity if it is 1 or greater
     }
   };
+  // Automatically select the first available size with stock
+  useEffect(() => {
+    const firstAvailableSize = product.features.find(
+      (feature: any) => feature.stock > 0
+    );
+    if (firstAvailableSize) {
+      setSelectedSize(firstAvailableSize.size);
+    }
+  }, [product.features]);
 
   return (
     <>

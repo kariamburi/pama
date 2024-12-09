@@ -236,18 +236,18 @@ export const FilterPopup = () => {
   return (
     <AlertDialog>
       <AlertDialogTrigger>
-        <div className="lg:hidden flex bg-white border rounded-full p-2 gap-2 text-black cursor-pointer hover:bg-gray-100">
-          <TuneOutlinedIcon /> <div className="hidden lg:inline">Filter</div>
+        <div className="flex bg-black rounded-full p-2 gap-2 text-white cursor-pointer hover:bg-gray-700">
+          <TuneOutlinedIcon /> <div className="">Filter</div>
         </div>
       </AlertDialogTrigger>
 
-      <AlertDialogContent className="bg-white">
+      <AlertDialogContent className="bg-white w-full lg:w-[80vw] lg:max-w-[800px]">
         <AlertDialogHeader>
           <AlertDialogTitle>
             <h2 className="text-lg font-bold mb-4">Filters</h2>
           </AlertDialogTitle>
-          <AlertDialogDescription className="p-regular-16 text-grey-600">
-            <ScrollArea className="p-3 h-[70vh]">
+          <AlertDialogDescription className="text-grey-600">
+            <ScrollArea className="p-2 h-[70vh]">
               <div className="w-full bg-white rounded-xl border justify-between flex">
                 <CategorySelect
                   selected={selectedType}
@@ -299,10 +299,10 @@ export const FilterPopup = () => {
                           type="number"
                           value={minPrice}
                           defaultValue=""
-                          className="col-span-2"
+                          className="border rounded-sm"
                         />
                       </div>
-                      <div className="grid grid-cols-2 items-center gap-4">
+                      <div className="grid grid-cols-2 items-center gap-1">
                         <label htmlFor="maxWidth" className="text-xs">
                           Max. Price
                         </label>
@@ -312,7 +312,7 @@ export const FilterPopup = () => {
                           type="number"
                           value={maxPrice}
                           defaultValue=""
-                          className="col-span-2"
+                          className="border rounded-sm"
                         />
                       </div>
                       <button

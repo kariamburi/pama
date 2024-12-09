@@ -91,9 +91,9 @@ const occassionCondition = occassionArray.length
   : {};
  
   const colorArray = color ? color.split(",") : [];
-  //console.log(materialArray)
+// Create a regex condition for each color to match subcolors
 const colorCondition = colorArray.length
-  ? { color: { $in: colorArray } }
+  ? { color: { $in: colorArray.map(c => new RegExp(c, "i")) } } // "i" makes it case-insensitive
   : {};
   
     const [minPrice, maxPrice] = price.split("-");

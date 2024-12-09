@@ -46,6 +46,8 @@ import Navbarhome from "@/components/shared/navbarhome";
 import Head from "next/head";
 import Footer from "@/components/shared/Footer";
 import { Toaster } from "@/components/ui/toaster";
+import SearchAll from "@/components/shared/SearchAll";
+import { RemoveCategory } from "@/components/shared/RemoveCategory";
 
 export default async function Home({ searchParams }: SearchParamProps) {
   const { sessionClaims } = auth();
@@ -84,7 +86,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
   }
   return (
     <main>
-      <div className="min-h-screen">
+      <div className="min-h-screen bg-gray-100">
         <Head>
           <title>Pama | Buy Pure Turkey Ware in Kenya</title>
           <meta
@@ -135,7 +137,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
               )}
             </div>
           </div>
-          <div className="max-w-6xl bg-gray-100 lg:bg-white mx-auto flex mt-0">
+          <div className="max-w-6xl bg-gray-100 mx-auto flex mt-0">
             <div className="flex-1">
               <div className="p-2 mt-[195px] lg:mt-0 mb-5 lg:mb-0">
                 <div className="flex justify-between m-2">
@@ -181,12 +183,18 @@ export default async function Home({ searchParams }: SearchParamProps) {
                         </div>
                       </div>
                     )}
+                    {(category || gender || kids || product) && (
+                      <>
+                        <RemoveCategory />
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="bg-gray-100 rounded-xl p-1 flex justify-between items-center">
-                  <div className="hidden lg:inline">
+                  <div className="hidden">
                     <div className="flex p-1 items-center gap-1">
                       <div>Filter:</div>
+                      <SearchAll />
                       <PopoverOccassion category={category} gender={gender} />
                       <PopoverFabric category={category} gender={gender} />
                       <PopoverPrice />

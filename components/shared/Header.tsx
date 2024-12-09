@@ -26,10 +26,11 @@ export default function Header() {
           Explore the best collections curated for you!
         </p>
       </div>
-      <div className=" lg:mx-auto text-center">
-        <SearchAll />
+      <div className="gap-1 lg:mx-auto text-center">
+        <Searchmain />
+
+        {/*  <SearchAll /> */}
       </div>
-      {/* Left Side */}
     </div>
   );
 }
