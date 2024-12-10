@@ -206,7 +206,7 @@ const ProductCardBookMark = ({
             )}
 
             {isLoadingpopup && (
-              <div className="absolute inset-0 flex items-center justify-center bg-[#000000] bg-opacity-50 rounded-t-xl ">
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-t-xl ">
                 {/* Spinner or loading animation */}
                 <CircularProgress sx={{ color: "white" }} />
               </div>

@@ -191,7 +191,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
             )}
 
             {isLoadingpopup && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-100 rounded-t-xl ">
+              <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-t-xl ">
                 {/* Spinner or loading animation */}
                 <CircularProgress sx={{ color: "black" }} />
               </div>

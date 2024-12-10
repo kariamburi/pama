@@ -17,7 +17,13 @@ export default function Header() {
   };
 
   return (
-    <div className="flex flex-col max-w-6xl mx-auto">
+    <div
+      style={{
+        animation: `fadeInUp 1s ease-in-out 0s forwards`,
+        opacity: 0, // Initial opacity before animation starts
+      }}
+      className="flex flex-col max-w-6xl mx-auto"
+    >
       <div className="mb-4 lg:mx-auto text-center">
         <h1 className="text-xs lg:text-2xl text-gray-800 font-bold mb-0">
           Welcome to Turkey Wear
@@ -31,6 +37,18 @@ export default function Header() {
 
         {/*  <SearchAll /> */}
       </div>
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px); /* Mimics the initial y: 20 */
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0); /* Moves to the final position */
+          }
+        }
+      `}</style>
     </div>
   );
 }
