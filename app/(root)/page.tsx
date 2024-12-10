@@ -88,25 +88,25 @@ export default async function Home({ searchParams }: SearchParamProps) {
     <main>
       <div className="min-h-screen bg-gray-100">
         <Head>
-          <title>Pama | Buy Pure Turkey Ware in Kenya</title>
+          <title>Pama | Buy Pure Turkey Wear in Kenya</title>
           <meta
             name="description"
-            content="Pama is Kenya's premier online store specializing in Pure Turkey ware. Shop for the best quality clothes and accessories at affordable prices."
+            content="Pama is Kenya's premier online store specializing in Pure Turkey wear. Shop for the best quality clothes and accessories at affordable prices."
           />
           <meta
             property="og:title"
-            content="Pama | Pure Turkey Ware Store in Kenya"
+            content="Pama | Pure Turkey Wear Store in Kenya"
           />
           <meta
             property="og:description"
-            content="Pama offers the finest Pure Turkey ware in Kenya. Browse our selection of high-quality clothes, and accessories available for delivery nationwide."
+            content="Pama offers the finest Pure Turkey wear in Kenya. Browse our selection of high-quality clothes, and accessories available for delivery nationwide."
           />
           <meta property="og:image" content="/assets/images/logo.png" />
           <meta property="og:url" content="https://pama.co.ke" />
           <meta property="og:type" content="website" />
           <meta
             name="keywords"
-            content="Pama, Pure Turkey ware, Turkey collections, Turkey clothes,Turkey accessories, Kenya"
+            content="Pama, Pure Turkey wear, Turkey collections, Turkey clothes,Turkey accessories, Kenya"
           />
           <meta name="author" content="Pama" />
           <link rel="canonical" href="https://pama.co.ke" />
