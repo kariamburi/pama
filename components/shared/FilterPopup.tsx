@@ -328,7 +328,7 @@ export const FilterPopup = () => {
                         onClick={() => handlebutton()}
                         className="bg-[#000000] w-full p-1 text-xs rounded-sm text-white h-full"
                       >
-                        <SearchIcon /> Search Price
+                        <SearchIcon /> Search
                       </button>
                     </div>
                   </div>
