@@ -101,167 +101,136 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
           animation: `fadeIn 0.3s ease-out ${(index + 1) * 0.1}s forwards`,
           opacity: 0,
         }}
-        className="shadow-lg w-full max-w-[400px] rounded-xl bg-white"
+        className="border bg-white mb-2 rounded-xl shadow-sm overflow-hidden"
       >
-        {/* Product Image */}
-        <div className="w-full overflow-hidden  rounded-t-xl">
-          <div className="relative h-400 lg:h-[420px] rounded-t-xl w-full">
-            <div className="absolute top-2 left-2 z-10 w-full">
-              <SignedIn>
+        {/* Image section with dynamic height */}
+
+        <Link href={`/product/${product._id}`} className="relative w-full">
+          {isLoadingpopup && (
+            <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-t-xl ">
+              {/* Spinner or loading animation */}
+              <CircularProgress sx={{ color: "black" }} />
+            </div>
+          )}
+          <div className={isZoomed ? "hidden" : "block"}>
+            <Image
+              src={product.imageUrls[0] || "/placeholder-image.png"}
+              alt={product.productName}
+              width={400}
+              height={0}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              className={`rounded-t-xl w-full h-auto object-cover ${
+                isLoadingpopup ? "opacity-0" : "opacity-100"
+              } transition-opacity  transition-transform duration-300 transform ${
+                hoveredIndex === index ? "scale-105" : ""
+              }`}
+              onLoadingComplete={() => setIsLoadingpopup(false)}
+              placeholder="empty"
+            />
+          </div>
+          {/* Zoom Wrapper */}
+          <div className={!isZoomed ? "hidden" : "block"}>
+            <ControlledZoom isZoomed={isZoomed} onZoomChange={handleZoomChange}>
+              {/* <div style={{ display: "none" }}> */}
+              <Image
+                src={product.imageUrls[0] || "/placeholder-image.png"}
+                alt={product.productName}
+                width={400}
+                height={400}
+              />
+
+              {/*  </div> */}
+            </ControlledZoom>
+          </div>
+
+          <div className="absolute top-2 left-2 z-10 w-full">
+            <SignedIn>
+              <div
+                className="w-10 h-10 p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center rounded-full bg-white text-black tooltip tooltip-bottom hover:cursor-pointer hover:bg-gray-200"
+                data-tip="Favorite"
+                onClick={() => handle(product._id)}
+              >
+                <FavoriteOutlinedIcon />
+              </div>
+            </SignedIn>
+
+            <SignedOut>
+              <Link href="/sign-in">
                 <div
                   className="w-10 h-10 p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center rounded-full bg-white text-black tooltip tooltip-bottom hover:cursor-pointer hover:bg-gray-200"
                   data-tip="Favorite"
-                  onClick={() => handle(product._id)}
                 >
                   <FavoriteOutlinedIcon />
                 </div>
-              </SignedIn>
-
-              <SignedOut>
-                <Link href="/sign-in">
-                  <div
-                    className="w-10 h-10 p-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] flex items-center justify-center rounded-full bg-white text-black tooltip tooltip-bottom hover:cursor-pointer hover:bg-gray-200"
-                    data-tip="Favorite"
-                  >
-                    <FavoriteOutlinedIcon />
-                  </div>
-                </Link>
-              </SignedOut>
-            </div>
-            {/* Zoom Button */}
-            <div className="absolute top-2 right-2 z-10">
-              <button
-                className="w-10 h-10 flex items-center justify-center bg-white text-black rounded-full shadow hover:bg-gray-200"
-                onClick={handleZoomChange} // Trigger Zoom modal
-              >
-                <ZoomInOutlinedIcon />
-              </button>
-            </div>
-            <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 right-2 bg-white text-black text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
-              <LocalFireDepartmentOutlinedIcon sx={{ fontSize: 14 }} />
-              <div>{trendingStatus}</div>
-            </div>
-            {product.featuredInDeals && (
-              <>
-                {product.featuredInDeals === "Sale" && (
-                  <>
-                    <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-black text-white text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
-                      <div>
-                        <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                      </div>
-                      <div>{product.featuredInDeals}</div>
-                    </div>
-                  </>
-                )}
-                {product.featuredInDeals === "Clearance" && (
-                  <>
-                    <div className="absolute flex gap-1 flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-blue-800  text-white text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
-                      <div>
-                        <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                      </div>
-                      <div>{product.featuredInDeals}</div>
-                    </div>
-                  </>
-                )}
-                {product.featuredInDeals === "Bundles" && (
-                  <>
-                    <div className="absolute shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-orange-400 text-white text-[10px] lg:text-xs px-2 py-1 rounded-full shadow-md z-10">
-                      <div>
-                        <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                      </div>
-                      <div>{product.featuredInDeals}</div>
-                    </div>
-                  </>
-                )}
-              </>
-            )}
-            {isAdCreator && (
-              <div className="absolute right-2 top-14 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all z-10">
-                <div
-                  onClick={handleOpen}
-                  className="cursor-pointer hover:text-green-600"
-                >
-                  <ModeEditOutlinedIcon />
-                </div>
-                <DeleteConfirmation
-                  adId={product._id}
-                  imageUrls={product.imageUrls}
-                />
-              </div>
-            )}
-
-            {isLoadingpopup && (
-              <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-t-xl ">
-                {/* Spinner or loading animation */}
-                <CircularProgress sx={{ color: "black" }} />
-              </div>
-            )}
-            <div className={isZoomed ? "hidden" : "block"}>
-              <Link href={`/product/${product._id}`} passHref>
-                {/*  <img
-                  src={product.imageUrls?.[0] || "/placeholder-image.png"} // Safely access the first image or fallback
-                  alt={product.productName || "Product image"} // Provide a fallback for alt text
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  className={`rounded-t-xl object-cover h-full w-full ${
-                    isLoadingpopup ? "opacity-0" : "opacity-100"
-                  } transition-opacity transition-transform duration-300 transform ${
-                    hoveredIndex === index ? "scale-105" : ""
-                  }`}
-                  onLoad={() => setIsLoadingpopup(false)} // Use onLoad for plain <img>
-                />*/}
-                <Image
-                  src={product.imageUrls[0] || "/placeholder-image.png"}
-                  alt={product.productName}
-                  width={400}
-                  height={400}
-                  onMouseEnter={() => setHoveredIndex(index)}
-                  onMouseLeave={() => setHoveredIndex(null)}
-                  className={`rounded-t-xl object-cover h-full w-full ${
-                    isLoadingpopup ? "opacity-0" : "opacity-100"
-                  } transition-opacity  transition-transform duration-300 transform ${
-                    hoveredIndex === index ? "scale-105" : ""
-                  }`}
-                  onLoadingComplete={() => setIsLoadingpopup(false)}
-                  placeholder="empty"
-                />
               </Link>
-            </div>
-            {/* Zoom Wrapper */}
-            <div className={!isZoomed ? "hidden" : "block"}>
-              <ControlledZoom
-                isZoomed={isZoomed}
-                onZoomChange={handleZoomChange}
-              >
-                {/* <div style={{ display: "none" }}> */}
-                <Image
-                  src={product.imageUrls[0] || "/placeholder-image.png"}
-                  alt={product.productName}
-                  width={400}
-                  height={400}
-                />
-
-                {/*  </div> */}
-              </ControlledZoom>
-            </div>
+            </SignedOut>
           </div>
-          {/* Tailwind CSS Keyframes */}
-          <style jsx>{`
-            @keyframes fadeIn {
-              from {
-                opacity: 0;
-                transform: translateY(20px);
-              }
-              to {
-                opacity: 1;
-                transform: translateY(0);
-              }
-            }
-          `}</style>
-        </div>
+          {/* Zoom Button */}
+          <div className="absolute top-2 right-2 z-10">
+            <button
+              className="w-10 h-10 flex items-center justify-center bg-white text-black rounded-full shadow hover:bg-gray-200"
+              onClick={handleZoomChange} // Trigger Zoom modal
+            >
+              <ZoomInOutlinedIcon />
+            </button>
+          </div>
+          <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 right-2 bg-white text-black text-[10px] px-2 py-1 rounded-full shadow-md z-10">
+            <LocalFireDepartmentOutlinedIcon sx={{ fontSize: 14 }} />
+            <div>{trendingStatus}</div>
+          </div>
+          {product.featuredInDeals && (
+            <>
+              {product.featuredInDeals === "Sale" && (
+                <>
+                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-black text-white text-[10px] px-2 py-1 rounded-full shadow-md z-10">
+                    <div>
+                      <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
+                    </div>
+                    <div>{product.featuredInDeals}</div>
+                  </div>
+                </>
+              )}
+              {product.featuredInDeals === "Clearance" && (
+                <>
+                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-blue-800  text-white text-[10px] px-2 py-1 rounded-full shadow-md z-10">
+                    <div>
+                      <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
+                    </div>
+                    <div>{product.featuredInDeals}</div>
+                  </div>
+                </>
+              )}
+              {product.featuredInDeals === "Bundles" && (
+                <>
+                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-orange-400 text-white text-[10px] px-2 py-1 rounded-full shadow-md z-10">
+                    <div>
+                      <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
+                    </div>
+                    <div>{product.featuredInDeals}</div>
+                  </div>
+                </>
+              )}
+            </>
+          )}
+          {isAdCreator && (
+            <div className="absolute right-2 top-14 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all z-10">
+              <div
+                onClick={handleOpen}
+                className="cursor-pointer hover:text-green-600"
+              >
+                <ModeEditOutlinedIcon />
+              </div>
+              <DeleteConfirmation
+                adId={product._id}
+                imageUrls={product.imageUrls}
+              />
+            </div>
+          )}
+        </Link>
 
-        {/* Product Details */}
-        <div className="mt-1 p-1">
+        {/* Text section */}
+        <div className="p-4">
           <Link href={`/product/${product._id}`} passHref>
             <h3 className="text-sm lg:text-lg cursor-pointer font-semibold text-gray-800 hover:underline">
               {truncateDescription(product.productName, 35)}
@@ -347,54 +316,22 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
               </div>
             </>
           )}
-
-          {/*
-         <p className="text-sm font-medium text-gray-700">
-          <span className="font-semibold">Availability:</span>{" "}
-          {product.availability === "In Stock" ? (
-            <span className="text-green-600">In Stock</span>
-          ) : (
-            <span className="text-red-600">Out of Stock</span>
-          )}
-        </p>
-        <p className="text-sm font-medium text-gray-700">
-          <span className="font-semibold">Tags:</span> {product.tags}
-        </p>
-
-        <p className="text-sm font-medium text-gray-700">
-          <span className="font-semibold">Customization:</span>{" "}
-          {product.customizationOptions}
-        </p>
-        
-
-          <p className="text-sm font-medium text-gray-700">
-          <span className="font-semibold">Trending:</span>{" "}
-          {product.trendingStatus}
-        </p>*/}
         </div>
-
-        {/* Add to Cart or Stock Status 
-        <div className="mt-4">
-        
-          <div className="mt-2 text-sm font-semibold">
-            {product.features.reduce((total: number, feature: any) => {
-              return total + feature.stock;
-            }, 0) > 0 ? (
-              <>
-                <button className="w-full px-3 py-1 bg-black text-white rounded-xl hover:bg-gray-800">
-                  Add to Cart
-                </button>
-              </>
-            ) : (
-              <div className="text-red-500 w-full font-semibold">
-                <button className="ml-2 px-3 py-1 bg-gray-300 text-gray-700 rounded-xl cursor-not-allowed">
-                  Out of Stock
-                </button>
-              </div>
-            )}
-          </div>
-        </div>*/}
+        {/* Tailwind CSS Keyframes */}
+        <style jsx>{`
+          @keyframes fadeIn {
+            from {
+              opacity: 0;
+              transform: translateY(20px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
       </div>
+
       <ProductWindowUpdate
         isOpen={isOpen}
         onClose={handleClose}

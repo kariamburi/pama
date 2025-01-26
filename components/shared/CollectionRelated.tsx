@@ -16,6 +16,7 @@ import {
 } from "@/lib/actions/ad.product";
 import ProductCard from "./ProductCard";
 import { IProduct } from "@/lib/database/models/product.model";
+import Masonry from "react-masonry-css";
 //import Card from './Card'
 //import Pagination from './Pagination'
 
@@ -111,45 +112,51 @@ const CollectionRelated = ({
 
     if (node) observer.current.observe(node);
   };
-
+  const breakpointColumns = {
+    default: 4, // 3 columns on large screens
+    1100: 3, // 2 columns for screens <= 1100px
+    700: 2, // 1 column for screens <= 700px
+  };
   return (
-    <div>
+    <>
       {data.length > 0 ? (
-        <div className="flex flex-col items-center gap-10 p-0">
-          <div className="grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
-            {data.map((prod: any, index: number) => {
-              if (data.length === index + 1) {
-                return (
-                  <div
-                    ref={lastAdRef}
-                    key={prod._id}
-                    className="flex justify-center"
-                  >
-                    {/* Render Ad */}
-                    <ProductCard
-                      product={prod}
-                      userId={userId}
-                      index={index}
-                      trendingStatus={""}
-                    />
-                  </div>
-                );
-              } else {
-                return (
-                  <div key={prod._id} className="flex justify-center">
-                    {/* Render Ad */}
-                    <ProductCard
-                      product={prod}
-                      userId={userId}
-                      index={index}
-                      trendingStatus={""}
-                    />
-                  </div>
-                );
-              }
-            })}
-          </div>
-        </div>
+        <Masonry
+          breakpointCols={breakpointColumns}
+          className="flex gap-4"
+          columnClassName="bg-clip-padding"
+        >
+          {data.map((prod: any, index: number) => {
+            if (data.length === index + 1) {
+              return (
+                <div
+                  ref={lastAdRef}
+                  key={prod._id}
+                  className="flex justify-center"
+                >
+                  {/* Render Ad */}
+                  <ProductCard
+                    product={prod}
+                    userId={userId}
+                    index={index}
+                    trendingStatus={""}
+                  />
+                </div>
+              );
+            } else {
+              return (
+                <div key={prod._id} className="flex justify-center">
+                  {/* Render Ad */}
+                  <ProductCard
+                    product={prod}
+                    userId={userId}
+                    index={index}
+                    trendingStatus={""}
+                  />
+                </div>
+              );
+            }
+          })}
+        </Masonry>
       ) : (
         loading === false && (
           <>
@@ -176,7 +183,7 @@ const CollectionRelated = ({
           </div>
         </div>
       )}
-    </div>
+    </>
   );
 };
 

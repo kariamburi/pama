@@ -247,7 +247,7 @@ homeProps) => {
                       className={`${
                         activeTab === link.label
                           ? "items-center p-3 flex gap-1 bg-black text-white rounded-xl hover:cursor-pointers"
-                          : "items-center p-3 flex gap-1 border rounded-xl bg-white text-black hover:cursor-pointer hover:bg-gray-200"
+                          : "items-center p-3 flex gap-1 border rounded-xl bg-white text-black hover:cursor-pointer dark:hover:bg-gray-400 hover:bg-gray-200"
                       }`}
                     >
                       <span className="text-right my-auto">

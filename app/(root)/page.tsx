@@ -190,7 +190,7 @@ export default async function Home({ searchParams }: SearchParamProps) {
                     )}
                   </div>
                 </div>
-                <div className="bg-gray-100 rounded-xl p-1 flex justify-between items-center">
+                <div className="rounded-xl p-1 flex justify-between items-center">
                   <div className="hidden">
                     <div className="flex p-1 items-center gap-1">
                       <div>Filter:</div>

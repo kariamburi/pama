@@ -17,7 +17,7 @@ import SkeletonCardMobile from "./SkeletonCardMobile";
 import { IProduct } from "@/lib/database/models/product.model";
 import FloatingCall from "./FloatingCall";
 import FloatingLocation from "./FloatingLocation";
-
+import Masonry from "react-masonry-css";
 type CollectionProps = {
   emptyTitle: string;
   emptyStateSubtext: string;
@@ -146,12 +146,20 @@ const CollectionInfinite = ({
 
     if (node) observer.current.observe(node);
   };
-
+  const breakpointColumns = {
+    default: 4, // 3 columns on large screens
+    1100: 3, // 2 columns for screens <= 1100px
+    700: 2, // 1 column for screens <= 700px
+  };
   return (
     <div>
       {data.length > 0 ? (
         <div className="flex flex-col items-center gap-10 p-1">
-          <div className="grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
+          <Masonry
+            breakpointCols={breakpointColumns}
+            className="flex gap-4"
+            columnClassName="bg-clip-padding"
+          >
             {data.map((prod: any, index: number) => {
               if (data.length === index + 1) {
                 return (
@@ -183,7 +191,7 @@ const CollectionInfinite = ({
                 );
               }
             })}
-          </div>
+          </Masonry>
           <FloatingLocation comp={comp} />
           <FloatingChatIcon phone={data[0].organizer.whatsapp ?? ""} />
           <FloatingCall phone={data[0].organizer.phone ?? ""} />
@@ -202,28 +210,15 @@ const CollectionInfinite = ({
       )}
 
       {loading && (
-        <div className="flex items-center justify-center w-full">
-          <div className="hidden lg:inline mt-2 grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
-            <div className="mt-2 grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-            </div>
-          </div>
-          <div className="lg:hidden mt-2 grid w-full grid-cols-2 gap-1 sm:grid-cols-2 lg:grid-cols-4 lg:gap-3">
-            <SkeletonCardMobile />
-            <SkeletonCardMobile />
-            <SkeletonCardMobile />
-            <SkeletonCardMobile />
+        <div>
+          <div className="w-full mt-10 h-full flex flex-col items-center justify-center">
+            <Image
+              src="/assets/icons/loading2.gif"
+              alt="loading"
+              width={40}
+              height={40}
+              unoptimized
+            />
           </div>
         </div>
       )}

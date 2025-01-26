@@ -595,17 +595,30 @@ export const ProductForm = ({
                       <div className="w-full overflow-hidden rounded-full px-4 py-2">
                         <Autocomplete
                           multiple
-                          value={selectedSubcolors} // Pass objects for selected subcolors
-                          onChange={(event, newValue) =>
-                            // Convert selected objects back to `string[]`
+                          freeSolo // Allow custom input
+                          value={selectedSubcolors}
+                          onChange={(event, newValue) => {
+                            // Handle custom input by normalizing the data
+                            const updatedColors = newValue.map((option) => {
+                              if (typeof option === "string") {
+                                // Handle custom color input
+                                return { title: option, code: option };
+                              }
+                              return option;
+                            });
+
                             field.onChange(
-                              newValue.map((option) => option.title)
-                            )
+                              updatedColors.map((color) => color.title) // Pass only titles to form state
+                            );
+                          }}
+                          options={COLORS.flatMap((color) => color.subcolors)} // Provide predefined options
+                          getOptionLabel={(option) =>
+                            typeof option === "string"
+                              ? option
+                              : option?.title || ""
                           }
-                          options={COLORS.flatMap((color) => color.subcolors)} // Provide all subcolors
-                          getOptionLabel={(option) => option?.title || ""} // Handle undefined case
                           renderOption={(props, option) =>
-                            option ? ( // Ensure option is defined
+                            typeof option !== "string" && option ? ( // Ensure option is defined
                               <li {...props}>
                                 <div className="flex items-center gap-2">
                                   <span
@@ -624,8 +637,8 @@ export const ProductForm = ({
                           renderInput={(params) => (
                             <TextField
                               {...params}
-                              label="Select Colors"
-                              placeholder="Choose Colors"
+                              label="Select or Enter Colors"
+                              placeholder="Choose or Add Colors"
                             />
                           )}
                         />
@@ -636,56 +649,6 @@ export const ProductForm = ({
                 );
               }}
             />
-
-            {/* Customization Options 
-            <FormField
-              control={form.control}
-              name="customizationOptions"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormControl>
-                    <div className="flex flex-col text-sm px-4 py-2">
-                      <div className="gap-3 items-center flex">
-                        <input
-                          type="radio"
-                          name="customizationOptions"
-                          value="Made-to-Measure"
-                          className="cursor-pointer"
-                          checked={field.value === "Made-to-Measure"}
-                          onChange={(e) => field.onChange(e.target.value)}
-                        />
-                        <div>Made-to-Measure</div>
-                      </div>
-                      <div className="gap-3 items-center flex">
-                        <input
-                          type="radio"
-                          name="customizationOptions"
-                          value="Custom Design"
-                          className="cursor-pointer"
-                          checked={field.value === "Custom Design"}
-                          onChange={(e) => field.onChange(e.target.value)}
-                        />
-
-                        <div>Custom Design</div>
-                      </div>
-                      <div className="gap-3 items-center flex">
-                        <input
-                          type="radio"
-                          name="customizationOptions"
-                          value="Personalized Items"
-                          className="cursor-pointer"
-                          checked={field.value === "Personalized Items"}
-                          onChange={(e) => field.onChange(e.target.value)}
-                        />
-
-                        <div> Personalized Items</div>
-                      </div>
-                    </div>
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />*/}
           </div>
 
           {/* SKU, Weight, and Dimensions */}

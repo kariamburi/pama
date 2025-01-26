@@ -8,6 +8,7 @@ import ProductCard from "./ProductCard";
 import ProductCardBookMark from "./ProductCardBookMark";
 import SkeletonCardMobile from "./SkeletonCardMobile";
 import SkeletonCard from "./SkeletonCard";
+import Masonry from "react-masonry-css";
 type CollectionProps = {
   userId: string;
   emptyTitle: string;
@@ -78,12 +79,21 @@ const CollectionBookmark = ({
 
     if (node) observer.current.observe(node);
   };
+  const breakpointColumns = {
+    default: 4, // 3 columns on large screens
+    1100: 3, // 2 columns for screens <= 1100px
+    700: 2, // 1 column for screens <= 700px
+  };
   return (
     <>
       {data.length > 0 ? (
         isVertical ? (
           <div className="flex flex-col bg-grey-50 rounded-lg items-center gap-10 p-1 lg:p-2">
-            <ul className="grid w-full grid-cols-2 gap-1 lg:gap-3 sm:grid-cols-2 lg:grid-cols-4 xl:gap-3">
+            <Masonry
+              breakpointCols={breakpointColumns}
+              className="flex gap-4"
+              columnClassName="bg-clip-padding"
+            >
               {data.map((prod: any, index: number) => {
                 if (data.length === index + 1) {
                   return (
@@ -115,7 +125,7 @@ const CollectionBookmark = ({
                   );
                 }
               })}
-            </ul>
+            </Masonry>
           </div>
         ) : (
           <div className="flex p-1 bg-grey-50 rounded-lg">
