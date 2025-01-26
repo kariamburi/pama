@@ -2,7 +2,7 @@ import Skeleton from "@mui/material/Skeleton";
 import Box from "@mui/material/Box";
 
 const SkeletonCardMobile = () => (
-  <div className="space-y-4">
+  <div className="mb-2 space-y-4">
     {/* Image */}
 
     <Skeleton

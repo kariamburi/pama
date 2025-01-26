@@ -219,14 +219,14 @@ const CollectionInfinite = ({
               className="flex gap-4"
               columnClassName="bg-clip-padding"
             >
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
-              <SkeletonCard />
+              <SkeletonCardMobile />
+              <SkeletonCardMobile />
+              <SkeletonCardMobile />
+              <SkeletonCardMobile />
+              <SkeletonCardMobile />
+              <SkeletonCardMobile />
+              <SkeletonCardMobile />
+              <SkeletonCardMobile />
             </Masonry>
           ) : (
             <div className="w-full mt-10 h-full flex flex-col items-center justify-center">
