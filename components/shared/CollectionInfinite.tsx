@@ -68,6 +68,7 @@ const CollectionInfinite = ({
   const [totalPages, setTotalPages] = useState(1);
   const [trendingStatus, settrendingStatus] = useState("");
   const [loading, setLoading] = useState(true);
+  const [isInitialLoading, setIsInitialLoading] = useState(true);
   // const observer = useRef();
   const observer = useRef<IntersectionObserver | null>(null);
 
@@ -111,6 +112,7 @@ const CollectionInfinite = ({
       console.error("Error fetching ads", error);
     } finally {
       setLoading(false);
+      setIsInitialLoading(false); // Transition from initial loading to subsequent loading
     }
   };
 
@@ -211,15 +213,32 @@ const CollectionInfinite = ({
 
       {loading && (
         <div>
-          <div className="w-full mt-10 h-full flex flex-col items-center justify-center">
-            <Image
-              src="/assets/icons/loading2.gif"
-              alt="loading"
-              width={40}
-              height={40}
-              unoptimized
-            />
-          </div>
+          {isInitialLoading ? (
+            <Masonry
+              breakpointCols={breakpointColumns}
+              className="flex gap-4"
+              columnClassName="bg-clip-padding"
+            >
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+              <SkeletonCard />
+            </Masonry>
+          ) : (
+            <div className="w-full mt-10 h-full flex flex-col items-center justify-center">
+              <Image
+                src="/assets/icons/loading2.gif"
+                alt="loading"
+                width={40}
+                height={40}
+                unoptimized
+              />
+            </div>
+          )}
         </div>
       )}
     </div>

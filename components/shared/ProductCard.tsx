@@ -107,7 +107,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
 
         <Link href={`/product/${product._id}`} className="relative w-full">
           {isLoadingpopup && (
-            <div className="absolute inset-0 flex items-center justify-center bg-gray-200 rounded-t-xl ">
+            <div className="absolute h-[300px] inset-0 flex items-center justify-center bg-gray-200 rounded-t-xl ">
               {/* Spinner or loading animation */}
               <CircularProgress sx={{ color: "black" }} />
             </div>
@@ -175,38 +175,28 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
               <ZoomInOutlinedIcon />
             </button>
           </div>
-          <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 right-2 bg-white text-black text-[10px] px-2 py-1 rounded-full shadow-md z-10">
-            <LocalFireDepartmentOutlinedIcon sx={{ fontSize: 14 }} />
+          <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 right-2 bg-white text-black text-[10px] p-1 rounded-full shadow-md z-10">
             <div>{trendingStatus}</div>
           </div>
           {product.featuredInDeals && (
             <>
               {product.featuredInDeals === "Sale" && (
                 <>
-                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-black text-white text-[10px] px-2 py-1 rounded-full shadow-md z-10">
-                    <div>
-                      <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                    </div>
+                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-black text-white text-[10px] p-1 rounded-full shadow-md z-10">
                     <div>{product.featuredInDeals}</div>
                   </div>
                 </>
               )}
               {product.featuredInDeals === "Clearance" && (
                 <>
-                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-blue-800  text-white text-[10px] px-2 py-1 rounded-full shadow-md z-10">
-                    <div>
-                      <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                    </div>
+                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-blue-800  text-white text-[10px] p-1 rounded-full shadow-md z-10">
                     <div>{product.featuredInDeals}</div>
                   </div>
                 </>
               )}
               {product.featuredInDeals === "Bundles" && (
                 <>
-                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-orange-400 text-white text-[10px] px-2 py-1 rounded-full shadow-md z-10">
-                    <div>
-                      <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
-                    </div>
+                  <div className="absolute flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bottom-4 left-2 bg-orange-400 text-white text-[10px] p-1 rounded-full shadow-md z-10">
                     <div>{product.featuredInDeals}</div>
                   </div>
                 </>

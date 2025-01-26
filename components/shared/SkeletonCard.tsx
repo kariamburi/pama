@@ -3,14 +3,14 @@ import Box from "@mui/material/Box";
 
 const SkeletonCard = () => (
   <>
-    <div className="space-y-4">
+    <div className=" mb-2 space-y-4">
       {/* Image */}
 
       <Skeleton
         variant="rectangular"
         style={{
           width: "100%",
-          //borderRadius: "0.75rem",
+          backgroundColor: "#ffffff",
           borderTopLeftRadius: "0.75rem", // equivalent to `rounded-t-xl`
           borderTopRightRadius: "0.75rem",
           height: "24rem", // equivalent to `h-72`
