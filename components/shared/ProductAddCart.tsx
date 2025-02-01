@@ -336,7 +336,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                 <>
                   {product.featuredInDeals === "Sale" && (
                     <>
-                      <div className="w-[70px] flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-black text-white text-xs p-1 rounded-full shadow-md">
+                      <div className="w-[80px] flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-black text-white text-xs py-1 px-2 rounded-full shadow-md">
                         <div>
                           <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
                         </div>
@@ -346,7 +346,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                   )}
                   {product.featuredInDeals === "Clearance" && (
                     <>
-                      <div className="w-[70px] flex gap-1 flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-blue-800  text-white text-xs p-1 rounded-full shadow-md">
+                      <div className="w-[80px] flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-blue-800  text-white text-xs py-1 px-2 rounded-full shadow-md">
                         <div>
                           <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
                         </div>
@@ -356,7 +356,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                   )}
                   {product.featuredInDeals === "Bundles" && (
                     <>
-                      <div className="w-[70px] shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-orange-400 text-white text-xs p-1 rounded-full shadow-md">
+                      <div className="w-[80px] flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-orange-400 text-white text-xs py-1 px-2 rounded-full shadow-md">
                         <div>
                           <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
                         </div>

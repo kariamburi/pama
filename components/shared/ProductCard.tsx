@@ -104,31 +104,32 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
         className="border bg-white mb-2 rounded-xl shadow-sm overflow-hidden"
       >
         {/* Image section with dynamic height */}
-
-        <Link href={`/product/${product._id}`} className="relative w-full">
-          {isLoadingpopup && (
-            <div className="absolute h-[300px] inset-0 flex items-center justify-center bg-gray-200 rounded-t-xl ">
-              {/* Spinner or loading animation */}
-              <CircularProgress sx={{ color: "black" }} />
+        <div className="relative w-full">
+          <Link href={`/product/${product._id}`} className="relative w-full">
+            {isLoadingpopup && (
+              <div className="absolute h-[300px] inset-0 flex items-center justify-center bg-gray-200 rounded-t-xl ">
+                {/* Spinner or loading animation */}
+                <CircularProgress sx={{ color: "black" }} />
+              </div>
+            )}
+            <div className={isZoomed ? "hidden" : "block"}>
+              <Image
+                src={product.imageUrls[0] || "/placeholder-image.png"}
+                alt={product.productName}
+                width={400}
+                height={0}
+                onMouseEnter={() => setHoveredIndex(index)}
+                onMouseLeave={() => setHoveredIndex(null)}
+                className={`rounded-t-xl w-full h-auto object-cover ${
+                  isLoadingpopup ? "opacity-0" : "opacity-100"
+                } transition-opacity  transition-transform duration-300 transform ${
+                  hoveredIndex === index ? "scale-105" : ""
+                }`}
+                onLoadingComplete={() => setIsLoadingpopup(false)}
+                placeholder="empty"
+              />
             </div>
-          )}
-          <div className={isZoomed ? "hidden" : "block"}>
-            <Image
-              src={product.imageUrls[0] || "/placeholder-image.png"}
-              alt={product.productName}
-              width={400}
-              height={0}
-              onMouseEnter={() => setHoveredIndex(index)}
-              onMouseLeave={() => setHoveredIndex(null)}
-              className={`rounded-t-xl w-full h-auto object-cover ${
-                isLoadingpopup ? "opacity-0" : "opacity-100"
-              } transition-opacity  transition-transform duration-300 transform ${
-                hoveredIndex === index ? "scale-105" : ""
-              }`}
-              onLoadingComplete={() => setIsLoadingpopup(false)}
-              placeholder="empty"
-            />
-          </div>
+          </Link>
           {/* Zoom Wrapper */}
           <div className={!isZoomed ? "hidden" : "block"}>
             <ControlledZoom isZoomed={isZoomed} onZoomChange={handleZoomChange}>
@@ -217,8 +218,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
               />
             </div>
           )}
-        </Link>
-
+        </div>
         {/* Text section */}
         <div className="p-4">
           <Link href={`/product/${product._id}`} passHref>
