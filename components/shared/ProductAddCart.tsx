@@ -346,7 +346,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                   )}
                   {product.featuredInDeals === "Clearance" && (
                     <>
-                      <div className="w-[80px] flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-blue-800  text-white text-xs py-1 px-2 rounded-full shadow-md">
+                      <div className="w-[100px] flex gap-1 shadow-[0px_4px_20px_rgba(0,0,0,0.3)] bg-blue-800  text-white text-xs py-1 px-2 rounded-full shadow-md">
                         <div>
                           <DiscountOutlinedIcon sx={{ fontSize: 14 }} />{" "}
                         </div>
