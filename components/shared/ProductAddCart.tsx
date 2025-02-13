@@ -455,7 +455,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                               ).toLocaleString()}
                             </>
                           ) : (
-                            <>{product.price}</>
+                            <>{product.price.toLocaleString()}</>
                           )}
                         </span>
                       </div>
@@ -662,7 +662,7 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                               ).toLocaleString()}
                             </>
                           ) : (
-                            <>{product.price}</>
+                            <>{product.price.toLocaleString()}</>
                           )}
                         </div>
                       </div>

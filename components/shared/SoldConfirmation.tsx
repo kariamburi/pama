@@ -35,6 +35,7 @@ export const SoldConfirmation = ({
 }: soldProps) => {
   const pathname = usePathname();
   const [instock, setInstock] = useState(initialStock);
+  const [soldPrice, setSoldPrice] = useState(""); // New state for sold price
   let [isPending, startTransition] = useTransition();
 
   function generateRandomOrderId() {
@@ -44,13 +45,18 @@ export const SoldConfirmation = ({
   }
 
   const handleMarkSold = async () => {
+    if (!soldPrice || isNaN(Number(soldPrice)) || Number(soldPrice) <= 0) {
+      alert("Please enter a valid sold price.");
+      return;
+    }
+
     const response = await ProductSold({
       order: {
         userId: userId,
         productId: product._id,
         size: selectedSize,
         buyprice: product.buyprice,
-        price: product.price - (product.price * product.discount) / 100,
+        price: Number(soldPrice), // Use user-inputted price
         qty: quantity,
         status: "completed",
         orderId: generateRandomOrderId(),
@@ -61,8 +67,8 @@ export const SoldConfirmation = ({
 
     if (response === "Order Created") {
       const newStock = instock - quantity;
-      setInstock(newStock); // Update local state
-      onStockUpdate(selectedSize, newStock); // Update parent state
+      setInstock(newStock);
+      onStockUpdate(selectedSize, newStock);
     }
   };
 
@@ -83,18 +89,32 @@ export const SoldConfirmation = ({
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader>
           <AlertDialogTitle>
-            Confirm sold ({quantity}) piece of size ({selectedSize})?
+            Confirm sold ({quantity}) piece(s) of size ({selectedSize})?
           </AlertDialogTitle>
           <AlertDialogDescription className="p-regular-16 text-grey-600">
-            This will generate a completed Order for this product size.
+            Enter the actual selling price for this product size.
           </AlertDialogDescription>
         </AlertDialogHeader>
+
+        {/* Input field for Sold Price */}
+        <div className="px-4">
+          <label className="block text-sm font-medium text-gray-700">
+            Sold Price (KES)
+          </label>
+          <input
+            type="number"
+            className="w-full mt-1 p-2 border border-gray-300 rounded-md"
+            placeholder="Enter sold price"
+            value={soldPrice}
+            onChange={(e) => setSoldPrice(e.target.value)}
+          />
+        </div>
 
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
           <AlertDialogAction onClick={() => startTransition(handleMarkSold)}>
-            {isPending ? "Order processing..." : "Confirm Sold"}
+            {isPending ? "Processing Order..." : "Confirm Sold"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>
