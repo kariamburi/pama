@@ -18,12 +18,15 @@ import FavoriteOutlinedIcon from "@mui/icons-material/FavoriteOutlined";
 import DiscountOutlinedIcon from "@mui/icons-material/DiscountOutlined";
 import ZoomInOutlinedIcon from "@mui/icons-material/ZoomInOutlined";
 import LocalFireDepartmentOutlinedIcon from "@mui/icons-material/LocalFireDepartmentOutlined";
+<<<<<<< HEAD
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@radix-ui/react-tooltip";
+=======
+>>>>>>> afb95b6 (first commit)
 import Link from "next/link";
 import { updatebookmarked } from "@/lib/actions/ad.product";
 import { createBookmark } from "@/lib/actions/bookmark.actions";
@@ -118,6 +121,10 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                 alt={product.productName}
                 width={400}
                 height={0}
+<<<<<<< HEAD
+=======
+                style={{ minHeight: "200px" }}
+>>>>>>> afb95b6 (first commit)
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 className={`rounded-t-xl w-full h-auto object-cover ${
