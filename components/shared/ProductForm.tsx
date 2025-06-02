@@ -500,7 +500,6 @@ export const ProductForm = ({
           {selectedType === "Clothes" && (
             <>
               {" "}
-<<<<<<< HEAD
               <FormField
                 control={form.control}
                 name="fabricCareInstructions"
@@ -531,45 +530,6 @@ export const ProductForm = ({
                   </FormItem>
                 )}
               />
-=======
-          <FormField
-  control={form.control}
-  name="fabricCareInstructions"
-  render={({ field }) => (
-    <FormItem className="w-full">
-      <FormControl>
-        <div className="w-full overflow-hidden rounded-full px-4 py-2">
-          <Autocomplete
-            id="fabricCareInstructions"
-            freeSolo // 🔹 allow typing custom values
-            options={MATERIALS}
-            getOptionLabel={(option) =>
-              typeof option === "string" ? option : ""
-            }
-            value={field.value || ""}
-            onChange={(event, newValue) => {
-              field.onChange(newValue || "");
-            }}
-            onInputChange={(event, newInputValue) => {
-              // update on typing too (optional: only on blur if preferred)
-              field.onChange(newInputValue);
-            }}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Material (Optional)*"
-                placeholder="Enter or choose a material"
-              />
-            )}
-          />
-        </div>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
->>>>>>> afb95b6 (first commit)
               {(selectedSubcategory === "Women" ||
                 selectedSubcategory === "Unisex") && (
                 <>
@@ -616,7 +576,6 @@ export const ProductForm = ({
 
           {/* Style and Material */}
           <div className="flex flex-col gap-5 md:flex-row">
-<<<<<<< HEAD
             <FormField
               control={form.control}
               name="color"
@@ -690,51 +649,6 @@ export const ProductForm = ({
                 );
               }}
             />
-=======
-       <FormField
-  control={form.control}
-  name="color"
-  render={({ field }) => (
-    <FormItem className="w-full">
-      <FormControl>
-        <div className="w-full overflow-hidden rounded-full px-4 py-2">
-          <Autocomplete
-            multiple
-            freeSolo
-            value={field.value || []}
-            onChange={(event, newValue) => {
-              // Normalize to array of strings only
-              const updatedColors = newValue.map((option:any) =>
-                typeof option === "string" ? option : option.title
-              );
-              field.onChange(updatedColors);
-            }}
-            options={COLORS.flatMap((color) => color.subcolors.map((sc) => sc.title))}
-            getOptionLabel={(option:any) =>
-              typeof option === "string" ? option : option.title
-            }
-            renderOption={(props:any, option:any) => (
-              <li {...props}>{typeof option === "string" ? option : option.title}</li>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select or Enter Colors"
-                placeholder="Choose or Add Colors"
-              />
-            )}
-          />
-        </div>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
-
-
-
-           
->>>>>>> afb95b6 (first commit)
           </div>
 
           {/* SKU, Weight, and Dimensions */}
@@ -798,7 +712,6 @@ export const ProductForm = ({
             />
           </div>
 
-<<<<<<< HEAD
           {/* Meta Title and Meta Description 
 
           <div className="border-b">
@@ -807,9 +720,6 @@ export const ProductForm = ({
             </h2>
           </div>
           */}
-=======
-         
->>>>>>> afb95b6 (first commit)
           <div className="flex flex-col gap-5 md:flex-row">
             {/* Stock Quantity */}
             <FormField
