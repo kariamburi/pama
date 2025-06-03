@@ -500,36 +500,42 @@ export const ProductForm = ({
           {selectedType === "Clothes" && (
             <>
               {" "}
-              <FormField
-                control={form.control}
-                name="fabricCareInstructions"
-                render={({ field }) => (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <div className="w-full overflow-hidden rounded-full px-4 py-2">
-                        <Autocomplete
-                          id="fabricCareInstructions"
-                          options={MATERIALS}
-                          getOptionLabel={(option) => option}
-                          value={
-                            MATERIALS.find((vc) => vc === field.value) || null
-                          }
-                          onChange={(event, newValue) => {
-                            field.onChange(newValue ? newValue : null);
-                          }}
-                          renderInput={(field) => (
-                            <TextField
-                              {...field}
-                              label="Material (Optional)*"
-                            />
-                          )}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
+               <FormField
+  control={form.control}
+  name="fabricCareInstructions"
+  render={({ field }) => (
+    <FormItem className="w-full">
+      <FormControl>
+        <div className="w-full overflow-hidden rounded-full px-4 py-2">
+          <Autocomplete
+            id="fabricCareInstructions"
+            freeSolo // 🔹 allow typing custom values
+            options={MATERIALS}
+            getOptionLabel={(option) =>
+              typeof option === "string" ? option : ""
+            }
+            value={field.value || ""}
+            onChange={(event, newValue) => {
+              field.onChange(newValue || "");
+            }}
+            onInputChange={(event, newInputValue) => {
+              // update on typing too (optional: only on blur if preferred)
+              field.onChange(newInputValue);
+            }}
+            renderInput={(params) => (
+              <TextField
+                {...params}
+                label="Material (Optional)*"
+                placeholder="Enter or choose a material"
               />
+            )}
+          />
+        </div>
+      </FormControl>
+      <FormMessage />
+    </FormItem>
+  )}
+/>
               {(selectedSubcategory === "Women" ||
                 selectedSubcategory === "Unisex") && (
                 <>
@@ -576,79 +582,80 @@ export const ProductForm = ({
 
           {/* Style and Material */}
           <div className="flex flex-col gap-5 md:flex-row">
-            <FormField
-              control={form.control}
-              name="color"
-              render={({ field }) => {
-                // Map `string[]` to objects expected by Autocomplete
-                const selectedSubcolors = (field.value || [])
-                  .map((subcolorTitle) =>
-                    COLORS.flatMap((color) => color.subcolors).find(
-                      (subcolor) => subcolor.title === subcolorTitle
-                    )
-                  )
-                  .filter(Boolean) as { title: string; code: string }[];
+          <FormField
+    control={form.control}
+    name="color"
+    render={({ field }) => {
+      const [customColor, setCustomColor] = useState<string | null>(null);
+      const currentValues = field.value || [];
 
-                return (
-                  <FormItem className="w-full">
-                    <FormControl>
-                      <div className="w-full overflow-hidden rounded-full px-4 py-2">
-                        <Autocomplete
-                          multiple
-                          freeSolo // Allow custom input
-                          value={selectedSubcolors}
-                          onChange={(event, newValue) => {
-                            // Handle custom input by normalizing the data
-                            const updatedColors = newValue.map((option) => {
-                              if (typeof option === "string") {
-                                // Handle custom color input
-                                return { title: option, code: option };
-                              }
-                              return option;
-                            });
+      const handleConfirmCustomColor = () => {
+        if (customColor && !currentValues.includes(customColor)) {
+          const updated = [...currentValues, customColor];
+          field.onChange(updated);
+          setCustomColor(null);
+        }
+      };
 
-                            field.onChange(
-                              updatedColors.map((color) => color.title) // Pass only titles to form state
-                            );
-                          }}
-                          options={COLORS.flatMap((color) => color.subcolors)} // Provide predefined options
-                          getOptionLabel={(option) =>
-                            typeof option === "string"
-                              ? option
-                              : option?.title || ""
-                          }
-                          renderOption={(props, option) =>
-                            typeof option !== "string" && option ? ( // Ensure option is defined
-                              <li {...props}>
-                                <div className="flex items-center gap-2">
-                                  <span
-                                    style={{
-                                      width: 20,
-                                      height: 20,
-                                      backgroundColor: option.code,
-                                      borderRadius: "50%",
-                                    }}
-                                  ></span>
-                                  {option.title}
-                                </div>
-                              </li>
-                            ) : null
-                          }
-                          renderInput={(params) => (
-                            <TextField
-                              {...params}
-                              label="Select or Enter Colors"
-                              placeholder="Choose or Add Colors"
-                            />
-                          )}
-                        />
-                      </div>
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                );
-              }}
-            />
+      return (
+        <FormItem className="w-full">
+          <FormControl>
+            <div className="w-full overflow-hidden rounded-full px-4 py-2">
+              <Autocomplete
+                multiple
+                freeSolo
+                value={currentValues}
+                onChange={(event, newValue, reason) => {
+                  const updatedColors = newValue.map((option: any) =>
+                    typeof option === "string" ? option : option.title
+                  );
+                  field.onChange(updatedColors);
+                }}
+                onInputChange={(event, inputValue, reason) => {
+                  if (reason === "input" && inputValue.trim() !== "") {
+                    setCustomColor(inputValue.trim());
+                  } else {
+                    setCustomColor(null);
+                  }
+                }}
+                options={COLORS.flatMap((color) =>
+                  color.subcolors.map((sc) => sc.title)
+                )}
+                getOptionLabel={(option: any) =>
+                  typeof option === "string" ? option : option.title
+                }
+                renderOption={(props: any, option: any) => (
+                  <li {...props}>
+                    {typeof option === "string" ? option : option.title}
+                  </li>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Select or Enter Colors"
+                    placeholder="Choose or Add Colors"
+                  />
+                )}
+              />
+
+              {customColor && (
+                <div className="mt-2 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleConfirmCustomColor}
+                    className="rounded-full bg-blue-600 px-4 py-2 text-sm text-white shadow hover:bg-blue-700"
+                  >
+                    Confirm "{customColor}"
+                  </button>
+                </div>
+              )}
+            </div>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      );
+    }}
+  />
           </div>
 
           {/* SKU, Weight, and Dimensions */}

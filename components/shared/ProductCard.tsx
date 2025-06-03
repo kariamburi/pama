@@ -118,6 +118,7 @@ const ProductCard = ({ product, userId, index, trendingStatus }: CardProps) => {
                 alt={product.productName}
                 width={400}
                 height={0}
+                style={{ minHeight: "200px" }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
                 className={`rounded-t-xl w-full h-auto object-cover ${
