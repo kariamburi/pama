@@ -273,7 +273,7 @@ export const ProductForm = ({
 
   const [selectedColors, setSelectedColors] = useState<any[]>([]); // For multiple primary colors
   const [selectedSubcolors, setSelectedSubcolors] = useState<any[]>([]); // For subcolors
-
+   const [customColor, setCustomColor] = useState<string | null>(null);
   const handleColorChange = (event: any, newValue: any) => {
     setSelectedColors(newValue); // Set selected primary colors
     setSelectedSubcolors([]); // Reset subcolors when primary colors change
@@ -587,7 +587,7 @@ export const ProductForm = ({
     control={form.control}
     name="color"
     render={({ field }) => {
-      const [customColor, setCustomColor] = useState<string | null>(null);
+   
       const currentValues = field.value || [];
 
       const handleConfirmCustomColor = () => {
