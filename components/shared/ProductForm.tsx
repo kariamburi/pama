@@ -583,45 +583,80 @@ export const ProductForm = ({
 
           {/* Style and Material */}
           <div className="flex flex-col gap-5 md:flex-row">
-       <FormField
-  control={form.control}
-  name="color"
-  render={({ field }) => (
-    <FormItem className="w-full">
-      <FormControl>
-        <div className="w-full overflow-hidden rounded-full px-4 py-2">
-          <Autocomplete
-            multiple
-            freeSolo
-            value={field.value || []}
-            onChange={(event, newValue) => {
-              // Normalize to array of strings only
-              const updatedColors = newValue.map((option:any) =>
-                typeof option === "string" ? option : option.title
-              );
-              field.onChange(updatedColors);
-            }}
-            options={COLORS.flatMap((color) => color.subcolors.map((sc) => sc.title))}
-            getOptionLabel={(option:any) =>
-              typeof option === "string" ? option : option.title
-            }
-            renderOption={(props:any, option:any) => (
-              <li {...props}>{typeof option === "string" ? option : option.title}</li>
-            )}
-            renderInput={(params) => (
-              <TextField
-                {...params}
-                label="Select or Enter Colors"
-                placeholder="Choose or Add Colors"
+        <FormField
+    control={form.control}
+    name="color"
+    render={({ field }) => {
+      const [customColor, setCustomColor] = useState<string | null>(null);
+      const currentValues = field.value || [];
+
+      const handleConfirmCustomColor = () => {
+        if (customColor && !currentValues.includes(customColor)) {
+          const updated = [...currentValues, customColor];
+          field.onChange(updated);
+          setCustomColor(null);
+        }
+      };
+
+      return (
+        <FormItem className="w-full">
+          <FormControl>
+            <div className="w-full overflow-hidden rounded-full px-4 py-2">
+              <Autocomplete
+                multiple
+                freeSolo
+                value={currentValues}
+                onChange={(event, newValue, reason) => {
+                  const updatedColors = newValue.map((option: any) =>
+                    typeof option === "string" ? option : option.title
+                  );
+                  field.onChange(updatedColors);
+                }}
+                onInputChange={(event, inputValue, reason) => {
+                  if (reason === "input" && inputValue.trim() !== "") {
+                    setCustomColor(inputValue.trim());
+                  } else {
+                    setCustomColor(null);
+                  }
+                }}
+                options={COLORS.flatMap((color) =>
+                  color.subcolors.map((sc) => sc.title)
+                )}
+                getOptionLabel={(option: any) =>
+                  typeof option === "string" ? option : option.title
+                }
+                renderOption={(props: any, option: any) => (
+                  <li {...props}>
+                    {typeof option === "string" ? option : option.title}
+                  </li>
+                )}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label="Select or Enter Colors"
+                    placeholder="Choose or Add Colors"
+                  />
+                )}
               />
-            )}
-          />
-        </div>
-      </FormControl>
-      <FormMessage />
-    </FormItem>
-  )}
-/>
+
+              {customColor && (
+                <div className="mt-2 flex justify-end">
+                  <button
+                    type="button"
+                    onClick={handleConfirmCustomColor}
+                    className="rounded-full bg-blue-600 px-4 py-2 text-sm text-white shadow hover:bg-blue-700"
+                  >
+                    Confirm "{customColor}"
+                  </button>
+                </div>
+              )}
+            </div>
+          </FormControl>
+          <FormMessage />
+        </FormItem>
+      );
+    }}
+  />
 
 
 
