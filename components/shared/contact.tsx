@@ -21,7 +21,7 @@ const Contact = ({ product, userId, userName, userImage }: chatProps) => {
   const handleShowPhoneClick = async (e: any) => {
     setshowphone(true);
     const calls = (Number(product.calls ?? "0") + 1).toString();
-    const _id = product._id;
+    const _id = product._id.toString(); // ✅ convert ObjectId -> string
     await updatecalls({
       _id,
       calls,
@@ -32,7 +32,7 @@ const Contact = ({ product, userId, userName, userImage }: chatProps) => {
 
   const handlewhatsappClick = async (e: any) => {
     const whatsapp = (Number(product.whatsapp ?? "0") + 1).toString();
-    const _id = product._id;
+    const _id = product._id.toString(); // ✅ convert ObjectId -> string
     await updatewhatsapp({
       _id,
       whatsapp,

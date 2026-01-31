@@ -66,8 +66,8 @@ const SettingsEdit = ({ user, type, userId }: setingsProp) => {
   const initialValues =
     user && type === "Update"
       ? {
-          ...user,
-        }
+        ...user,
+      }
       : UserDefaultValues;
   const [selectedDays, setSelectedDays] = useState<string[]>(
     user?.businessworkingdays ?? []
@@ -230,15 +230,9 @@ const SettingsEdit = ({ user, type, userId }: setingsProp) => {
   const [isUserCheck, setIsUserCheck] = useState(false);
 
   useEffect(() => {
-    let check = false;
-
-    if (user) {
-      check = userId === user._id;
-    }
-
-    setIsUserCheck(check); // Update the state based on the check
-  }, [user, userId]); // Dependencies ensure the effect runs when user or userId changes
-
+    const check = !!userId && !!user?._id && userId === user._id.toString();
+    setIsUserCheck(check);
+  }, [user, userId]);
   return (
     <Form {...form}>
       <form
