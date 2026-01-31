@@ -53,14 +53,7 @@ import {
   CarouselPrevious,
 } from "../ui/carousel";
 
-import {
-  addDoc,
-  collection,
-  getDocs,
-  query,
-  serverTimestamp,
-  where,
-} from "firebase/firestore";
+
 import { db } from "@/lib/firebase";
 import Head from "next/head";
 
@@ -261,11 +254,10 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
             <div className="flex flex-col gap-6">
               {/* Product Images */}
               <div
-                className={`${
-                  product.imageUrls.length === 1
-                    ? "w-full flex items-center justify-center p-2 rounded-xl"
-                    : "grid grid-cols-2 gap-4"
-                }`}
+                className={`${product.imageUrls.length === 1
+                  ? "w-full flex items-center justify-center p-2 rounded-xl"
+                  : "grid grid-cols-2 gap-4"
+                  }`}
               >
                 {/*   <img
                       src={url}
@@ -288,11 +280,9 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                         height={400}
                         onMouseEnter={() => setHoveredIndex(index)}
                         onMouseLeave={() => setHoveredIndex(null)}
-                        className={`rounded-lg max-h-[600px] shadow-lg object-cover w-full ${
-                          isLoadingpopup ? "opacity-0" : "opacity-100"
-                        } transition-opacity  transition-transform duration-300 transform ${
-                          hoveredIndex === index ? "scale-105" : ""
-                        }`}
+                        className={`rounded-lg max-h-[600px] shadow-lg object-cover w-full ${isLoadingpopup ? "opacity-0" : "opacity-100"
+                          } transition-opacity  transition-transform duration-300 transform ${hoveredIndex === index ? "scale-105" : ""
+                          }`}
                         onLoadingComplete={() => setIsLoadingpopup(false)}
                         placeholder="empty"
                       />
@@ -482,13 +472,12 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                               feature.stock > 0 &&
                               handleSizeSelect(feature.size)
                             } // Only set size if in stock
-                            className={`m-1 justify-center flex items-center w-10 h-10 rounded-full cursor-pointer ${
-                              feature.stock > 0
-                                ? selectedSize === feature.size
-                                  ? "bg-black text-white border-none shadow-lg" // Highlight selected size
-                                  : "text-black border shadow"
-                                : "bg-gray-300 text-gray-500 line-through border" // "Sold Out" style
-                            }`}
+                            className={`m-1 justify-center flex items-center w-10 h-10 rounded-full cursor-pointer ${feature.stock > 0
+                              ? selectedSize === feature.size
+                                ? "bg-black text-white border-none shadow-lg" // Highlight selected size
+                                : "text-black border shadow"
+                              : "bg-gray-300 text-gray-500 line-through border" // "Sold Out" style
+                              }`}
                           >
                             {feature.size}
                           </span>
@@ -546,9 +535,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     <SignedIn>
                       <button
                         onClick={handleAddToCart}
-                        className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
-                          isSending ? "bg-gray-100" : "bg-white"
-                        }`}
+                        className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${isSending ? "bg-gray-100" : "bg-white"
+                          }`}
                         disabled={isSending} // Disable button while sending
                       >
                         <div className="flex gap-1 items-center justify-center w-full">
@@ -566,9 +554,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                     <SignedOut>
                       <Link href="/sign-in">
                         <button
-                          className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
-                            isSending ? "bg-gray-100" : "bg-white"
-                          }`}
+                          className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${isSending ? "bg-gray-100" : "bg-white"
+                            }`}
                           disabled={isSending} // Disable button while sending
                         >
                           <div className="flex gap-1 items-center justify-center w-full">
@@ -746,13 +733,12 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                           onClick={() =>
                             feature.stock > 0 && handleSizeSelect(feature.size)
                           } // Only set size if in stock
-                          className={`m-1 justify-center flex items-center w-10 h-10 rounded-full cursor-pointer ${
-                            feature.stock > 0
-                              ? selectedSize === feature.size
-                                ? "bg-black text-white border-none shadow-lg" // Highlight selected size
-                                : "text-black border shadow"
-                              : "bg-gray-300 text-gray-500 line-through border" // "Sold Out" style
-                          }`}
+                          className={`m-1 justify-center flex items-center w-10 h-10 rounded-full cursor-pointer ${feature.stock > 0
+                            ? selectedSize === feature.size
+                              ? "bg-black text-white border-none shadow-lg" // Highlight selected size
+                              : "text-black border shadow"
+                            : "bg-gray-300 text-gray-500 line-through border" // "Sold Out" style
+                            }`}
                         >
                           {feature.size}
                         </span>
@@ -802,9 +788,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                   <SignedIn>
                     <button
                       onClick={handleAddToCart}
-                      className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
-                        isSending ? "bg-gray-100" : "bg-white"
-                      }`}
+                      className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${isSending ? "bg-gray-100" : "bg-white"
+                        }`}
                       disabled={isSending} // Disable button while sending
                     >
                       <div className="flex gap-1 items-center justify-center w-full">
@@ -819,9 +804,8 @@ export const ProductAddCart = ({ product, userId }: productProps) => {
                   <SignedOut>
                     <Link href="/sign-in">
                       <button
-                        className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${
-                          isSending ? "bg-gray-100" : "bg-white"
-                        }`}
+                        className={`bg-white border w-full lg:w-[300px] py-3 px-1 text-sm rounded-sm text-black h-full hover:bg-gray-100 ${isSending ? "bg-gray-100" : "bg-white"
+                          }`}
                         disabled={isSending} // Disable button while sending
                       >
                         <div className="flex gap-1 items-center justify-center w-full">
