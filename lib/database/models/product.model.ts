@@ -1,11 +1,11 @@
-import mongoose, { Document, Schema, model, models } from "mongoose";
-export interface Feature  {
+import mongoose, { Document, Schema, Types, model, models } from "mongoose";
+export interface Feature {
   size: string // Represents the size (e.g., "44", "48")
   stock: number // Number of items available for this size
- // checked: boolean; // Indicates if the size is currently available for sale
+  // checked: boolean; // Indicates if the size is currently available for sale
 };
 export interface IProduct extends Document {
-  _id:string;
+  _id: Types.ObjectId;
   productName: string;
   description?: string;
   category: string;
@@ -24,14 +24,14 @@ export interface IProduct extends Document {
   imageUrls: string[]; // Ensure it is always an array
   fabricCareInstructions?: string;
   sku?: string;
-  views:number;
-whatsapp:number;
-calls:number;
-shared:number;
-bookmarked:number;
+  views: number;
+  whatsapp: number;
+  calls: number;
+  shared: number;
+  bookmarked: number;
   organizer: {
-    photo: string | undefined; _id: string, firstName: string, lastName: string,phone: string ,whatsapp: string  
-}
+    photo: string | undefined; _id: string, firstName: string, lastName: string, phone: string, whatsapp: string
+  }
 }
 
 const FeatureSchema = new Schema({
@@ -44,7 +44,7 @@ const FeatureSchema = new Schema({
     required: true, // Each feature must have a stock count
     min: 0, // Stock cannot be negative
   },
- 
+
 });
 
 const ProductSchema: Schema = new Schema(
@@ -60,13 +60,13 @@ const ProductSchema: Schema = new Schema(
     buyprice: { type: Number, required: true },
     price: { type: Number, required: true },
     discount: { type: Number, default: 0 },
-    featuredInDeals:  { type: String },
+    featuredInDeals: { type: String },
     customizationOptions: { type: String },
     imageUrls: { type: [String], required: true },
     fabricCareInstructions: { type: String },
     sku: { type: String, unique: true, required: true },
-    whatsapp:{ type: Number , default: 0},
-    calls:{ type: Number , default: 0},
+    whatsapp: { type: Number, default: 0 },
+    calls: { type: Number, default: 0 },
     views: { type: Number, default: 0 },
     bookmarked: { type: Number, default: 0 },
     shared: { type: Number, default: 0 },
