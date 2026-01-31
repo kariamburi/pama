@@ -646,7 +646,7 @@ export const ProductForm = ({
                               onClick={handleConfirmCustomColor}
                               className="rounded-full bg-blue-600 px-4 py-2 text-sm text-white shadow hover:bg-blue-700"
                             >
-                              Confirm "{customColor}"
+                              Confirm &quot;{customColor}&quot;
                             </button>
                           </div>
                         )}
