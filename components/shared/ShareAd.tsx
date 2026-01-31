@@ -32,8 +32,9 @@ const ShareAd: React.FC<ShareProps> = ({ product }) => {
     setIsLoading(true);
     try {
       const shared = (Number(product.shared ?? "0") + 1).toString();
+      const _id = product._id.toString(); // ✅ convert ObjectId -> string
       await updateshared({
-        _id: product._id,
+        _id,
         shared,
         path: `/product/${product._id}`,
       });
