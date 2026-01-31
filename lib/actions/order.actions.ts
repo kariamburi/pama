@@ -16,11 +16,11 @@ import axios from "axios"
 
 const populateAd = (query: any) => {
   return query
-  .populate({ path: 'shippingId', model: Delivery, select: '_id method location areas price note' })
-  .populate({
-    path: 'productId',
-    model: Product,
-    select: `
+    .populate({ path: 'shippingId', model: Delivery, select: '_id method location areas price note' })
+    .populate({
+      path: 'productId',
+      model: Product,
+      select: `
       productName
       description
       category
@@ -43,7 +43,7 @@ const populateAd = (query: any) => {
       sku
       availability
     `
-  });
+    });
 };
 
 
@@ -113,7 +113,7 @@ export const ProductSold = async ({ order, path }: CreateOrderParams) => {
     };
     // Find an existing order matching the conditions
     const existingOrder = await Order.findOne(conditions);
-   // console.log("existingOrder: "+existingOrder)
+    // console.log("existingOrder: "+existingOrder)
     // Declare variables for new order and response message
     let newOrder;
     let response = "Order already exists";
@@ -122,34 +122,34 @@ export const ProductSold = async ({ order, path }: CreateOrderParams) => {
     if (!existingOrder) {
       newOrder = await Order.create({ ...order });
       response = "Order Created";
-     // console.log("newOrder: "+newOrder)
+      // console.log("newOrder: "+newOrder)
       const { productId, size, qty } = newOrder;
       const product = await Product.findById(productId);
       if (!product) {
         throw new Error("Product not found");
       }
-  
+
       // Step 4: Update the stock for the specific size in the features array
       const featureIndex = product.features.findIndex(
-        (feature :any) => feature.size === size
+        (feature: any) => feature.size === size
       );
       if (featureIndex === -1) {
         throw new Error(`Size ${size} not found in product features`);
       }
-  
+
       // Subtract the quantity sold
       product.features[featureIndex].stock -= qty;
-  
+
       // Ensure stock does not go negative
       if (product.features[featureIndex].stock < 0) {
         throw new Error(
           `Insufficient stock for size ${size}. Current stock: ${product.features[featureIndex].stock + qty}`
         );
       }
-  
+
       // Step 5: Save the updated product
       await product.save();
-    } 
+    }
 
     // Revalidate the path for Next.js caching
     await revalidatePath(path);
@@ -171,7 +171,7 @@ export async function updateOrdersByIds(
   firstname: string,
   lastname: string,
   phone: string,
-  shippingId:string
+  shippingId: string
 ) {
   try {
     // Connect to the database
@@ -179,9 +179,8 @@ export async function updateOrdersByIds(
 
     // Perform the batch update
     const updateResponse = await Order.updateMany(
-      { _id: { $in: ids.map((_id) => _id) } }, // Filter for multiple _ids
-      { orderId, referenceId,contact,phone,firstname,lastname,shippingId },
-      { new: true } // Update fields
+      { _id: { $in: ids } },
+      { $set: { orderId, referenceId, contact, phone, firstname, lastname, shippingId } }
     );
     return updateResponse; // Return the response from MongoDB
   } catch (error: any) {
@@ -189,10 +188,10 @@ export async function updateOrdersByIds(
     throw error; // Re-throw error to be handled by the caller
   }
 }
-export async function updatePendingOrdersToSuccessful(orderId: string,phone:string) {
+export async function updatePendingOrdersToSuccessful(orderId: string, phone: string) {
   try {
     // Connect to the database
-    
+
     await connectToDatabase();
 
     // Update orders with status "pending" and matching orderId
@@ -200,18 +199,18 @@ export async function updatePendingOrdersToSuccessful(orderId: string,phone:stri
       { orderId, status: "pending" }, // Matching condition
       { $set: { status: "successful" } } // Fields to update
     );
- // console.log("result: "+result)
- const message="Your have a new order placed on pama.co.ke."
- const smsUrl = `http://107.20.199.106/sms/1/text/query?username=Ezeshatrans&password=5050Martin.com&from=Ezesha&text=${encodeURIComponent(
-  message
-)}&to=${phone}`;
+    // console.log("result: "+result)
+    const message = "Your have a new order placed on pama.co.ke."
+    const smsUrl = `http://107.20.199.106/sms/1/text/query?username=Ezeshatrans&password=5050Martin.com&from=Ezesha&text=${encodeURIComponent(
+      message
+    )}&to=${phone}`;
 
-const requestHeaders = {
-  Accept: 'application/json',
-  'Content-Type': 'application/json',
-};
+    const requestHeaders = {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    };
 
-await axios.get(smsUrl, { headers: requestHeaders });
+    await axios.get(smsUrl, { headers: requestHeaders });
 
     return JSON.parse(JSON.stringify(result)); // Return the update result for further processing
   } catch (error) {
@@ -221,21 +220,21 @@ await axios.get(smsUrl, { headers: requestHeaders });
 }
 
 
-export async function updateProductStock(orderId :string) {
+export async function updateProductStock(orderId: string) {
   try {
     // Step 1: Connect to the database
     await connectToDatabase();
     // Step 2: Fetch the order details
-   // const conditions = {
-   //   $and: [
+    // const conditions = {
+    //   $and: [
     //    { orderId: orderId },
-     //   { status: { $in: ["completed", "successful"] } }, // Match completed or successful status
-     // ],
-   // };
+    //   { status: { $in: ["completed", "successful"] } }, // Match completed or successful status
+    // ],
+    // };
     const conditions = {
       $and: [
         { orderId: orderId },
-        { status: "pending"}, // Match completed or successful status
+        { status: "pending" }, // Match completed or successful status
       ],
     };
     // Step 2: Fetch all orders with the same orderId
@@ -243,7 +242,7 @@ export async function updateProductStock(orderId :string) {
     if (orders.length === 0) {
       console.log("No orders found with the provided orderId");
     }
-   
+
     // Step 3: Process each order
     for (const order of orders) {
       const { productId, size, qty } = order;
@@ -254,12 +253,12 @@ export async function updateProductStock(orderId :string) {
         console.log(`Product not found for productId: ${productId}`);
         continue; // Skip to the next order if the product doesn't exist
       }
-    //  console.log("product: "+product)
+      //  console.log("product: "+product)
       // Step 5: Update the stock for the specific size in the features array
       const featureIndex = product.features.findIndex(
-        (feature:any) => feature.size === size
+        (feature: any) => feature.size === size
       );
-    //  console.log("featureIndex: "+featureIndex)
+      //  console.log("featureIndex: "+featureIndex)
       if (featureIndex === -1) {
         console.log(
           `Size ${size} not found in features for productId: ${productId}`
@@ -269,21 +268,21 @@ export async function updateProductStock(orderId :string) {
 
       // Subtract the quantity sold
       //console.log( product.features[featureIndex].size+": "+ product.features[featureIndex].stock)
-    //  product.features[featureIndex].stock -= qty;
-      
+      //  product.features[featureIndex].stock -= qty;
+
       // Ensure stock does not go negative
       if (product.features[featureIndex].stock > 0) {
         product.features[featureIndex].stock -= qty;
-       // console.log( product.features[featureIndex].size+":NEW : "+ product.features[featureIndex].stock)
+        // console.log( product.features[featureIndex].size+":NEW : "+ product.features[featureIndex].stock)
       }
 
       // Step 6: Save the updated product
       await product.save();
-     // console.log(
-     //   `Stock updated for productId: ${productId}, size: ${size}, qty: ${qty}`
-     // );
+      // console.log(
+      //   `Stock updated for productId: ${productId}, size: ${size}, qty: ${qty}`
+      // );
     }
-   // console.log("Stock updated for all matching orders")
+    // console.log("Stock updated for all matching orders")
     return { success: true, message: "Stock updated for all matching orders" };
   } catch (error) {
     console.error("Error updating product stock:", error);
@@ -294,7 +293,7 @@ export async function updateProductStock(orderId :string) {
 export async function updateDispatchedOrders(_id: string) {
   try {
     // Connect to the database
-    
+
     await connectToDatabase();
 
     // Update orders with status "pending" and matching orderId
@@ -303,7 +302,7 @@ export async function updateDispatchedOrders(_id: string) {
       { status: "completed" },
       { new: true }
     )
-   // console.log(`Updated ${result.modifiedCount} orders to "successful" for orderId: ${orderId}`);
+    // console.log(`Updated ${result.modifiedCount} orders to "successful" for orderId: ${orderId}`);
 
     return result; // Return the update result for further processing
   } catch (error) {
@@ -337,26 +336,26 @@ export async function getOrdersById(_id: string) {
     handleError(error)
   }
 }
-export async function getGraphSales(duration:string) {
+export async function getGraphSales(duration: string) {
   try {
     await connectToDatabase();
-   
-  let groupByFormat;
 
-  // Determine grouping format based on duration
-  switch (duration) {
-    case 'day':
-      groupByFormat = { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } };
-      break;
-    case 'week':
-      groupByFormat = { $isoWeek: "$createdAt" }; // ISO week number
-      break;
-    case 'month':
-      groupByFormat = { $dateToString: { format: "%Y-%m", date: "$createdAt" } };
-      break;
-    default:
-      return {error:"Invalid duration"};
-  }
+    let groupByFormat;
+
+    // Determine grouping format based on duration
+    switch (duration) {
+      case 'day':
+        groupByFormat = { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } };
+        break;
+      case 'week':
+        groupByFormat = { $isoWeek: "$createdAt" }; // ISO week number
+        break;
+      case 'month':
+        groupByFormat = { $dateToString: { format: "%Y-%m", date: "$createdAt" } };
+        break;
+      default:
+        return { error: "Invalid duration" };
+    }
 
     const salesData = await Order.aggregate([
       { $match: { status: { $in: ['completed', 'successful'] } } },
@@ -369,7 +368,7 @@ export async function getGraphSales(duration:string) {
       },
       { $sort: { _id: 1 } }, // Sort by date
     ]);
-   return JSON.parse(JSON.stringify(salesData));
+    return JSON.parse(JSON.stringify(salesData));
   } catch (error) {
     handleError(error)
   }
@@ -377,10 +376,10 @@ export async function getGraphSales(duration:string) {
 export async function getallOders(orderId: string, start: string, end: string, limit: number, page: number) {
   try {
     await connectToDatabase();
-   
+
     const startDate = start ? new Date(start) : null;
     const endDate = end ? new Date(end) : null;
-    
+
     // Build conditions dynamically
     const conditions: any = {};
     if (orderId) {
@@ -407,7 +406,7 @@ export async function getallOders(orderId: string, start: string, end: string, l
 
     // Get the count of documents that match the conditions
     const AdCount = await Order.countDocuments(conditions);
-   return { data: JSON.parse(JSON.stringify(order)), totalPages: Math.ceil(AdCount / limit) }
+    return { data: JSON.parse(JSON.stringify(order)), totalPages: Math.ceil(AdCount / limit) }
   } catch (error) {
     handleError(error)
   }
@@ -455,20 +454,20 @@ export async function getStatusOrders() {
 }
 
 // UPDATE
-export async function getallOdersByuserId(userId: string, limit:number, page:number,status:string) {
+export async function getallOdersByuserId(userId: string, limit: number, page: number, status: string) {
   try {
     await connectToDatabase();
-   // const conditions = { userId: userId }
+    // const conditions = { userId: userId }
     const conditions = { $and: [{ userId: userId }, { status: status }] };
 
     const skipAmount = (Number(page) - 1) * limit
-   // const bookmark = await Bookmark.find(conditions);
-   const order = await populateAd(Order.find(conditions)
-   .skip(skipAmount)
-   .limit(limit));
-   const AdCount = await Order.countDocuments(conditions)
+    // const bookmark = await Bookmark.find(conditions);
+    const order = await populateAd(Order.find(conditions)
+      .skip(skipAmount)
+      .limit(limit));
+    const AdCount = await Order.countDocuments(conditions)
 
-   return { data: JSON.parse(JSON.stringify(order)), totalPages: Math.ceil(AdCount / limit) }
+    return { data: JSON.parse(JSON.stringify(order)), totalPages: Math.ceil(AdCount / limit) }
   } catch (error) {
     handleError(error)
   }
