@@ -1,12 +1,7 @@
 import NavItems from "@/components/shared/NavItems";
-<<<<<<< HEAD
 
 import { SearchParamProps } from "@/types";
 //import DashboardMyads from "@/components/shared/dashboardMyads";
-
-=======
-import { SearchParamProps } from "@/types";
->>>>>>> afb95b6 (first commit)
 import Navbar from "@/components/shared/navbar";
 import { getUserById, getUserDetails } from "@/lib/actions/user.actions";
 import { auth } from "@clerk/nextjs/server";
