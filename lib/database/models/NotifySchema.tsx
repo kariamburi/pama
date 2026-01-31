@@ -1,19 +1,15 @@
-import mongoose, { Document, Schema, model, models } from "mongoose";
+import { Schema, model, models, Document, Types } from "mongoose";
 
 export interface INotify extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   contact: string;
+  subscribedAt: Date;
 }
-const NotifySchema = new Schema({
-  contact: {
-    type: String,
-    required: true,
-    unique: true,
-  },
+
+const NotifySchema = new Schema<INotify>({
+  contact: { type: String, required: true, unique: true },
   subscribedAt: { type: Date, default: Date.now },
 });
 
-//delete mongoose.models.Subscriber;
-const Notify = models.Notify || model("Notify", NotifySchema);
-
+const Notify = models.Notify || model<INotify>("Notify", NotifySchema);
 export default Notify;

@@ -1,8 +1,8 @@
-import mongoose, { Document, Schema, model, models } from "mongoose";
+import mongoose, { Document, Schema, Types, model, models } from "mongoose";
 
 
 export interface IDelivery extends Document {
- _id:string;
+  _id: Types.ObjectId;
   method: string;
   location?: string;
   areas?: string[];
@@ -13,7 +13,7 @@ const DeliverySchema = new Schema({
   method: { type: String, required: true },
   location: { type: String },
   areas: { type: [String] },
-  price: { type: String , required: true},
+  price: { type: String, required: true },
   note: { type: String },
 })
 //delete mongoose.models.Delivery;

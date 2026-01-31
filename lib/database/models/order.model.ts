@@ -1,13 +1,13 @@
-import mongoose, { Document, Schema, model, models } from "mongoose";
+import mongoose, { Document, Schema, Types, model, models } from "mongoose";
 
 export interface IOrder extends Document {
-  _id: string;
+  _id: Types.ObjectId;
   userId: string;
   productId: string;
   qty: number;
   buyprice: number;
   price: number;
-  size:string;
+  size: string;
   status: string;
   orderId: string;
   referenceId: string;
@@ -29,11 +29,11 @@ const OrderSchema = new Schema({
   referenceId: { type: String }, // Default value for referenceId
   contact: { type: String },
   firstname: { type: String },
-  lastname: { type: String},
+  lastname: { type: String },
   phone: { type: String },
   shippingId: { type: Schema.Types.ObjectId, ref: 'Delivery' },
 },
-{ timestamps: true })
+  { timestamps: true })
 //delete mongoose.models.Order;
 const Order = models.Order || model('Order', OrderSchema);
 
