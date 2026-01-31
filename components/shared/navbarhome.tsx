@@ -26,7 +26,6 @@ import {
 } from "../ui/hover-card";
 import { Separator } from "../ui/separator";
 import { Button } from "../ui/button";
-import { collection, onSnapshot, query, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db } from "@/lib/firebase";
 import Image from "next/image";
