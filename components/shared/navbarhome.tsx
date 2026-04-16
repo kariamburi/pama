@@ -124,8 +124,8 @@ export default function Navbarhome({ userstatus, userId, comp }: NavProps) {
             )}
             <div className="rounded-full overflow-hidden">
               <Image
-                src={comp.imageUrl ?? "/assets/images/logo.png"}
-                alt={comp.businessname ?? "logo"}
+                src={comp?.imageUrl ?? "/assets/images/logo.png"}
+                alt={comp?.businessname ?? "logo"}
                 onClick={() => router.push("/")}
                 className="hover:cursor-pointer"
                 width={36}

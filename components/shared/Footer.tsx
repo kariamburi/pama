@@ -23,20 +23,19 @@ const Footer = ({ comp }: MobileProps) => {
   };
   const currentYear = new Date().getFullYear();
   // Format working days
-  const workingDays = `${comp.businessworkingdays[0]} to ${
-    comp.businessworkingdays[comp.businessworkingdays.length - 1]
-  }`;
+  const workingDays = `${comp?.businessworkingdays[0]} to ${comp?.businessworkingdays[comp?.businessworkingdays.length - 1]
+    }`;
 
   // Format business hours
-  const hours = comp.businesshours[0];
-  const openTime = `${parseInt(hours.openHour, 10)}:${hours.openMinute.padStart(
+  const hours = comp?.businesshours[0];
+  const openTime = `${parseInt(hours?.openHour, 10)}:${hours?.openMinute.padStart(
     2,
     "0"
-  )} ${hours.openHour < 12 ? "AM" : "PM"}`;
-  const closeTime = `${hours.closeHour % 12 || 12}:${hours.closeMinute.padStart(
+  )} ${hours?.openHour < 12 ? "AM" : "PM"}`;
+  const closeTime = `${hours?.closeHour % 12 || 12}:${hours?.closeMinute.padStart(
     2,
     "0"
-  )} ${hours.closeHour < 12 || hours.closeHour === 24 ? "AM" : "PM"}`;
+  )} ${hours?.closeHour < 12 || hours?.closeHour === 24 ? "AM" : "PM"}`;
   const [input, setInput] = useState("");
   const [message, setMessage] = useState("");
 
@@ -66,9 +65,9 @@ const Footer = ({ comp }: MobileProps) => {
       <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
         <div>
           <h3 className="mb-3 text-slate-950 font-bold">Find Us</h3>
-          <p className="">{comp.businessname}</p>
+          <p className="">{comp?.businessname}</p>
           <p className="">
-            <strong>Location:</strong> {comp.businessaddress}
+            <strong>Location:</strong> {comp?.businessaddress}
           </p>
           <p className="">
             <strong>Working Days:</strong> {workingDays}
@@ -78,9 +77,9 @@ const Footer = ({ comp }: MobileProps) => {
           </p>
 
           <p className=" flex items-center">
-            <a href={`tel:${comp.phone}`} className="flex items-center">
+            <a href={`tel:${comp?.phone}`} className="flex items-center">
               <CallIcon className="w-5 h-5 mr-2 " />
-              {comp.phone}
+              {comp?.phone}
             </a>
           </p>
         </div>
@@ -116,17 +115,17 @@ const Footer = ({ comp }: MobileProps) => {
           <p className="mb-3 text-slate-950 font-bold">Our resources</p>
           <ul className="space-y-4">
             <li className="transition-colors hover:underline hover:cursor-pointer">
-              <a href={comp.facebook ?? "#"} className="hover:underline">
+              <a href={comp?.facebook ?? "#"} className="hover:underline">
                 Our FB
               </a>
             </li>
             <li className="transition-colors  hover:underline hover:cursor-pointer">
-              <a href={comp.instagram ?? "#"} className="hover:underline">
+              <a href={comp?.instagram ?? "#"} className="hover:underline">
                 Our Instagram
               </a>
             </li>
             <li className="transition-colors hover:underline hover:cursor-pointer">
-              <a href={comp.tiktok ?? "#"} className="hover:underline  ">
+              <a href={comp?.tiktok ?? "#"} className="hover:underline  ">
                 Our Tiktok
               </a>
             </li>

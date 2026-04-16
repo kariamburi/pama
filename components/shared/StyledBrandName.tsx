@@ -7,7 +7,7 @@ const StyledBrandName = ({ comp }: MobileProps) => {
   return (
     <h1 className="text-lg lg:text-xl">
       <span className="text-[#000000] font-bold">
-        {comp.businessname ?? "Business Name"}
+        {comp?.businessname ?? "Business Name"}
       </span>
     </h1>
   );

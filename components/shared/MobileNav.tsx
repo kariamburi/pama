@@ -50,8 +50,8 @@ const MobileNav = ({ userstatus, userId, comp }: MobileProps) => {
             <div className="flex items-center">
               <div className="rounded-full overflow-hidden">
                 <Image
-                  src={comp.imageUrl ?? "/assets/images/logo.png"}
-                  alt={comp.businessname ?? "logo"}
+                  src={comp?.imageUrl ?? "/assets/images/logo.png"}
+                  alt={comp?.businessname ?? "logo"}
                   width={26}
                   height={26}
                 />

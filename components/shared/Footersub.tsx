@@ -24,6 +24,7 @@ const Footersub = () => {
                 About
               </Link>
             </div>
+
             <div>|</div>
             <div className="transition-colors text-[10px] hover:text-emerald-600 hover:cursor-pointer">
               <Link

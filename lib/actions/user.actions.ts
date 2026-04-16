@@ -17,54 +17,45 @@ export async function createUser(user: CreateUserParams) {
     const newUser = await User.create(user)
     return JSON.parse(JSON.stringify(newUser))
   } catch (error) {
-   handleError(error)
+    handleError(error)
   }
 }
 export async function createUserr(user: CreateUserParams) {
   try {
     await connectToDatabase()
 
-    const newUser = await User.create(user, { verified: [{accountverified: false, verifieddate: Date()}]},)
+    const newUser = await User.create(user, { verified: [{ accountverified: false, verifieddate: Date() }] },)
     return JSON.parse(JSON.stringify(newUser))
   } catch (error) {
-   handleError(error)
+    handleError(error)
   }
 }
 export async function getUserDetails(userId?: string) {
   try {
-    // Connect to the database
     await connectToDatabase();
 
-    let user;
-    let adminUser;
+    let user = null;
 
     if (userId) {
-      // Fetch the user by ID
       user = await User.findById(userId);
 
       if (!user) {
-        throw new Error('User not found');
+        throw new Error("User not found");
       }
     }
 
-    // Fetch the Admin user
-    adminUser = await User.findOne({ status: 'Admin' });
-
-    if (!adminUser) {
-      throw new Error('Admin user not found');
-    }
+    const adminUser = await User.findOne({ status: "Admin" });
 
     return JSON.parse(
       JSON.stringify({
-        user: user || null, // Include user details if provided
-        adminUser, // Always include Admin user details
+        user,
+        adminUser: adminUser || null,
       })
     );
   } catch (error) {
     handleError(error);
   }
 }
-
 export async function getUserById(userId: string) {
   try {
     await connectToDatabase()
@@ -73,49 +64,49 @@ export async function getUserById(userId: string) {
 
     if (!user) throw new Error('User not found')
 
-// Fetch verification fee
-//const verifyData = await Verifies.findOne() // adjust if you have a different criteria
-const fee =  500
-//console.log(fee);
-return JSON.parse(JSON.stringify({ ...user.toObject(), fee }))
+    // Fetch verification fee
+    //const verifyData = await Verifies.findOne() // adjust if you have a different criteria
+    const fee = 500
+    //console.log(fee);
+    return JSON.parse(JSON.stringify({ ...user.toObject(), fee }))
 
 
 
-  //  return JSON.parse(JSON.stringify(user))
+    //  return JSON.parse(JSON.stringify(user))
   } catch (error) {
-   handleError(error)
+    handleError(error)
   }
 }
 export async function getAdminProfile() {
   try {
     await connectToDatabase()
-const condition ={email:"paul.irungu@gmail.com"};
+    const condition = { email: "paul.irungu@gmail.com" };
     const comp = await User.findOne(condition)
 
     if (!comp) throw new Error('User not found')
 
-// Fetch verification fee
-return JSON.parse(JSON.stringify({comp }))
+    // Fetch verification fee
+    return JSON.parse(JSON.stringify({ comp }))
 
   } catch (error) {
-   handleError(error)
+    handleError(error)
   }
 }
-export async function getAllUsers( limit: number, page: number) {
+export async function getAllUsers(limit: number, page: number) {
   try {
     await connectToDatabase()
 
-const skipAmount = (Number(page) - 1) * limit;
-// Fetch filtered orders with pagination
-const user = await User.find()
-    .skip(skipAmount)
-    .limit(limit);
-// Get the count of documents that match the conditions
-const AdCount = await User.countDocuments();
-//console.log({ data: JSON.parse(JSON.stringify(user)), totalPages: Math.ceil(AdCount / limit) })
-return { data: JSON.parse(JSON.stringify(user)), totalPages: Math.ceil(AdCount / limit) }
+    const skipAmount = (Number(page) - 1) * limit;
+    // Fetch filtered orders with pagination
+    const user = await User.find()
+      .skip(skipAmount)
+      .limit(limit);
+    // Get the count of documents that match the conditions
+    const AdCount = await User.countDocuments();
+    //console.log({ data: JSON.parse(JSON.stringify(user)), totalPages: Math.ceil(AdCount / limit) })
+    return { data: JSON.parse(JSON.stringify(user)), totalPages: Math.ceil(AdCount / limit) }
   } catch (error) {
-   handleError(error)
+    handleError(error)
   }
 }
 
@@ -163,7 +154,7 @@ export async function updateUserToken(userId: string, user: UpdateUserToken) {
 export async function updateUserFromSettings({ user, path }: UpdateUserSetingsParams) {
   try {
     await connectToDatabase()
-//console.log(user);
+    //console.log(user);
     const updatedUser = await User.findByIdAndUpdate(user._id, user, { new: true })
 
     if (!updatedUser) throw new Error('User update failed')
@@ -185,7 +176,7 @@ export async function deleteUser(clerkId: string) {
     }
 
     // Unlink relationships
-  
+
 
     // Delete user
     const deletedUser = await User.findByIdAndDelete(userToDelete._id)
@@ -200,13 +191,13 @@ export async function deleteUser(clerkId: string) {
 export async function updateVerification(userId: string) {
   try {
     await connectToDatabase();
-//console.log("update userId: "+userId+" Date:"+Date());
+    //console.log("update userId: "+userId+" Date:"+Date());
     const updatedUserVerifiction = await User.findOneAndUpdate(
       { _id: userId },
-      { verified: [{accountverified: true, verifieddate: Date()}]},
+      { verified: [{ accountverified: true, verifieddate: Date() }] },
       { new: true }
     )
-    if(!updatedUserVerifiction) throw new Error("User Verification update failed");
+    if (!updatedUserVerifiction) throw new Error("User Verification update failed");
 
     return JSON.parse(JSON.stringify(updatedUserVerifiction));
   } catch (error) {
