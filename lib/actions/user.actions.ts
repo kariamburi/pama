@@ -78,7 +78,7 @@ export async function getUserById(userId: string) {
 export async function getAdminProfile() {
   try {
     await connectToDatabase()
-    const condition = { email: "paul.irungu@gmail.com" };
+    const condition = { email: "mwanjiku298@gmail.com" };
     const comp = await User.findOne(condition)
 
     if (!comp) throw new Error('User not found')
