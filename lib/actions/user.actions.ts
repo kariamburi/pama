@@ -38,17 +38,15 @@ export async function getUserDetails(userId?: string) {
 
     if (userId) {
       user = await User.findById(userId);
-
-      if (!user) {
-        throw new Error("User not found");
-      }
+      // ❌ REMOVE this:
+      // if (!user) throw new Error("User not found");
     }
 
     const adminUser = await User.findOne({ status: "Admin" });
 
     return JSON.parse(
       JSON.stringify({
-        user,
+        user: user || null,
         adminUser: adminUser || null,
       })
     );

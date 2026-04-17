@@ -57,24 +57,32 @@ const UserSchema = new Schema({
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   photo: { type: String, required: true },
-  status: { type: String, required: true },
-  businessname: { type: String }, // Optional
-  aboutbusiness: { type: String }, // Optional
-  businessaddress: { type: String }, // Optional
-  latitude: { type: String }, // Optional
-  longitude: { type: String }, // Optional
-  businesshours: { type: [BusinesshoursSchema], default: [] }, // Optional
-  businessworkingdays: { type: [String], default: [] }, // Optional
-  phone: { type: String }, // Optional
-  whatsapp: { type: String }, // Optional
-  website: { type: String }, // Optional
-  facebook: { type: String }, // Optional
-  twitter: { type: String }, // Optional
-  instagram: { type: String }, // Optional
-  tiktok: { type: String }, // Optional
-  verified: { type: [VerifiedSchema], required: true }, // Optional
-  imageUrl: { type: String }, // Optional
-  fcmToken: { type: Number },
+  status: { type: String, required: true, default: "User" },
+
+  businessname: { type: String, default: "" },
+  aboutbusiness: { type: String, default: "" },
+  businessaddress: { type: String, default: "" },
+  latitude: { type: String, default: "" },
+  longitude: { type: String, default: "" },
+
+  businesshours: { type: [BusinesshoursSchema], default: [] },
+  businessworkingdays: { type: [String], default: [] },
+
+  phone: { type: String, default: "" },
+  whatsapp: { type: String, default: "" },
+  website: { type: String, default: "" },
+  facebook: { type: String, default: "" },
+  twitter: { type: String, default: "" },
+  instagram: { type: String, default: "" },
+  tiktok: { type: String, default: "" },
+
+  verified: {
+    type: [VerifiedSchema],
+    default: [{ accountverified: false, verifieddate: new Date() }],
+  },
+
+  imageUrl: { type: String, default: "" },
+  fcmToken: { type: String, default: "" },
 });
 
 const User = models.User || model('User', UserSchema);

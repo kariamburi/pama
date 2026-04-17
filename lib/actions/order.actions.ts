@@ -13,6 +13,7 @@ import Order from "../database/models/order.model"
 import { ObjectId } from "mongodb";
 import Delivery from "../database/models/delivery.model"
 import axios from "axios"
+import { Types } from "mongoose"
 
 const populateAd = (query: any) => {
   return query
@@ -454,22 +455,34 @@ export async function getStatusOrders() {
 }
 
 // UPDATE
-export async function getallOdersByuserId(userId: string, limit: number, page: number, status: string) {
+export async function getallOdersByuserId(
+  userId: string,
+  limit: number,
+  page: number,
+  status: string
+) {
   try {
     await connectToDatabase();
-    // const conditions = { userId: userId }
-    const conditions = { $and: [{ userId: userId }, { status: status }] };
 
-    const skipAmount = (Number(page) - 1) * limit
-    // const bookmark = await Bookmark.find(conditions);
-    const order = await populateAd(Order.find(conditions)
-      .skip(skipAmount)
-      .limit(limit));
-    const AdCount = await Order.countDocuments(conditions)
+    if (!userId || !Types.ObjectId.isValid(userId)) {
+      return { data: [], totalPages: 0 };
+    }
 
-    return { data: JSON.parse(JSON.stringify(order)), totalPages: Math.ceil(AdCount / limit) }
+    const conditions = { $and: [{ userId }, { status }] };
+    const skipAmount = (Number(page) - 1) * limit;
+
+    const order = await populateAd(
+      Order.find(conditions).skip(skipAmount).limit(limit)
+    );
+
+    const AdCount = await Order.countDocuments(conditions);
+
+    return {
+      data: JSON.parse(JSON.stringify(order)),
+      totalPages: Math.ceil(AdCount / limit),
+    };
   } catch (error) {
-    handleError(error)
+    handleError(error);
   }
 }
 // DELETE
