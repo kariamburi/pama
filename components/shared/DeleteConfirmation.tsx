@@ -1,8 +1,7 @@
 "use client";
 
 import { useTransition } from "react";
-import { usePathname } from "next/navigation";
-import Image from "next/image";
+import { usePathname, useRouter } from "next/navigation";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import {
   AlertDialog,
@@ -15,50 +14,82 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
 import { deleteProduct } from "@/lib/actions/ad.product";
-type deleteProps = {
+import { useToast } from "../ui/use-toast";
+
+type DeleteProps = {
   adId: string;
-  imageUrls: string[];
+  imageUrls?: string[];
 };
-export const DeleteConfirmation = ({ adId, imageUrls }: deleteProps) => {
+
+export const DeleteConfirmation = ({ adId, imageUrls = [] }: DeleteProps) => {
   const pathname = usePathname();
-  let [isPending, startTransition] = useTransition();
-  let deleteImages: string[] = [];
-  for (let index = 0; index < imageUrls.length; index++) {
-    const image = imageUrls[index];
-    const url = new URL(image);
-    const filename = url.pathname.split("/").pop();
-    if (filename) {
-      deleteImages.push(filename);
-    }
-  }
+  const router = useRouter();
+  const { toast } = useToast();
+  const [isPending, startTransition] = useTransition();
+
+  const deleteImages = imageUrls
+    .map((image) => {
+      try {
+        const url = new URL(image);
+        return url.pathname.split("/").pop();
+      } catch {
+        return null;
+      }
+    })
+    .filter(Boolean) as string[];
+
+  const handleDelete = () => {
+    startTransition(async () => {
+      const res: any = await deleteProduct({
+        adId,
+        deleteImages,
+        path: pathname,
+      });
+
+      if (res?.ok) {
+        toast({
+          title: "Deleted",
+          description: "Product deleted successfully",
+          className: "bg-[#30AF5B] text-white",
+        });
+
+        router.refresh();
+      } else {
+        toast({
+          variant: "destructive",
+          title: "Failed",
+          description: res?.message || "Product delete failed",
+        });
+      }
+    });
+  };
 
   return (
     <AlertDialog>
-      <AlertDialogTrigger>
-        <div className="cursor-pointer hover:text-red-400">
+      <AlertDialogTrigger asChild>
+        <button type="button" className="cursor-pointer hover:text-red-500">
           <DeleteOutlineOutlinedIcon />
-        </div>
+        </button>
       </AlertDialogTrigger>
 
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you sure you want to delete?</AlertDialogTitle>
-          <AlertDialogDescription className="p-regular-16 text-grey-600">
-            This will permanently delete this Product
+          <AlertDialogDescription>
+            This will permanently delete this product.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel disabled={isPending}>Cancel</AlertDialogCancel>
 
           <AlertDialogAction
-            onClick={() =>
-              startTransition(async () => {
-                await deleteProduct({ adId, deleteImages, path: pathname });
-              })
-            }
+            disabled={isPending}
+            onClick={(e) => {
+              e.preventDefault();
+              handleDelete();
+            }}
           >
             {isPending ? "Deleting..." : "Delete"}
           </AlertDialogAction>

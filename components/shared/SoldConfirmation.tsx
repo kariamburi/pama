@@ -45,6 +45,11 @@ export const SoldConfirmation = ({
   }
 
   const handleMarkSold = async () => {
+    if (!product?._id) {
+      alert("Product ID missing.");
+      return;
+    }
+
     if (!soldPrice || isNaN(Number(soldPrice)) || Number(soldPrice) <= 0) {
       alert("Please enter a valid sold price.");
       return;
@@ -52,11 +57,11 @@ export const SoldConfirmation = ({
 
     const response = await ProductSold({
       order: {
-        userId: userId,
+        userId,
         productId: product._id,
         size: selectedSize,
         buyprice: product.buyprice,
-        price: Number(soldPrice), // Use user-inputted price
+        price: Number(soldPrice),
         qty: quantity,
         status: "completed",
         orderId: generateRandomOrderId(),
@@ -65,10 +70,12 @@ export const SoldConfirmation = ({
       path: pathname,
     });
 
-    if (response === "Order Created") {
-      const newStock = instock - quantity;
-      setInstock(newStock);
-      onStockUpdate(selectedSize, newStock);
+    if (response?.ok) {
+      setInstock(response.newStock);
+      onStockUpdate(selectedSize, response.newStock);
+      setSoldPrice("");
+    } else {
+      alert(response?.message || "Failed to mark as sold.");
     }
   };
 
@@ -113,7 +120,13 @@ export const SoldConfirmation = ({
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
 
-          <AlertDialogAction onClick={() => startTransition(handleMarkSold)}>
+          <AlertDialogAction
+            disabled={isPending}
+            onClick={(e) => {
+              e.preventDefault();
+              startTransition(handleMarkSold);
+            }}
+          >
             {isPending ? "Processing Order..." : "Confirm Sold"}
           </AlertDialogAction>
         </AlertDialogFooter>

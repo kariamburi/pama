@@ -7,7 +7,7 @@ import User from '@/lib/database/models/user.model'
 
 import { handleError } from '@/lib/utils'
 import { UTApi } from "uploadthing/server"
-import mongoose, { Document, Schema, model, models  } from "mongoose";
+import mongoose, { Document, Schema, model, models } from "mongoose";
 //const moment = require('moment');
 import {
   CreateAdParams,
@@ -39,7 +39,7 @@ import Product from '../database/models/product.model'
 const populateAd = (query: any) => {
   return query
     .populate({ path: 'organizer', model: User, select: '_id clerkId email firstName lastName photo businessname aboutbusiness businessaddress latitude longitude businesshours businessworkingdays phone whatsapp website facebook twitter instagram tiktok imageUrl verified fcmToken' })
- 
+
 }
 
 // CREATE
@@ -47,14 +47,14 @@ export async function createProduct({ userId, product, path }: CreateProductPara
   try {
     await connectToDatabase()
 
-   const organizer = await User.findById(userId)
-    
+    const organizer = await User.findById(userId)
+
     if (!organizer) throw new Error('Organizer not found')
-    
-    const newProduct = await Product.create({ ...product, organizer: userId})
-   
+
+    const newProduct = await Product.create({ ...product, organizer: userId })
+
     revalidatePath(path)
-   
+
     return JSON.parse(JSON.stringify(newProduct))
   } catch (error) {
     handleError(error)
@@ -62,113 +62,113 @@ export async function createProduct({ userId, product, path }: CreateProductPara
 }
 // GET ALL Ad
 
-export async function getAllProducts({ query, limit = 20, page=1,category,gender,kids,product,sortby,material,occassion,color,price}: GetAllProductsParams) {
+export async function getAllProducts({ query, limit = 20, page = 1, category, gender, kids, product, sortby, material, occassion, color, price }: GetAllProductsParams) {
   try {
     await connectToDatabase()
-   
+
     const titleCondition = query ? { productName: { $regex: query, $options: 'i' } } : {}
     const categoryCondition = category ? { category: { $regex: category, $options: 'i' } } : {}
-   const genderCondition = gender ? { genderAgeGroup: { $regex: gender, $options: 'i' } } : {};
-   let kidsCondition={};
-   if(kids){
-    const group= gender+"-"+kids;
-     kidsCondition = kids ? { genderAgeGroup: { $regex: group, $options: 'i' } } : {};
-   }
-  const productCondition = product ? { subCategory: { $regex: product, $options: 'i' } } : {};
-  
- // const materialCondition = material ? { material: { $regex: material, $options: 'i' } } : {};
+    const genderCondition = gender ? { genderAgeGroup: { $regex: gender, $options: 'i' } } : {};
+    let kidsCondition = {};
+    if (kids) {
+      const group = gender + "-" + kids;
+      kidsCondition = kids ? { genderAgeGroup: { $regex: group, $options: 'i' } } : {};
+    }
+    const productCondition = product ? { subCategory: { $regex: product, $options: 'i' } } : {};
 
-  const materialArray = material ? material.split(",") : [];
-  //console.log(materialArray)
-const materialCondition = materialArray.length
-  ? { fabricCareInstructions: { $in: materialArray } }
-  : {};
- 
-  const occassionArray = occassion ? occassion.split(",") : [];
-  //console.log(materialArray)
-const occassionCondition = occassionArray.length
-  ? { occasion: { $in: occassionArray } }
-  : {};
- 
-  const colorArray = color ? color.split(",") : [];
-// Create a regex condition for each color to match subcolors
-const colorCondition = colorArray.length
-  ? { color: { $in: colorArray.map(c => new RegExp(c, "i")) } } // "i" makes it case-insensitive
-  : {};
-  
+    // const materialCondition = material ? { material: { $regex: material, $options: 'i' } } : {};
+
+    const materialArray = material ? material.split(",") : [];
+    //console.log(materialArray)
+    const materialCondition = materialArray.length
+      ? { fabricCareInstructions: { $in: materialArray } }
+      : {};
+
+    const occassionArray = occassion ? occassion.split(",") : [];
+    //console.log(materialArray)
+    const occassionCondition = occassionArray.length
+      ? { occasion: { $in: occassionArray } }
+      : {};
+
+    const colorArray = color ? color.split(",") : [];
+    // Create a regex condition for each color to match subcolors
+    const colorCondition = colorArray.length
+      ? { color: { $in: colorArray.map(c => new RegExp(c, "i")) } } // "i" makes it case-insensitive
+      : {};
+
     const [minPrice, maxPrice] = price.split("-");
     const priceCondition = minPrice && maxPrice ? { price: { $gte: parseInt(minPrice), $lte: parseInt(maxPrice) } } : {}
-   
- const conditions = {
-  $and: [titleCondition,categoryCondition,genderCondition,kidsCondition,productCondition, materialCondition,occassionCondition,colorCondition,priceCondition],
-}
-  let trendingStatus="Bestsellers";
+
+    const conditions = {
+      $and: [titleCondition, categoryCondition, genderCondition, kidsCondition, productCondition, materialCondition, occassionCondition, colorCondition, priceCondition],
+    }
+    let trendingStatus = "Bestsellers";
     const skipAmount = (page - 1) * limit
-    let AdQuery:any=[];
-    if(sortby==="Recommeded"){
+    let AdQuery: any = [];
+    if (sortby === "Recommeded") {
       AdQuery = Product.find(conditions)
-         .sort({ createdAt: 'desc' })
-         .skip(skipAmount)
-         .limit(limit)
-   }
-   else if(sortby==="New Arrivals"){
-    trendingStatus="New Arrivals";
-    const oneWeekAgo = new Date();
-  oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // Calculate the date one week ago
+        .sort({ createdAt: 'desc' })
+        .skip(skipAmount)
+        .limit(limit)
+    }
+    else if (sortby === "New Arrivals") {
+      trendingStatus = "New Arrivals";
+      const oneWeekAgo = new Date();
+      oneWeekAgo.setDate(oneWeekAgo.getDate() - 7); // Calculate the date one week ago
 
-  AdQuery = Product.find({
-    ...conditions,
-    createdAt: { $gte: oneWeekAgo }, // Add condition to filter products created in the last 7 days
-  })
-    .sort({ createdAt: 'desc' }) // Sort by creation date in descending order
-    .skip(skipAmount) // Pagination: Skip the specified number of documents
-    .limit(limit); // Pagination: Limit the number of results
-}
-else if(sortby==="Bestsellers"){
- 
-  AdQuery = Product.find(conditions)
-     .sort({ views: -1 })
-     .skip(skipAmount)
-     .limit(limit)
-} else if(sortby==="Trending Now"){
-  trendingStatus="Trending Now";
-  AdQuery = Product.find(conditions)
-     .sort({ createdAt: 'asc' })
-     .skip(skipAmount)
-     .limit(limit)
-}
+      AdQuery = Product.find({
+        ...conditions,
+        createdAt: { $gte: oneWeekAgo }, // Add condition to filter products created in the last 7 days
+      })
+        .sort({ createdAt: 'desc' }) // Sort by creation date in descending order
+        .skip(skipAmount) // Pagination: Skip the specified number of documents
+        .limit(limit); // Pagination: Limit the number of results
+    }
+    else if (sortby === "Bestsellers") {
 
-else if(sortby==="Lowest Price"){
-  AdQuery = Product.find(conditions)
-  .sort({ price: 'asc' })
-  .skip(skipAmount)
-  .limit(limit)
-}else if(sortby==="Highest Price"){
-  AdQuery = Product.find(conditions)
- .sort({ price: 'desc' })
-  .skip(skipAmount)
-  .limit(limit)
-}else{
-  AdQuery = Product.find(conditions)
-      .sort({ createdAt: 'desc' })
-      .skip(skipAmount)
-      .limit(limit)
-}
-  
+      AdQuery = Product.find(conditions)
+        .sort({ views: -1 })
+        .skip(skipAmount)
+        .limit(limit)
+    } else if (sortby === "Trending Now") {
+      trendingStatus = "Trending Now";
+      AdQuery = Product.find(conditions)
+        .sort({ createdAt: 'asc' })
+        .skip(skipAmount)
+        .limit(limit)
+    }
+
+    else if (sortby === "Lowest Price") {
+      AdQuery = Product.find(conditions)
+        .sort({ price: 'asc' })
+        .skip(skipAmount)
+        .limit(limit)
+    } else if (sortby === "Highest Price") {
+      AdQuery = Product.find(conditions)
+        .sort({ price: 'desc' })
+        .skip(skipAmount)
+        .limit(limit)
+    } else {
+      AdQuery = Product.find(conditions)
+        .sort({ createdAt: 'desc' })
+        .skip(skipAmount)
+        .limit(limit)
+    }
 
 
-      const Products = await populateAd(AdQuery);
-   
-      const ProductCount = await Product.countDocuments(conditions)
-      const totalProducts = await Product.countDocuments();
-   
-      return {
-        data: JSON.parse(JSON.stringify(Products)),
-        trendingStatus: trendingStatus,
-        totalPages: Math.ceil(ProductCount / limit),
-        totalProducts: totalProducts,
-      }
-    
+
+    const Products = await populateAd(AdQuery);
+
+    const ProductCount = await Product.countDocuments(conditions)
+    const totalProducts = await Product.countDocuments();
+
+    return {
+      data: JSON.parse(JSON.stringify(Products)),
+      trendingStatus: trendingStatus,
+      totalPages: Math.ceil(ProductCount / limit),
+      totalProducts: totalProducts,
+    }
+
   } catch (error) {
     handleError(error)
   }
@@ -208,8 +208,8 @@ export async function getTotalProducts() {
     throw new Error('Unable to fetch product totals');
   }
 }
-export async function getTrendingProducts(timeFrame:string) {
-  
+export async function getTrendingProducts(timeFrame: string) {
+
   const endDate = new Date();
   let startDate = new Date(); // Initialize startDate as a Date object.
 
@@ -233,11 +233,11 @@ export async function getTrendingProducts(timeFrame:string) {
   })
     .sort({
       views: -1,
-    //  whatsapp: -1,
-     // bookmarked: -1,
-     // shared: -1,
-     // inquiries: -1,
-     // call: -1,
+      //  whatsapp: -1,
+      // bookmarked: -1,
+      // shared: -1,
+      // inquiries: -1,
+      // call: -1,
     })
     .limit(3); // Limit to top 10 products
 
@@ -256,17 +256,17 @@ export async function getRelatedProductsByCategory({
     await connectToDatabase()
 
     const skipAmount = (Number(page) - 1) * limit
-    const conditions = { $and: [{ category: category }, { subCategory: subCategory }, { genderAgeGroup: genderAgeGroup }, { occasion: occasion },   { _id: { $ne: productId } }] }
+    const conditions = { $and: [{ category: category }, { subCategory: subCategory }, { genderAgeGroup: genderAgeGroup }, { occasion: occasion }, { _id: { $ne: productId } }] }
 
     const AdQuery = Product.find(conditions)
-    //  .sort({ createdAt: 'desc' })
+      //  .sort({ createdAt: 'desc' })
       .sort({ priority: -1, createdAt: -1 })
       .skip(skipAmount)
       .limit(limit)
 
     const Ads = await populateAd(AdQuery)
     const AdCount = await Product.countDocuments(conditions)
-//console.log(JSON.parse(JSON.stringify(Ads)))
+    //console.log(JSON.parse(JSON.stringify(Ads)))
     return { data: JSON.parse(JSON.stringify(Ads)), totalPages: Math.ceil(AdCount / limit) }
   } catch (error) {
     handleError(error)
@@ -316,14 +316,14 @@ export async function updateProduct({ userId, product, path }: UpdateProductPara
 export async function updateview({ _id, views, path }: UpdateViewsParams) {
   try {
     await connectToDatabase();
-  
+
     // Find the category by its ID and update the name field only
     const updateAdViews = await Product.findByIdAndUpdate(
       _id,
       { views }, // Update only the name field
       { new: true }
     );
-  
+
     // Revalidate the path (assuming it's a separate function)
     revalidatePath(path);
 
@@ -339,14 +339,14 @@ export async function updateview({ _id, views, path }: UpdateViewsParams) {
 export async function updatecalls({ _id, calls, path }: UpdateCallsParams) {
   try {
     await connectToDatabase();
-    
+
     // Find the category by its ID and update the name field only
     const updateAdCalls = await Product.findByIdAndUpdate(
       _id,
       { calls }, // Update only the name field
       { new: true }
     );
-    
+
     // Revalidate the path (assuming it's a separate function)
     revalidatePath(path);
 
@@ -362,14 +362,14 @@ export async function updatecalls({ _id, calls, path }: UpdateCallsParams) {
 export async function updatewhatsapp({ _id, whatsapp, path }: UpdateWhatsappParams) {
   try {
     await connectToDatabase();
-    
+
     // Find the category by its ID and update the name field only
     const updateAdwhatsapp = await Product.findByIdAndUpdate(
       _id,
       { whatsapp }, // Update only the name field
       { new: true }
     );
-    
+
     // Revalidate the path (assuming it's a separate function)
     revalidatePath(path);
 
@@ -385,14 +385,14 @@ export async function updatewhatsapp({ _id, whatsapp, path }: UpdateWhatsappPara
 export async function updateinquiries({ _id, inquiries, path }: UpdateInquiriesParams) {
   try {
     await connectToDatabase();
-    
+
     // Find the category by its ID and update the name field only
     const updateAdinquiries = await Product.findByIdAndUpdate(
       _id,
       { inquiries }, // Update only the name field
       { new: true }
     );
-    
+
     // Revalidate the path (assuming it's a separate function)
     revalidatePath(path);
 
@@ -408,14 +408,14 @@ export async function updateinquiries({ _id, inquiries, path }: UpdateInquiriesP
 export async function updateshared({ _id, shared, path }: UpdateShareParams) {
   try {
     await connectToDatabase();
-    
+
     // Find the category by its ID and update the name field only
     const updateAdshare = await Product.findByIdAndUpdate(
       _id,
       { shared }, // Update only the name field
       { new: true }
     );
-    
+
     // Revalidate the path (assuming it's a separate function)
     revalidatePath(path);
 
@@ -431,14 +431,14 @@ export async function updateshared({ _id, shared, path }: UpdateShareParams) {
 export async function updatebookmarked({ _id, bookmarked, path }: UpdateBookmarkedParams) {
   try {
     await connectToDatabase();
-    
+
     // Find the category by its ID and update the name field only
     const updateAdbookmarked = await Product.findByIdAndUpdate(
       _id,
       { bookmarked }, // Update only the name field
       { new: true }
     );
-    
+
     // Revalidate the path (assuming it's a separate function)
     revalidatePath(path);
 
@@ -453,14 +453,14 @@ export async function updatebookmarked({ _id, bookmarked, path }: UpdateBookmark
 export async function updateabused({ _id, abused, path }: UpdateAbuseParams) {
   try {
     await connectToDatabase();
-    
+
     // Find the category by its ID and update the name field only
     const updateAdabused = await Product.findByIdAndUpdate(
       _id,
       { abused }, // Update only the name field
       { new: true }
     );
-    
+
     // Revalidate the path (assuming it's a separate function)
     revalidatePath(path);
 
@@ -473,18 +473,40 @@ export async function updateabused({ _id, abused, path }: UpdateAbuseParams) {
   }
 }
 // DELETE
-export async function deleteProduct({ adId, deleteImages, path }: DeleteProductParams) {
+export async function deleteProduct({
+  adId,
+  deleteImages,
+  path,
+}: DeleteProductParams) {
   try {
-  
-    if (deleteImages) {
-        const utapi = new UTApi();
-      await utapi.deleteFiles(deleteImages);
+    await connectToDatabase();
+
+    const deletedProduct = await Product.findByIdAndDelete(adId);
+
+    if (!deletedProduct) {
+      return { ok: false, message: "Product not found" };
     }
-    await connectToDatabase()
-    const deletedProduct = await Product.findByIdAndDelete(adId)
-    if (deletedProduct) revalidatePath(path)
+
+    if (deleteImages && deleteImages.length > 0) {
+      const utapi = new UTApi();
+
+      try {
+        await utapi.deleteFiles(deleteImages);
+      } catch (imageError) {
+        console.error("UploadThing image delete failed:", imageError);
+      }
+    }
+
+    revalidatePath(path);
+
+    return { ok: true, message: "Product deleted successfully" };
   } catch (error) {
-    handleError(error)
+    handleError(error);
+
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : "Delete failed",
+    };
   }
 }
 
@@ -492,13 +514,13 @@ export async function deleteProduct({ adId, deleteImages, path }: DeleteProductP
 
 export async function deleteSingleImage({ deleteImage, path }: deleteImageParams) {
   try {
-  
+
     if (deleteImage) {
-        const utapi = new UTApi();
-        const deletedAd = await utapi.deleteFiles(deleteImage);
-        if (deletedAd) revalidatePath(path)
+      const utapi = new UTApi();
+      const deletedAd = await utapi.deleteFiles(deleteImage);
+      if (deletedAd) revalidatePath(path)
     }
-   
+
   } catch (error) {
     handleError(error)
   }
