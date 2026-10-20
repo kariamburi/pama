@@ -204,17 +204,15 @@ const CollectionOrder = ({
                         <DispatchConfirmation _id={order._id} />
                       </>
                     )}
-                    {order.status === "pending" && (
-                      <>
-                        <button
-                          onClick={() => handleDelete(order._id)}
-                          disabled={order.status === "successful"}
-                          className={`mt-1 bg-gray-100 p-1 rounded-lg cursor-pointer hover:bg-gray-200`}
-                        >
-                          <DeleteOutlineOutlinedIcon />
-                        </button>
-                      </>
-                    )}
+
+                    <button
+                      onClick={() => handleDelete(order._id)}
+                      disabled={order.status === "successful"}
+                      className={`mt-1 bg-gray-100 p-1 rounded-lg cursor-pointer hover:bg-gray-200`}
+                    >
+                      <DeleteOutlineOutlinedIcon />
+                    </button>
+
                   </td>
                 </tr>
               ))}
