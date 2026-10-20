@@ -14,9 +14,10 @@ import { ObjectId } from "mongodb";
 import Delivery from "../database/models/delivery.model"
 import axios from "axios"
 import mongoose, { Types } from "mongoose"
-import { auth } from "@clerk/nextjs/server"
+import { auth, clerkClient } from "@clerk/nextjs/server"
 import User from "../database/models/user.model"
 import SaleReversal from "../database/models/sale-reversal.model"
+import AdminOrderDeletion from "../database/models/admin-order-deletion.model"
 
 const populateAd = (query: any) => {
   return query
@@ -762,17 +763,121 @@ export async function getallOdersByuserId(
     handleError(error);
   }
 }
-// DELETE
-export async function deleteOrder({ _id, path }: DeleteBookmarkParams) {
-  try {
-    await connectToDatabase()
+// A genuine server-side role check. Never use a client-provided userId or role.
+// Supports Clerk public/private metadata.role === "admin", or a trusted
+// database User.role === "admin" / User.isAdmin === true.
+async function getOrdersAdminActor(): Promise<{
+  clerkId: string;
+  dbUserId?: string;
+} | null> {
+  const { userId: clerkId } = await auth();
+  if (!clerkId) return null;
 
-    const deletedOrder = await Order.findByIdAndDelete(_id)
-    // Delete image from uploadthing
-    if (deletedOrder) revalidatePath(path)
+  await connectToDatabase();
+  const mongoUser = await User.findOne({ clerkId }).select("_id role isAdmin").exec();
+  const dbRole = String((mongoUser as any)?.role || "").trim().toLowerCase();
+  const isDbAdmin = dbRole === "admin" || (mongoUser as any)?.isAdmin === true;
+
+  let isClerkAdmin = false;
+  if (!isDbAdmin) {
+    const clerkUser = await (await clerkClient()).users.getUser(clerkId);
+    const publicMeta = clerkUser.publicMetadata as Record<string, unknown>;
+    const privateMeta = clerkUser.privateMetadata as Record<string, unknown>;
+    isClerkAdmin =
+      String(publicMeta?.role || "").trim().toLowerCase() === "admin" ||
+      String(privateMeta?.role || "").trim().toLowerCase() === "admin";
+  }
+
+  if (!isDbAdmin && !isClerkAdmin) return null;
+  return {
+    clerkId,
+    dbUserId: mongoUser ? String(mongoUser._id) : undefined,
+  };
+}
+
+// Called by the listing to decide whether to display the delete controls.
+export async function getOrdersAdminAccess(): Promise<{ isAdmin: boolean }> {
+  try {
+    return { isAdmin: !!(await getOrdersAdminActor()) };
   } catch (error) {
-    handleError(error)
+    console.error("Failed to check admin order access:", error);
+    return { isAdmin: false };
   }
 }
 
+// ADMIN DELETE: works for Pending, Successful, and Completed orders.
+// No automatic stock restoration: the Reverse Sale flow is separate.
+// Transaction logs a full snapshot and removes exactly one Order atomically.
+export async function deleteOrder({
+  _id,
+  path,
+  reason,
+}: DeleteBookmarkParams & { reason?: string }): Promise<{
+  ok: boolean;
+  message: string;
+}> {
+  let session: mongoose.ClientSession | null = null;
+  try {
+    if (!Types.ObjectId.isValid(_id)) {
+      return { ok: false, message: "Invalid order ID." };
+    }
+    const trimmedReason = String(reason || "").trim();
+    if (trimmedReason.length < 5 || trimmedReason.length > 500) {
+      return { ok: false, message: "Please provide a reason (5–500 characters)." };
+    }
 
+    const admin = await getOrdersAdminActor();
+    if (!admin) {
+      return { ok: false, message: "Only an administrator can delete orders." };
+    }
+
+    // Ensure the audit collection and its unique index exist before
+    // starting the transaction (important on first deployment).
+    await AdminOrderDeletion.init();
+    session = await mongoose.startSession();
+    let oldStatus = "";
+    await session.withTransaction(async () => {
+      const order = await Order.findById(_id).session(session!);
+      if (!order) throw new Error("Order not found. It may have already been deleted.");
+      oldStatus = String(order.status || "");
+
+      // Preserve an audit copy outside normal Order/sales collections.
+      await AdminOrderDeletion.create(
+        [{
+          originalOrderId: order._id,
+          orderSnapshot: order.toObject({ depopulate: true }),
+          originalStatus: oldStatus,
+          reason: trimmedReason,
+          deletedByClerkId: admin.clerkId,
+          deletedByUserId: admin.dbUserId ? new Types.ObjectId(admin.dbUserId) : undefined,
+        }],
+        { session: session! }
+      );
+
+      const deleted = await Order.deleteOne({ _id: order._id }).session(session!);
+      if (deleted.deletedCount !== 1) {
+        throw new Error("Order was already deleted. Please refresh the page.");
+      }
+    });
+
+    try {
+      if (typeof path === "string" && path.startsWith("/") && !path.startsWith("//")) {
+        revalidatePath(path);
+      }
+    } catch (error) {
+      console.error("Order delete: refresh failed after successful deletion:", error);
+    }
+    return {
+      ok: true,
+      message: `The ${oldStatus || "selected"} order was deleted. Stock was not changed.`,
+    };
+  } catch (error) {
+    console.error("Admin order delete failed:", error);
+    return {
+      ok: false,
+      message: error instanceof Error ? error.message : "Unable to delete order.",
+    };
+  } finally {
+    if (session) await session.endSession();
+  }
+}

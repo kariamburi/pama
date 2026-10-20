@@ -1,12 +1,11 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import {
   deleteOrder,
-  updateDispatchedOrders,
-  updatePendingOrdersToSuccessful,
+  getOrdersAdminAccess,
 } from "@/lib/actions/order.actions";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import Pagination from "./Pagination";
@@ -38,16 +37,78 @@ const CollectionOrder = ({
 }: CollectionProps) => {
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
   const pathname = usePathname();
+  const router = useRouter();
   const { toast } = useToast();
 
-  const handleDelete = async (_id: string) => {
-    await deleteOrder({ _id, path: pathname });
-    toast({
-      title: "Alert",
-      description: "Deleted",
-      duration: 5000,
-      className: "bg-[#000000] text-white",
-    });
+  // Permissions come from the server. The server also checks authorization
+  // again when the delete action runs, so hiding buttons is not the security gate.
+  const [isOrderAdmin, setIsOrderAdmin] = useState(false);
+  const [orderToDelete, setOrderToDelete] = useState<any | null>(null);
+  const [deleteReason, setDeleteReason] = useState("");
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [deletedIds, setDeletedIds] = useState<string[]>([]);
+
+  const visibleOrders = useMemo(
+    () => data.filter((order) => !deletedIds.includes(String(order._id))),
+    [data, deletedIds]
+  );
+
+  useEffect(() => {
+    let active = true;
+    getOrdersAdminAccess()
+      .then((result) => {
+        if (active) setIsOrderAdmin(result.isAdmin);
+      })
+      .catch(() => {
+        if (active) setIsOrderAdmin(false);
+      });
+    return () => { active = false; };
+  }, []);
+
+  const showDeleteConfirmation = (order: any) => {
+    if (!isOrderAdmin || isDeleting) return;
+    setOrderToDelete(order);
+    setDeleteReason("");
+  };
+
+  const closeDeleteConfirmation = () => {
+    if (isDeleting) return;
+    setOrderToDelete(null);
+    setDeleteReason("");
+  };
+
+  const handleDeleteConfirmed = async () => {
+    if (!orderToDelete || !isOrderAdmin || isDeleting) return;
+    if (deleteReason.trim().length < 5) {
+      toast({ title: "Reason required", description: "Enter at least 5 characters explaining the deletion.", variant: "destructive" });
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      const result = await deleteOrder({
+        _id: String(orderToDelete._id),
+        path: pathname,
+        reason: deleteReason.trim(),
+      });
+      if (!result.ok) {
+        toast({ title: "Deletion failed", description: result.message, variant: "destructive" });
+        return;
+      }
+      setDeletedIds((previous) => [...previous, String(orderToDelete._id)]);
+      setOrderToDelete(null);
+      setDeleteReason("");
+      toast({ title: "Order deleted", description: result.message });
+      router.refresh();
+    } catch (error) {
+      toast({
+        title: "Deletion failed",
+        description: error instanceof Error ? error.message : "Please try again.",
+        variant: "destructive",
+      });
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
   const handleOrderClick = (order: any) => {
@@ -66,7 +127,7 @@ const CollectionOrder = ({
           <div>Total</div>
           <div className="font-bold">
             KES{" "}
-            {data
+            {visibleOrders
               .reduce((total, order) => total + order.price, 0)
               .toLocaleString()}
           </div>
@@ -77,7 +138,7 @@ const CollectionOrder = ({
           <div>Successful</div>
           <div className="font-bold">
             KES{" "}
-            {data
+            {visibleOrders
               .filter((order) => order.status === "successful")
               .reduce((total, order) => total + order.price, 0)
               .toLocaleString()}
@@ -89,7 +150,7 @@ const CollectionOrder = ({
           <div>Pending</div>
           <div className="font-bold">
             KES{" "}
-            {data
+            {visibleOrders
               .filter((order) => order.status === "pending")
               .reduce((total, order) => total + order.price, 0)
               .toLocaleString()}
@@ -101,7 +162,7 @@ const CollectionOrder = ({
           <div>Completed</div>
           <div className="font-bold">
             KES{" "}
-            {data
+            {visibleOrders
               .filter((order) => order.status === "completed")
               .reduce((total, order) => total + order.price, 0)
               .toLocaleString()}
@@ -109,7 +170,7 @@ const CollectionOrder = ({
         </div>
       </div>
 
-      {data.length > 0 ? (
+      {visibleOrders.length > 0 ? (
         <div>
           <table className="w-full border-collapse border border-gray-300 text-sm">
             <thead>
@@ -126,7 +187,7 @@ const CollectionOrder = ({
               </tr>
             </thead>
             <tbody>
-              {data.map((order: any) => (
+              {visibleOrders.map((order: any) => (
                 <tr key={order._id}>
                   <td
                     className="border p-2 text-blue-500 cursor-pointer underline"
@@ -205,13 +266,17 @@ const CollectionOrder = ({
                       </>
                     )}
 
-                    <button
-                      onClick={() => handleDelete(order._id)}
-                      disabled={order.status === "successful"}
-                      className={`mt-1 bg-gray-100 p-1 rounded-lg cursor-pointer hover:bg-gray-200`}
-                    >
-                      <DeleteOutlineOutlinedIcon />
-                    </button>
+                    {isOrderAdmin && (
+                      <button
+                        type="button"
+                        onClick={() => showDeleteConfirmation(order)}
+                        className="mt-1 rounded-lg bg-red-50 p-1 text-red-700 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-red-500"
+                        aria-label={`Delete ${order.status} order ${order.referenceId || order._id}`}
+                        title="Admin: Delete order"
+                      >
+                        <DeleteOutlineOutlinedIcon />
+                      </button>
+                    )}
 
                   </td>
                 </tr>
@@ -225,6 +290,70 @@ const CollectionOrder = ({
               page={page}
               totalPages={totalPages}
             />
+          )}
+
+          {/* Admin delete confirmation — includes Completed and Successful orders. */}
+          {isOrderAdmin && orderToDelete && (
+            <div
+              className="fixed inset-0 z-[80] flex items-center justify-center bg-black/60 p-4"
+              role="presentation"
+              onMouseDown={(event) => {
+                if (event.target === event.currentTarget) closeDeleteConfirmation();
+              }}
+            >
+              <div
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="delete-order-title"
+                className="w-full max-w-lg rounded-2xl bg-white p-6 shadow-2xl"
+              >
+                <h2 id="delete-order-title" className="mb-2 text-xl font-bold text-gray-900">
+                  Delete {String(orderToDelete.status || "")} order?
+                </h2>
+                <p className="mb-3 text-sm text-gray-700">
+                  <strong>Product:</strong> {orderToDelete.productId?.productName || "Unknown"}<br />
+                  <strong>Size:</strong> {orderToDelete.size || "—"} | <strong>Qty:</strong> {orderToDelete.qty}<br />
+                  <strong>Order:</strong> {orderToDelete.referenceId || orderToDelete._id}
+                </p>
+                <div className="mb-4 rounded-lg border border-amber-200 bg-amber-50 p-3 text-sm text-amber-900">
+                  This permanently removes the order from normal sales and reports.
+                  <strong> It will NOT restore stock.</strong> For an incorrectly marked
+                  dress size, use the Reverse Sale action in the product editor instead.
+                  An admin deletion audit entry will be retained.
+                </div>
+                <label htmlFor="admin-delete-reason" className="mb-1 block text-sm font-semibold">
+                  Reason for deletion (required)
+                </label>
+                <textarea
+                  id="admin-delete-reason"
+                  className="w-full rounded-lg border border-gray-300 p-3 text-sm outline-none focus:border-black focus:ring-1 focus:ring-black"
+                  rows={3}
+                  value={deleteReason}
+                  onChange={(e) => setDeleteReason(e.target.value)}
+                  placeholder="Why should this order be removed?"
+                  maxLength={500}
+                  disabled={isDeleting}
+                />
+                <div className="mt-5 flex justify-end gap-2">
+                  <button
+                    type="button"
+                    disabled={isDeleting}
+                    onClick={closeDeleteConfirmation}
+                    className="rounded-lg border px-4 py-2 text-sm font-semibold hover:bg-gray-50 disabled:opacity-50"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="button"
+                    disabled={isDeleting || deleteReason.trim().length < 5}
+                    onClick={handleDeleteConfirmed}
+                    className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold text-white hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50"
+                  >
+                    {isDeleting ? "Deleting..." : "Yes, Delete Order"}
+                  </button>
+                </div>
+              </div>
+            </div>
           )}
 
           {/* Modal for displaying order details */}
@@ -316,9 +445,7 @@ const CollectionOrder = ({
                       </p>
                       <p className="text-sm text-gray-700">
                         <strong>Order Status:</strong>{" "}
-                        {selectedOrder.status === "successful"
-                          ? "Successful"
-                          : "Pending"}
+                        {String(selectedOrder.status || "unknown").replace(/^./, (char: string) => char.toUpperCase())}
                       </p>
                       <p className="text-sm text-gray-700">
                         <strong>Ordered At:</strong>{" "}
