@@ -745,7 +745,7 @@ export const ProductForm = ({
                           {field.value &&
                             field.value.map((feature, index) => (
                               <li
-                                key={index}
+                                key={`${feature.size}-${index}`}
                                 className="justify-between flex flex-col border p-2 rounded-lg gap-2"
                               >
                                 <div className="flex items-center gap-2">
@@ -769,16 +769,14 @@ export const ProductForm = ({
                                     quantity={1}
                                     instock={feature.stock}
                                     onStockUpdate={(size, newStock) => {
-                                      const updatedFeatures = [...field.value];
-                                      const featureIndex =
-                                        updatedFeatures.findIndex(
-                                          (f) => f.size === size
-                                        );
-                                      if (featureIndex !== -1) {
-                                        updatedFeatures[featureIndex].stock =
-                                          newStock;
-                                        field.onChange(updatedFeatures);
-                                      }
+                                      // Immutable update: only the sold size changes.
+                                      const updatedFeatures = (field.value || []).map(
+                                        (item) =>
+                                          item.size === size
+                                            ? { ...item, stock: newStock }
+                                            : item
+                                      );
+                                      field.onChange(updatedFeatures);
                                     }}
                                   />
                                   <input
@@ -855,16 +853,22 @@ export const ProductForm = ({
                               width={50}
                               height={50}
                               onClick={() => {
-                                if (
-                                  newListingTitle.trim() !== "" &&
-                                  newListingStock > 0
-                                ) {
+                                const sizeToAdd = newListingTitle.trim();
+                                if (sizeToAdd !== "" && newListingStock > 0) {
+                                  const alreadyExists = (field.value || []).some(
+                                    (item) => item.size.trim() === sizeToAdd
+                                  );
+                                  if (alreadyExists) {
+                                    toast({
+                                      title: "Size already added",
+                                      description: `Size ${sizeToAdd} is already listed.`,
+                                      variant: "destructive",
+                                    });
+                                    return;
+                                  }
                                   const updatedFeatures = [
                                     ...(field.value || []),
-                                    {
-                                      size: newListingTitle.trim(),
-                                      stock: Number(newListingStock),
-                                    },
+                                    { size: sizeToAdd, stock: Number(newListingStock) },
                                   ];
                                   field.onChange(updatedFeatures);
                                   setNewListingTitle("");

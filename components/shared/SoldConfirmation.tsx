@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState } from "react";
 import { usePathname } from "next/navigation";
 import {
   AlertDialog,
@@ -13,121 +13,164 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
 import { ProductSold } from "@/lib/actions/order.actions";
 
-type soldProps = {
+type SoldProps = {
   userId: string;
   product: any;
   selectedSize: string;
   quantity: number;
   instock: number;
-  onStockUpdate: (size: string, newStock: number) => void; // Callback to update parent state
+  onStockUpdate: (size: string, newStock: number) => void;
 };
+
+function generateRandomOrderId() {
+  const timestamp = Date.now();
+  const randomString = Math.random().toString(36).substring(2, 8);
+  return `ORDER_${timestamp}_${randomString.toUpperCase()}`;
+}
 
 export const SoldConfirmation = ({
   selectedSize,
   quantity,
-  instock: initialStock,
+  instock,
   userId,
   product,
   onStockUpdate,
-}: soldProps) => {
+}: SoldProps) => {
   const pathname = usePathname();
-  const [instock, setInstock] = useState(initialStock);
-  const [soldPrice, setSoldPrice] = useState(""); // New state for sold price
-  let [isPending, startTransition] = useTransition();
-
-  function generateRandomOrderId() {
-    const timestamp = Date.now();
-    const randomString = Math.random().toString(36).substring(2, 8);
-    return `ORDER_${timestamp}_${randomString.toUpperCase()}`;
-  }
+  const [open, setOpen] = useState(false);
+  const [soldPrice, setSoldPrice] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
   const handleMarkSold = async () => {
+    if (isSubmitting) return;
+    setError("");
+
     if (!product?._id) {
-      alert("Product ID missing.");
+      setError("Product ID missing.");
       return;
     }
 
-    if (!soldPrice || isNaN(Number(soldPrice)) || Number(soldPrice) <= 0) {
-      alert("Please enter a valid sold price.");
+    const price = Number(soldPrice);
+    if (!Number.isFinite(price) || price <= 0) {
+      setError("Please enter a valid sold price.");
       return;
     }
 
-    const response = await ProductSold({
-      order: {
-        userId,
-        productId: product._id,
-        size: selectedSize,
-        buyprice: product.buyprice,
-        price: Number(soldPrice),
-        qty: quantity,
-        status: "completed",
-        orderId: generateRandomOrderId(),
-        referenceId: generateRandomOrderId(),
-      },
-      path: pathname,
-    });
+    if (!Number.isInteger(quantity) || quantity < 1 || quantity > instock) {
+      setError(`Not enough stock available for size ${selectedSize}.`);
+      return;
+    }
 
-    if (response?.ok) {
-      setInstock(response.newStock);
-      onStockUpdate(selectedSize, response.newStock);
-      setSoldPrice("");
-    } else {
-      alert(response?.message || "Failed to mark as sold.");
+    setIsSubmitting(true);
+    try {
+      const response = await ProductSold({
+        order: {
+          userId,
+          productId: String(product._id),
+          size: selectedSize,
+          buyprice: product.buyprice,
+          price,
+          qty: quantity,
+          status: "completed",
+          orderId: generateRandomOrderId(),
+          referenceId: generateRandomOrderId(),
+        },
+        path: pathname,
+      });
+
+      if (response?.ok && typeof response.newStock === "number") {
+        onStockUpdate(selectedSize, response.newStock);
+        setSoldPrice("");
+        setError("");
+        setOpen(false);
+      } else {
+        setError(response?.message || "Failed to mark size as sold.");
+      }
+    } catch (caughtError) {
+      setError(
+        caughtError instanceof Error
+          ? caughtError.message
+          : "Unable to complete the sale. Please try again."
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
-    <AlertDialog>
-      {instock > 0 ? (
-        <AlertDialogTrigger>
-          <div className="text-xs bg-black hover:bg-gray-700 text-white p-2 cursor-pointer rounded">
-            Mark Sold
-          </div>
-        </AlertDialogTrigger>
-      ) : (
-        <div className="text-xs bg-gray-400 text-white p-2 rounded">
+    <AlertDialog
+      open={open}
+      onOpenChange={(nextOpen) => {
+        if (!isSubmitting) {
+          setOpen(nextOpen);
+          if (!nextOpen) setError("");
+        }
+      }}
+    >
+      <AlertDialogTrigger asChild>
+        <button
+          type="button"
+          disabled={instock < quantity || isSubmitting}
+          className={
+            instock >= quantity
+              ? "text-xs bg-black hover:bg-gray-700 text-white p-2 cursor-pointer rounded"
+              : "text-xs bg-gray-400 text-white p-2 rounded cursor-not-allowed"
+          }
+        >
           Mark Sold
-        </div>
-      )}
+        </button>
+      </AlertDialogTrigger>
 
       <AlertDialogContent className="bg-white">
         <AlertDialogHeader>
           <AlertDialogTitle>
             Confirm sold ({quantity}) piece(s) of size ({selectedSize})?
           </AlertDialogTitle>
-          <AlertDialogDescription className="p-regular-16 text-grey-600">
+          <AlertDialogDescription className="text-grey-600">
             Enter the actual selling price for this product size.
           </AlertDialogDescription>
         </AlertDialogHeader>
 
-        {/* Input field for Sold Price */}
         <div className="px-4">
-          <label className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor={`sold-price-${selectedSize}`}
+            className="block text-sm font-medium text-gray-700"
+          >
             Sold Price (KES)
           </label>
           <input
+            id={`sold-price-${selectedSize}`}
             type="number"
+            min="0.01"
+            step="0.01"
+            disabled={isSubmitting}
             className="w-full mt-1 p-2 border border-gray-300 rounded-md"
             placeholder="Enter sold price"
             value={soldPrice}
-            onChange={(e) => setSoldPrice(e.target.value)}
+            onChange={(event) => setSoldPrice(event.target.value)}
           />
+          {error && (
+            <p role="alert" className="mt-2 text-sm text-red-600">
+              {error}
+            </p>
+          )}
         </div>
 
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
-
+          <AlertDialogCancel disabled={isSubmitting}>
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
-            disabled={isPending}
-            onClick={(e) => {
-              e.preventDefault();
-              startTransition(handleMarkSold);
+            disabled={isSubmitting}
+            onClick={(event) => {
+              event.preventDefault();
+              void handleMarkSold();
             }}
           >
-            {isPending ? "Processing Order..." : "Confirm Sold"}
+            {isSubmitting ? "Processing Order..." : "Confirm Sold"}
           </AlertDialogAction>
         </AlertDialogFooter>
       </AlertDialogContent>

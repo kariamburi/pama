@@ -13,7 +13,10 @@ import Order from "../database/models/order.model"
 import { ObjectId } from "mongodb";
 import Delivery from "../database/models/delivery.model"
 import axios from "axios"
-import { Types } from "mongoose"
+import mongoose, { Types } from "mongoose"
+import { auth } from "@clerk/nextjs/server"
+import User from "../database/models/user.model"
+import SaleReversal from "../database/models/sale-reversal.model"
 
 const populateAd = (query: any) => {
   return query
@@ -102,59 +105,341 @@ export const ProductSold = async ({ order, path }: CreateOrderParams) => {
   try {
     await connectToDatabase();
 
-    const qty = Number(order.qty || 1);
+    const qty = Number(order.qty ?? 1);
+    const selectedSize = String(order.size ?? "").trim();
 
-    if (!order.productId || !order.userId || !order.size) {
+    if (!order.productId || !order.userId || !selectedSize) {
       throw new Error("Missing product, user, or size");
     }
-
-    if (qty < 1) {
+    if (!Number.isInteger(qty) || qty < 1) {
       throw new Error("Invalid quantity");
     }
+    if (!Number.isFinite(Number(order.price)) || Number(order.price) <= 0) {
+      throw new Error("Invalid sold price");
+    }
 
-    // 1. Reduce stock atomically only if enough stock exists
+    // $elemMatch checks stock and size ON THE SAME feature entry.
+    // The positional $ will decrement only the matching size.
     const updatedProduct = await Product.findOneAndUpdate(
       {
         _id: order.productId,
-        "features.size": order.size,
-        "features.stock": { $gte: qty },
+        features: {
+          $elemMatch: {
+            size: selectedSize,
+            stock: { $gte: qty },
+          },
+        },
       },
       {
-        $inc: {
-          "features.$.stock": -qty,
-        },
+        $inc: { "features.$.stock": -qty },
       },
       { new: true }
     );
 
     if (!updatedProduct) {
-      throw new Error(`Insufficient stock or size ${order.size} not found`);
+      throw new Error(
+        `Insufficient stock, or size ${selectedSize} was not found`
+      );
     }
 
-    // 2. Create a fresh completed order every time
-    const newOrder = await Order.create({ ...order });
-
-    await revalidatePath(path);
+    // Store exactly the same normalized size used for the stock update.
+    let newOrder;
+    try {
+      newOrder = await Order.create({
+        ...order,
+        size: selectedSize,
+        qty,
+        price: Number(order.price),
+        saleSource: "manual_product_sold",
+        stockSizeVerified: true,
+      });
+    } catch (orderError) {
+      // Best-effort compensation if order creation fails after deduction.
+      // True all-or-nothing guarantees require a MongoDB transaction.
+      try {
+        await Product.updateOne(
+          {
+            _id: order.productId,
+            features: { $elemMatch: { size: selectedSize } },
+          },
+          { $inc: { "features.$.stock": qty } }
+        );
+      } catch (rollbackError) {
+        console.error("Stock rollback failed:", rollbackError);
+      }
+      throw orderError;
+    }
 
     const updatedFeature = updatedProduct.features.find(
-      (f: any) => f.size === order.size
+      (feature: { size: string; stock: number }) =>
+        feature.size === selectedSize
     );
+
+    // An invalid revalidation path should not turn a completed sale
+    // into an apparent failure that someone may retry.
+    try {
+      revalidatePath(path);
+    } catch (revalidateError) {
+      console.error("Sold stock revalidation failed:", revalidateError);
+    }
 
     return {
       ok: true,
-      message: "Order Created",
+      message: `Size ${selectedSize} sold successfully`,
       order: JSON.parse(JSON.stringify(newOrder)),
       newStock: updatedFeature?.stock ?? 0,
     };
   } catch (error) {
-    handleError(error);
+    console.error("ProductSold failed:", error);
     return {
       ok: false,
       message:
-        error instanceof Error ? error.message : "Failed to create order",
+        error instanceof Error ? error.message : "Failed to mark size sold",
     };
   }
 };
+
+// Only manually recorded, completed sales can be reversed.
+// Legacy manual sales created before the fixed stock-matching query used
+// ORDER_ identifiers. Do NOT include normal website/customer orders.
+function isReversibleManualSale(sale: any): boolean {
+  if (!sale || sale.status !== "completed" || sale.shippingId) return false;
+  // Both IDs are issued by the manual Mark Sold component, not by checkout.
+  const hasManualIds =
+    /^ORDER_/.test(String(sale.orderId || "")) &&
+    /^ORDER_/.test(String(sale.referenceId || ""));
+  return hasManualIds && (
+    sale.saleSource === "manual_product_sold" || !sale.saleSource
+  );
+}
+
+// SERVER-SIDE permission, not the userId passed from the browser.
+// This implementation uses Clerk user -> Mongo User.clerkId and limits
+// reversal to the product organizer/owner. Adapt if your app uses another
+// auth provider or staff permissions model.
+async function requireProductOwner(productId: string): Promise<string> {
+  const { userId: clerkId } = await auth();
+
+  if (!clerkId) {
+    throw new Error("Sign in to manage sales.");
+  }
+
+  // 1. Find the logged-in user
+  const user = await User.findOne({ clerkId })
+    .select("_id")
+    .exec();
+
+  if (!user) {
+    throw new Error("User account was not found.");
+  }
+
+  const dbUserId = String(user._id);
+
+  // 2. Verify that the user owns this product
+  const product = await Product.findOne({
+    _id: productId,
+    organizer: user._id,
+  })
+    .select("_id")
+    .exec();
+
+  if (!product) {
+    throw new Error(
+      "You do not have permission to reverse sales for this product."
+    );
+  }
+
+  return dbUserId;
+}
+
+export async function getReversibleManualSales({
+  productId,
+  size,
+}: {
+  productId: string;
+  size: string;
+}) {
+  try {
+    if (!Types.ObjectId.isValid(productId) || !size?.trim()) {
+      throw new Error("A valid product and size are required.");
+    }
+    await connectToDatabase();
+    await requireProductOwner(productId);
+
+    const records = await Order.find({
+      productId,
+      size: size.trim(),
+      status: "completed",
+      $or: [
+        { saleSource: "manual_product_sold" },
+        {
+          saleSource: { $exists: false },
+          orderId: /^ORDER_/,
+          referenceId: /^ORDER_/,
+          shippingId: null,
+        },
+      ],
+    })
+      .sort({ createdAt: -1 })
+      .limit(25)
+      .select("_id productId size qty price createdAt orderId referenceId saleSource stockSizeVerified shippingId status")
+      .lean();
+
+    return {
+      ok: true as const,
+      sales: records.filter(isReversibleManualSale).map((sale: any) => ({
+        _id: String(sale._id),
+        size: String(sale.size),
+        qty: Number(sale.qty),
+        price: Number(sale.price),
+        date: sale.createdAt ? new Date(sale.createdAt).toISOString() : "",
+        legacy: sale.stockSizeVerified !== true,
+        reference: String(sale.referenceId || sale.orderId || ""),
+      })),
+    };
+  } catch (error) {
+    console.error("getReversibleManualSales failed:", error);
+    return {
+      ok: false as const,
+      sales: [],
+      message: error instanceof Error ? error.message : "Failed to fetch manual sales.",
+    };
+  }
+}
+
+export async function reverseManualSale({
+  saleId,
+  productId,
+  originalSize,
+  restoreSize,
+  reason,
+  path,
+}: {
+  saleId: string;
+  productId: string;
+  originalSize: string;
+  restoreSize?: string;
+  reason: string;
+  path: string;
+}) {
+  let session: mongoose.ClientSession | null = null;
+  try {
+    if (!Types.ObjectId.isValid(saleId) || !Types.ObjectId.isValid(productId)) {
+      throw new Error("Invalid sale or product identifier.");
+    }
+    if (!originalSize?.trim() || !reason?.trim()) {
+      throw new Error("Sale size and reversal reason are required.");
+    }
+    await connectToDatabase();
+    // Recheck permission server-side for every request.
+    const actorId = await requireProductOwner(productId);
+    let restoredSize = "";
+    let restoredQty = 0;
+    let newStock = 0;
+    let currentStocks: Array<{ size: string; stock: number }> = [];
+
+    // A transaction ensures both stock restore and order removal succeed,
+    // or neither changes. Requires MongoDB replica set / Atlas.
+    session = await mongoose.startSession();
+    await session.withTransaction(async () => {
+      const sale = await Order.findOne({
+        _id: saleId,
+        productId,
+        size: originalSize.trim(),
+      }).session(session!);
+      if (!isReversibleManualSale(sale)) {
+        throw new Error("This manual sale no longer exists or cannot be reversed.");
+      }
+      const qty = Number(sale.qty);
+      restoredQty = qty;
+      if (!Number.isInteger(qty) || qty < 1) {
+        throw new Error("The recorded sale has an invalid quantity.");
+      }
+      const isLegacy = sale.stockSizeVerified !== true;
+      restoredSize = isLegacy ? String(restoreSize || "").trim() : String(sale.size);
+      if (!restoredSize) {
+        throw new Error("For an older sale, select the size that actually lost stock.");
+      }
+      if (!isLegacy && restoreSize && restoreSize !== String(sale.size)) {
+        throw new Error("Verified sales must be restored to the recorded size.");
+      }
+
+      // Never create new sizes by accident. Restore only an existing entry.
+      const product = await Product.findOne({
+        _id: productId,
+        organizer: actorId,
+      }).session(session!);
+      if (!product) throw new Error("Product not found or access denied.");
+      if (!product.features.some((f: any) => String(f.size) === restoredSize)) {
+        throw new Error(`Size ${restoredSize} no longer exists on this product.`);
+      }
+
+      // Deleting the exact order inside the transaction removes it from
+      // normal sales totals, order history and profit calculations.
+      const deleted = await Order.deleteOne({
+        _id: sale._id,
+        productId,
+        status: "completed",
+      }).session(session!);
+      if (deleted.deletedCount !== 1) {
+        throw new Error("Sale already reversed. Refresh and try again.");
+      }
+
+      const updated = await Product.findOneAndUpdate(
+        {
+          _id: productId,
+          features: { $elemMatch: { size: restoredSize } },
+        },
+        { $inc: { "features.$.stock": qty } },
+        { new: true, session: session! }
+      );
+      if (!updated) throw new Error("Unable to restore stock.");
+      newStock = Number(
+        updated.features.find((f: any) => String(f.size) === restoredSize)?.stock
+      );
+      // Sync every variant to the database, including legacy corrections
+      // where the recorded size and deducted size did not match.
+      currentStocks = updated.features.map((f: any) => ({
+        size: String(f.size),
+        stock: Number(f.stock),
+      }));
+
+      // Save a correction audit, but not a counted sale.
+      await SaleReversal.create([{
+        originalSaleId: sale._id,
+        productId: sale.productId,
+        originalSize: String(sale.size),
+        restoredSize,
+        qty,
+        price: Number(sale.price),
+        orderId: String(sale.orderId || ""),
+        reversedBy: actorId,
+        reason: reason.trim(),
+        legacy: isLegacy,
+        originalSaleDate: sale.createdAt || null,
+      }], { session: session! });
+    });
+
+    try { revalidatePath(path); } catch (error) {
+      console.error("Reversal path revalidation failed:", error);
+    }
+    return {
+      ok: true as const,
+      message: `Sale removed. Restored ${restoredQty} item(s) to size ${restoredSize}.`,
+      restoredSize,
+      newStock,
+      currentStocks,
+    };
+  } catch (error) {
+    console.error("reverseManualSale failed:", error);
+    return {
+      ok: false as const,
+      message: error instanceof Error ? error.message : "Unable to reverse this sale.",
+    };
+  } finally {
+    if (session) await session.endSession();
+  }
+}
 
 export async function updateOrdersByIds(
   ids: string[], // Array of _id strings
