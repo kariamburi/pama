@@ -763,9 +763,9 @@ export async function getallOdersByuserId(
     handleError(error);
   }
 }
-// A genuine server-side role check. Never use a client-provided userId or role.
-// Supports Clerk public/private metadata.role === "admin", or a trusted
-// database User.role === "admin" / User.isAdmin === true.
+// Pama Collection stores its administrator role in User.status.
+// That field must be server-controlled (users must not be able to edit their own status).
+// Trusted Clerk metadata is retained as a fallback for projects already using it.
 async function getOrdersAdminActor(): Promise<{
   clerkId: string;
   dbUserId?: string;
@@ -774,9 +774,14 @@ async function getOrdersAdminActor(): Promise<{
   if (!clerkId) return null;
 
   await connectToDatabase();
-  const mongoUser = await User.findOne({ clerkId }).select("_id role isAdmin").exec();
-  const dbRole = String((mongoUser as any)?.role || "").trim().toLowerCase();
-  const isDbAdmin = dbRole === "admin" || (mongoUser as any)?.isAdmin === true;
+
+  // Important: Your User model defines "status", not "role" or "isAdmin".
+  const mongoUser = await User.findOne({ clerkId })
+    .select("_id status")
+    .exec();
+
+  const isDbAdmin =
+    String(mongoUser?.status ?? "").trim().toLowerCase() === "admin";
 
   let isClerkAdmin = false;
   if (!isDbAdmin) {
@@ -784,11 +789,12 @@ async function getOrdersAdminActor(): Promise<{
     const publicMeta = clerkUser.publicMetadata as Record<string, unknown>;
     const privateMeta = clerkUser.privateMetadata as Record<string, unknown>;
     isClerkAdmin =
-      String(publicMeta?.role || "").trim().toLowerCase() === "admin" ||
-      String(privateMeta?.role || "").trim().toLowerCase() === "admin";
+      String(publicMeta?.role ?? "").trim().toLowerCase() === "admin" ||
+      String(privateMeta?.role ?? "").trim().toLowerCase() === "admin";
   }
 
   if (!isDbAdmin && !isClerkAdmin) return null;
+
   return {
     clerkId,
     dbUserId: mongoUser ? String(mongoUser._id) : undefined,
