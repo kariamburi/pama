@@ -39,6 +39,7 @@ import { useToast } from "../ui/use-toast";
 import ProductQRCode from "./ProductQRCode";
 import ProductQRwindow from "./ProductQRwindow";
 import { SoldConfirmation } from "./SoldConfirmation";
+import { ReverseSold } from "./ReverseSold";
 // Infer the form data type from Zod schema
 type ProductFormData = z.infer<typeof ProductSchema>;
 type ProductFormProps = {
@@ -761,7 +762,7 @@ export const ProductForm = ({
                                     {feature.stock > 0 ? feature.stock : "Out"}
                                   </span>
                                 </div>
-                                <div className="flex items-center gap-2">
+                                <div className="flex flex-wrap items-center gap-2">
                                   <SoldConfirmation
                                     userId={userId}
                                     product={product}
@@ -776,7 +777,23 @@ export const ProductForm = ({
                                             ? { ...item, stock: newStock }
                                             : item
                                       );
-                                      field.onChange(updatedFeatures);
+                                      form.setValue("features", updatedFeatures, { shouldDirty: true });
+                                    }}
+                                  />
+                                  <ReverseSold
+                                    product={product}
+                                    selectedSize={feature.size}
+                                    availableSizes={(field.value || []).map((item) => item.size)}
+                                    onStockSync={(stocks) => {
+                                      const bySize = new Map(
+                                        stocks.map((item) => [item.size, item.stock])
+                                      );
+                                      const updatedFeatures = (form.getValues("features") || []).map(
+                                        (item) => bySize.has(item.size)
+                                          ? { ...item, stock: bySize.get(item.size)! }
+                                          : item
+                                      );
+                                      form.setValue("features", updatedFeatures, { shouldDirty: true });
                                     }}
                                   />
                                   <input
